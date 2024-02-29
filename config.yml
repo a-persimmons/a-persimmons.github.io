@@ -1,5 +1,5 @@
 baseURL: "https://blog.codingforjoy.com/"
-title:Home
+title: Home
 paginate: 3
 theme: PaperMod
 
