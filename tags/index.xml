@@ -1,18 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Tags on Monicool</title>
+    <title>Tags on Home</title>
     <link>https://blog.codingforjoy.com/tags/</link>
-    <description>Recent content in Tags on Monicool</description>
+    <description>Recent content in Tags on Home</description>
     <image>
-      <title>Monicool</title>
+      <title>Home</title>
       <url>https://blog.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
       <link>https://blog.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 17 Aug 2021 19:59:25 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 01 Mar 2024 01:22:55 +0800</lastBuildDate>
     <atom:link href="https://blog.codingforjoy.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>docker</title>
+      <link>https://blog.codingforjoy.com/tags/docker/</link>
+      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
+      <guid>https://blog.codingforjoy.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>linux</title>
+      <link>https://blog.codingforjoy.com/tags/linux/</link>
+      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
+      <guid>https://blog.codingforjoy.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>top</title>
+      <link>https://blog.codingforjoy.com/tags/top/</link>
+      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
+      <guid>https://blog.codingforjoy.com/tags/top/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Mysql</title>
       <link>https://blog.codingforjoy.com/tags/mysql/</link>
