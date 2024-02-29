@@ -2,99 +2,99 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Home</title>
-    <link>https://blog.codingforjoy.com/tags/</link>
+    <link>https://a-persimmons.github.io/tags/</link>
     <description>Recent content in Tags on Home</description>
     <image>
       <title>Home</title>
-      <url>https://blog.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://blog.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://a-persimmons.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://a-persimmons.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 01 Mar 2024 01:22:55 +0800</lastBuildDate>
-    <atom:link href="https://blog.codingforjoy.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://a-persimmons.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>docker</title>
-      <link>https://blog.codingforjoy.com/tags/docker/</link>
+      <link>https://a-persimmons.github.io/tags/docker/</link>
       <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/docker/</guid>
+      <guid>https://a-persimmons.github.io/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>linux</title>
-      <link>https://blog.codingforjoy.com/tags/linux/</link>
+      <link>https://a-persimmons.github.io/tags/linux/</link>
       <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/linux/</guid>
+      <guid>https://a-persimmons.github.io/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>top</title>
-      <link>https://blog.codingforjoy.com/tags/top/</link>
+      <link>https://a-persimmons.github.io/tags/top/</link>
       <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/top/</guid>
+      <guid>https://a-persimmons.github.io/tags/top/</guid>
       <description></description>
     </item>
     <item>
       <title>Mysql</title>
-      <link>https://blog.codingforjoy.com/tags/mysql/</link>
+      <link>https://a-persimmons.github.io/tags/mysql/</link>
       <pubDate>Tue, 17 Aug 2021 19:59:25 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/mysql/</guid>
+      <guid>https://a-persimmons.github.io/tags/mysql/</guid>
       <description></description>
     </item>
     <item>
       <title>调优</title>
-      <link>https://blog.codingforjoy.com/tags/%E8%B0%83%E4%BC%98/</link>
+      <link>https://a-persimmons.github.io/tags/%E8%B0%83%E4%BC%98/</link>
       <pubDate>Tue, 17 Aug 2021 19:59:25 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/%E8%B0%83%E4%BC%98/</guid>
+      <guid>https://a-persimmons.github.io/tags/%E8%B0%83%E4%BC%98/</guid>
       <description></description>
     </item>
     <item>
       <title>Java</title>
-      <link>https://blog.codingforjoy.com/tags/java/</link>
+      <link>https://a-persimmons.github.io/tags/java/</link>
       <pubDate>Sun, 20 Jun 2021 20:59:25 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/java/</guid>
+      <guid>https://a-persimmons.github.io/tags/java/</guid>
       <description></description>
     </item>
     <item>
       <title>JDK</title>
-      <link>https://blog.codingforjoy.com/tags/jdk/</link>
+      <link>https://a-persimmons.github.io/tags/jdk/</link>
       <pubDate>Sun, 20 Jun 2021 20:59:25 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/jdk/</guid>
+      <guid>https://a-persimmons.github.io/tags/jdk/</guid>
       <description></description>
     </item>
     <item>
       <title>源码</title>
-      <link>https://blog.codingforjoy.com/tags/%E6%BA%90%E7%A0%81/</link>
+      <link>https://a-persimmons.github.io/tags/%E6%BA%90%E7%A0%81/</link>
       <pubDate>Sun, 20 Jun 2021 20:59:25 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/%E6%BA%90%E7%A0%81/</guid>
+      <guid>https://a-persimmons.github.io/tags/%E6%BA%90%E7%A0%81/</guid>
       <description></description>
     </item>
     <item>
       <title>GC</title>
-      <link>https://blog.codingforjoy.com/tags/gc/</link>
+      <link>https://a-persimmons.github.io/tags/gc/</link>
       <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/gc/</guid>
+      <guid>https://a-persimmons.github.io/tags/gc/</guid>
       <description></description>
     </item>
     <item>
       <title>JVM</title>
-      <link>https://blog.codingforjoy.com/tags/jvm/</link>
+      <link>https://a-persimmons.github.io/tags/jvm/</link>
       <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/jvm/</guid>
+      <guid>https://a-persimmons.github.io/tags/jvm/</guid>
       <description></description>
     </item>
     <item>
       <title>Thread</title>
-      <link>https://blog.codingforjoy.com/tags/thread/</link>
+      <link>https://a-persimmons.github.io/tags/thread/</link>
       <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/thread/</guid>
+      <guid>https://a-persimmons.github.io/tags/thread/</guid>
       <description></description>
     </item>
     <item>
       <title>编程</title>
-      <link>https://blog.codingforjoy.com/tags/%E7%BC%96%E7%A8%8B/</link>
+      <link>https://a-persimmons.github.io/tags/%E7%BC%96%E7%A8%8B/</link>
       <pubDate>Sun, 06 Jun 2021 17:59:25 +0000</pubDate>
-      <guid>https://blog.codingforjoy.com/tags/%E7%BC%96%E7%A8%8B/</guid>
+      <guid>https://a-persimmons.github.io/tags/%E7%BC%96%E7%A8%8B/</guid>
       <description></description>
     </item>
   </channel>
