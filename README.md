@@ -48,7 +48,7 @@
    - 复制 token
 4. 进入blog仓库 `Settings`->`Secrets and variables`->`Actions`
    - 点击`New repository secret`
-   - Name设置为hugo.yml中[github_token的变量] `GH_PAGE_ACTION_TOKEN`(自己命令了的话，记得修改hugo.yml)
+   - Name设置为hugo.yml中[github_token的变量] `GH_PAGE_ACTION_TOKEN`(自己命令了的话，记得修改 hugo.yml)
    - Secret 粘贴刚刚创建的token
    - Add Secret，设置token完成
 5. 本地推送，在 Action中查看进度，完成后，回到仓库首页，查看分支是否多了gh-pages
