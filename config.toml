@@ -1,0 +1,66 @@
+baseURL = "https://blog.codingforjoy.com/"
+paginate = 3
+languageCode = "en"
+DefaultContentLanguage = "en"
+enableInlineShortcodes = true
+# prevent build failures when using Hugo's Instagram shortcode due to deprecated Instagram API.
+# See https://github.com/gohugoio/hugo/issues/7228#issuecomment-714490456
+ignoreErrors = ["error-remote-getjson"]
+
+# -------
+author = "Persimmon"
+title = "Home"
+theme = "paper"
+
+
+disqusShortname = 'YOUR_DISQUS_SHORTNAME'   # use disqus comments
+
+[params]
+  # color style
+  color = 'linen'                           # linen, wheat, gray, light
+
+  # header social icons
+  #twitter = 'YOUR_TWITTER_ID'               # twitter.com/YOUR_TWITTER_ID
+  github = 'a-persimmons'                 # github.com/YOUR_GITHUB_ID
+  #instagram = 'YOUR_INSTAGRAM_ID'           # instagram.com/YOUR_INSTAGRAM_ID
+  #linkedin = 'YOUR_LINKEDIN_ID'             # linkedin.com/in/YOUR_LINKEDIN_ID
+  #mastodon = 'YOUR_MASTODON_LINK'           # e.g. 'https://mastodon.instance/@xxx'
+  rss = true                                # show rss icon
+
+  # home page profile
+  avatar = 'niklechunming@163.com'                 # gravatar email or image url
+  name = 'Persimmon'
+  bio = '擅长服务器开发：Web服务器、流媒体服务器'
+
+
+  # misc
+  disableHLJS = true                        # disable highlight.js
+  disablePostNavigation = true              # disable post navigation
+  monoDarkIcon = true                       # show monochrome dark mode icon
+  gravatarCdn = 'https://www.gravatar.com/avatar/ef333c1203724d1cb48104b2679529bb?s=160&d=identicon'         # e.g. 'https://cdn.v2ex.com/gravatar/'
+  math = true                               # enable KaTeX math typesetting globally
+  graphCommentId = "YOUR_GRAPH_COMMENT_ID"  # use graph comment (disqus alternative)
+
+
+[menu]
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 10
+  [[menu.main]]
+    identifier = "contact"
+    name = "Contact"
+    url = "/contact/"
+    weight = 10
+
+  # giscus
+[params.giscus]
+  repo = 'YOUR_GISCUS_REPO'                 # see https://giscus.app for more details
+  repoId = 'YOUR_GISCUS_REPO_ID'
+  category = 'YOUR__GISCUS_CATEGORY'
+  categoryId = 'YOUR_GISCUS_CATEGORY_ID'
+  mapping = 'pathname'
+  theme = 'light'
+  lang = 'zh-CN'
