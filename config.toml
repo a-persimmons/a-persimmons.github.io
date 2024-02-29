@@ -1,4 +1,4 @@
-baseURL = "https://blog.codingforjoy.com/"
+baseURL = "https://a-persimmons.github.io/"
 paginate = 3
 languageCode = "en"
 DefaultContentLanguage = "en"
