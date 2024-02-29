@@ -27,7 +27,7 @@ docker run -ti --rm --name tmp-limit --cpus="1" -m="1G" ubuntu bash -c 'apt upda
 
 现在，让我们在运行该 Docker 容器的主机上启动 top 工具。 top工具的输出如下：
 
-![top command from the host](./assets/1-top-from-host.png)
+![top command from the host](https://i0.wp.com/blog.ycrash.io/wp-content/uploads/2024/02/1-top-from-host.png?w=1467&ssl=1)
 
 <p align="center">图1：来自主机的top命令</p>
 
@@ -37,7 +37,7 @@ docker run -ti --rm --name tmp-limit --cpus="1" -m="1G" ubuntu bash -c 'apt upda
 
 现在，让我们在容器内执行 top 命令。以下是top命令报告的输出：
 
-![top command from the container](./assets/2-top-from-container.png)
+![top command from the container](https://i0.wp.com/blog.ycrash.io/wp-content/uploads/2024/02/2-top-from-container.png?w=1467&ssl=1)
 
 <p align="center">图 2：来自容器的 top 命令</p>
 
@@ -53,7 +53,7 @@ docker run -ti --rm --name tmp-limit --cpus="1" -m="1G" ubuntu bash -c 'apt upda
 
    `docker stats` 命令提供容器级别的基本资源利用率指标。以下是先前启动的容器的“docker stats”的输出：
 
-   ![docker stats output](./assets/3-docker-stats.png)
+   ![docker stats output](https://i0.wp.com/blog.ycrash.io/wp-content/uploads/2024/02/3-docker-stats.png?w=1472&ssl=1)
 
    <p align="center">图 3：docker stats 输出</p>
 
@@ -65,7 +65,7 @@ docker run -ti --rm --name tmp-limit --cpus="1" -m="1G" ubuntu bash -c 'apt upda
 
 3. yCrash
 
-   ![yCrash – root cause analysis report](./assets/4-ycrash.png)
+   ![yCrash – root cause analysis report](https://i0.wp.com/blog.ycrash.io/wp-content/uploads/2024/02/4-ycrash.png?w=1472&ssl=1)
 
    <p align="center">图 4：yCrash – 根本原因分析报告</p>
 
