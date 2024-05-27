@@ -1,14 +1,18 @@
 ---
 author: ["柿子"]
-title: '如何构建RocketMQ 5.2源码调试环境'
+title: '如何构建RocketMQ-5.2源码调试环境'
 date: 2024-05-24T13:06:57+08:00
 summary: "构建最小可调试环境"
 tags: ["RocketMQ","Debug","源码"]
+typora-root-url: ../../static
+typora-copy-images-to: ../../static/images
 ---
 
 ## 前言
 
-源于看到了这两篇博客[基于 Rust 的高性能 RocketMQ Proxy](https://juejin.cn/post/7321551188092911668)、[RocketMQ 5.0：无状态代理模式的探索与实践](https://www.cnblogs.com/alisystemsoftware/p/16776559.html)，兴趣使然，想探究下Proxy现有的设计实现，为自主实现各大MQ协议互转Proxy代理铺垫。也就是第一篇博客实现的Proxy，看起来在RocketMQ未来规划中是有的。关于Coding需要体会下才得道。![10.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0cf0153cb97c4df5bb0b31e006c7296e~tplv-k3u1fbpfcp-zoom-1.image)
+源于看到了这两篇博客[基于 Rust 的高性能 RocketMQ Proxy](https://juejin.cn/post/7321551188092911668)、[RocketMQ 5.0：无状态代理模式的探索与实践](https://www.cnblogs.com/alisystemsoftware/p/16776559.html)，兴趣使然，想探究下Proxy现有的设计实现，为自主实现各大MQ协议互转Proxy代理铺垫。也就是第一篇博客实现的Proxy，看起来在RocketMQ未来规划中是有的。关于Coding需要体会下才得道。
+
+![1.png](/images/0cf0153cb97c4df5bb0b31e006c7296e~tplv-k3u1fbpfcp-zoom-1.png)
 
 下面开始。。。
 
@@ -39,11 +43,11 @@ git clone https://github.com/apache/rocketmq.git
 
 - 然后IDE中maven install或者终端`mvn clean install -Dmaven.test.skip=true`
 
-  <img src="./assets/image-20240524%E4%B8%8B%E5%8D%8820029614.png" alt="image-20240524下午20029614" style="zoom:50%;" />
+  ![image-20240524下午20029614](/images/image-20240524%E4%B8%8B%E5%8D%8820029614.png)
 
   - 最后主要关注项目中中这几个模块
 
-    <img src="./assets/image-20240524%E4%B8%8B%E5%8D%8820550779.png" alt="image-20240524下午20550779" style="zoom:50%;" />
+    ![image-20240524下午20550779](/images/image-20240524%E4%B8%8B%E5%8D%8820550779.png)
 
 ## 启动`NameServer`
 
@@ -57,13 +61,13 @@ git clone https://github.com/apache/rocketmq.git
 
    3. 打开启动配置框
 
-      <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8811922858.png" alt="image-20240527下午11922858" style="zoom:50%;" />
+      ![image-20240527下午11922858](/images/image-20240527%E4%B8%8B%E5%8D%8811922858.png)
 
    4. 设置环境变量“ROCKETMQ_HOME”为“distribution”模块绝对路径，确定
 
 3. 重新启动，看下面打印，启动成功
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8812103203.png" alt="image-20240527下午12103203" style="zoom:50%;" />
+   ![image-20240527下午12103203](/images/image-20240527%E4%B8%8B%E5%8D%8812103203.png)
 
 ## 选择 `Broker`、`Proxy`分离部署
 
@@ -75,7 +79,7 @@ git clone https://github.com/apache/rocketmq.git
 
 2. 打开IDE启动配置，设置启动参数和环境变量“ROCKETMQ_HOME”
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8833302390.png" alt="image-20240527下午33302390" style="zoom:50%;" />
+   ![image-20240527下午33302390](/images/image-20240527%E4%B8%8B%E5%8D%8833302390.png)
 
    添加VM参数：-Xms512m -Xmx512m -Xmn256m
 
@@ -85,7 +89,7 @@ git clone https://github.com/apache/rocketmq.git
 
 3. 重新启动，启动打印如下
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8833445533.png" alt="image-20240527下午33445533" style="zoom:50%;" />
+   ![image-20240527下午33445533](/images/image-20240527%E4%B8%8B%E5%8D%8833445533.png)
 
 ### 启动Proxy
 
@@ -93,13 +97,13 @@ git clone https://github.com/apache/rocketmq.git
 
 2. 打开启动配置，设置启动参数和环境变量
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8833921431.png" alt="image-20240527下午33921431" style="zoom:50%;" />
+   ![image-20240527下午33921431](/images/image-20240527%E4%B8%8B%E5%8D%8833921431.png)
 
    -n “192.168.1.128”修改为你的IP，表示代理的broker-server服务
 
 3. 重新启动，打印如下
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8834020223.png" alt="image-20240527下午34020223" style="zoom:50%;" />
+   ![image-20240527下午34020223](/images/image-20240527%E4%B8%8B%E5%8D%8834020223.png)
 
 ## 测试
 
@@ -111,17 +115,17 @@ git clone https://github.com/apache/rocketmq.git
 
   2. 打开启动配置，设置环境变量：NAMESRV_ADDR
 
-     <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8835612583.png" alt="image-20240527下午35612583" style="zoom:50%;" />
+     ![image-20240527下午35612583](/images/image-20240527%E4%B8%8B%E5%8D%8835612583.png)
 
      修改“192.168.1.128”为你的IP
 
   3. 重新启动，推送消息打印
 
-     <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8835929528.png" alt="image-20240527下午35929528" style="zoom:50%;" />
+     ![image-20240527下午35929528](/images/image-20240527%E4%B8%8B%E5%8D%8835929528.png)
 
   4. 异常如果是下面截图所示，暂时快速解决方法：重启 BrokerStartup
 
-     <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8840429418.png" alt="image-20240527下午40429418" style="zoom:50%;" />
+     ![image-20240527下午40429418](/images/image-20240527%E4%B8%8B%E5%8D%8840429418.png)
 
 - `Consumer`
 
@@ -129,11 +133,11 @@ git clone https://github.com/apache/rocketmq.git
 
   2. 打开启动配置，设置环境变量：NAMESRV_ADDR
 
-     ![image-20240527下午40726616](./assets/image-20240527%E4%B8%8B%E5%8D%8840726616.png)
+     ![image-20240527下午40726616](/images/image-20240527%E4%B8%8B%E5%8D%8840726616.png)
 
   3. 重启启动，消费记录如下
 
-     ![image-20240527下午40702811](./assets/image-20240527%E4%B8%8B%E5%8D%8840702811.png)
+     ![image-20240527下午40702811](/images/image-20240527%E4%B8%8B%E5%8D%8840702811.png)
 
 ### 通过`proxy`测试
 
@@ -157,15 +161,15 @@ git clone https://github.com/apache/rocketmq.git
 
    1. 启动MQAdminStartup类，看结果，是一个命令行工具
 
-      <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8842039785.png" alt="image-20240527下午42039785" style="zoom:50%;" />
+      <img src="/images/image-20240527%E4%B8%8B%E5%8D%8842039785.png" alt="image-20240527下午42039785" style="zoom:50%;" />
 
    2. 打开启动配置，添加启动参数：`updatetopic -n localhost:9876 -t TestTopic -c DefaultCluster`
 
-      <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8842237990.png" alt="image-20240527下午42237990" style="zoom:50%;" />
+      <img src="/images/image-20240527%E4%B8%8B%E5%8D%8842237990.png" alt="image-20240527下午42237990" style="zoom:50%;" />
 
    3. 执行成功如下打印
 
-      <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8842309734.png" alt="image-20240527下午42309734" style="zoom:50%;" />
+      <img src="/images/image-20240527%E4%B8%8B%E5%8D%8842309734.png" alt="image-20240527下午42309734" style="zoom:50%;" />
 
    4. 出此之外你还可以安装：[apache/rocketmq-dashboard](https://github.com/apache/rocketmq-dashboard)，用来可视化查看mq的一些情况，建议使用docker安装，`注意web端口8080映射为别的端口，默认和proxy默认端口冲突了`
 
@@ -278,11 +282,11 @@ git clone https://github.com/apache/rocketmq.git
 
 6. 启动`Producer`，打印如下
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8845229672.png" alt="image-20240527下午45229672" style="zoom:50%;" />
+   <img src="/images/image-20240527%E4%B8%8B%E5%8D%8845229672.png" alt="image-20240527下午45229672" style="zoom:50%;" />
 
 7. 启动`Consumer`，打印如下
 
-   <img src="./assets/image-20240527%E4%B8%8B%E5%8D%8845312605.png" alt="image-20240527下午45312605" style="zoom:50%;" />
+   <img src="/images/image-20240527%E4%B8%8B%E5%8D%8845312605.png" alt="image-20240527下午45312605" style="zoom:50%;" />
 
 ---
 
