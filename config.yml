@@ -74,7 +74,19 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "柿子Talk"
-    Content: 👏欢迎，有生活、工作、技术。。。
+    Content: >
+
+      👏欢迎，有生活、工作、技术。。。
+
+      - *莫听穿林打叶声，何妨吟啸且徐行。*
+
+      - *竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。*
+
+      - *料峭春风吹酒醒，微冷，山头斜照却相迎。*
+
+      - *回首向来萧瑟处，归去，也无风雨也无晴。*
+
+      -                    - 定风波/[宋]苏轼
 
 
   socialIcons:
@@ -105,15 +117,15 @@ params:
 
   # for search
   # https://fusejs.io/api/options.html
-  # fuseOpts:
-  #   isCaseSensitive: false
-  #   shouldSort: true
-  #   location: 0
-  #   distance: 1000
-  #   threshold: 0.4
-  #   minMatchCharLength: 0
-  #   limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
-  #   keys: ["title", "permalink", "summary", "content"]
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+    keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
     - name: Archive
