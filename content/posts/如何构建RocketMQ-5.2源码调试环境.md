@@ -282,11 +282,11 @@ git clone https://github.com/apache/rocketmq.git
 
 6. 启动`Producer`，打印如下
 
-   <img src="/images/image-20240527%E4%B8%8B%E5%8D%8845229672.png" alt="image-20240527下午45229672" style="zoom:50%;" />
+   ![image-20240527下午45229672](/images/image-20240527%E4%B8%8B%E5%8D%8845229672.png)
 
 7. 启动`Consumer`，打印如下
 
-   <img src="/images/image-20240527%E4%B8%8B%E5%8D%8845312605.png" alt="image-20240527下午45312605" style="zoom:50%;" />
+   ![image-20240527下午45312605](/images/image-20240527%E4%B8%8B%E5%8D%8845312605.png)
 
 ---
 
