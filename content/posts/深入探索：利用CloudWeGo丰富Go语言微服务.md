@@ -8,8 +8,6 @@ typora-root-url: ../../static
 typora-copy-images-to: ../../static/images
 ---
 
-# 深入探索：利用 CloudWeGo 丰富 Go 语言微服务
-
 > 通过实际示例深入了解 CloudWeGo 的 Kitex，其高性能和可扩展性重新定义了微服务卓越标准。
 >
 > [译]：https://www.cloudwego.io/blog/2024/02/21/delving-deeper-enriching-microservices-with-golang-with-cloudwego/
