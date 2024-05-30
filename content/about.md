@@ -1,25 +1,148 @@
 +++
 title = "About"
-description = "Hugo, the world's fastest framework for building websites"
+description = ""
 date = "2019-02-28"
 aliases = ["about-us", "about-hugo", "contact"]
-author = "lee.so"
+author = "柿子"
+
 +++
 
-Written in Go, Hugo is an open source static site generator available under the [Apache Licence 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+### 个人信息
 
-Hugo makes use of a variety of open source projects including:
+- 刘春明｜期望职位：后端开发/Golong/Java/Python｜期望城市：重庆/远程
+- [156****8852]()｜niklechunming@163.com｜[感兴趣：*物联网、AIGC*]()
 
-- https://github.com/yuin/goldmark
-- https://github.com/alecthomas/chroma
-- https://github.com/muesli/smartcrop
-- https://github.com/spf13/cobra
-- https://github.com/spf13/viper
+### 个人优势
 
-Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
+5年一线后端开发经验，熟悉公有云架构，微服务架构项目完整开发流程;在多个项目中担任主程，项目经历包含 物联网边缘网关、AI分析、汽⻋后市场经销商CRM，经销商运营微信小程序等;有产品意识，以用户的⻆度去设计实现功能;持续关注学习LLM应用端场景落地、Agent、RAG、Fine-tuning等技术，自主实现过Flow Agent、本地知识库、RAG搜索服务等；目前也在积极参与开源共建AI社区做一些贡献。
 
-Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
+积累的 **技术栈** 有：
 
-Websites built with Hugo are extremely fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
+* **熟练掌握** Web技术栈，使用GO/Java/Python进行后端服务开发，深入理解语言内部运行机制，也在学习C/C++和阅读流媒体服务器如ZLMediaKit、WebRTC等，尝试过混合JNI、JNA、CGO，有一定的前端工程能力包含JavaScript、HTML、CSS、JQuery等；
+* 熟练掌握网络和多线程编程，深入理解NIO、BIO、AIO以及goroutine、chain等技术概念；
+* **熟悉** 物联网常见云-边-端开发部署架构，以及相关技术框架选型，
+* **熟悉** AI算法边缘硬件落地工作流，有yolo算法部署瑞芯微NPU开发版开发部署经验；
+* **熟悉** rtsp、gb28181、ws-flv、rtmp等流媒体协议以及流媒体服务服务搭建，自主实现过rtsp客户端、SIP服务器，同时也在阅读ZLMediaKit、Monibuca等开源项目
+* **熟悉** JVM工具排查日志工具，如事故保留和处理、Arthas、jcmd、jmap 、mat等工具
+* **熟悉** 关系型数据库 MySQL ，对 MySQL 调优经验有一定经验，**理解**其索引实现原理
+* **孰悉** 常见 Redis 核心数据结构，了解 Redis 哨兵和集群架构及并发场景的问题如缓存雪崩，缓存穿透等并对其数据结构和持久化机制有一定理解
+* **熟悉** 常见分布式场景的技术难题，比如分布式锁，分布式事务，分布式定时任务等
+* **掌握** Spring , Mybatis , SpringMVC , Spring boot 等框架并研究过它们的核心原理
+* **熟练** 使用 Spring Cloud Netfix 以及衍生代 Spring Cloud Alibaba 微服务架构，能独立搭建一套微服务开发基础设施
+* **熟练** 合理使用 RocketMQ、Kafka、RabbitMQ 消息中间件，对各种消息通信场景的疑难问题有一定的解决能力，比如消息丢失、消息重复消费、消息顺序消费、大规模消息积压问题。
+* **熟悉** LInux环境部署和应用异常排查及解决，如系统资源监控、栈异常信息、日志检索、日志检索
+* **熟悉** Shell、Python脚本语言，如Shell根据应用部署编写，Python处理报表附件整理
+* **熟悉** 各种项目管理工具，如 Jenkins、Docker、Maven、 Gitlab 等
+* **熟练** 使用 IntelliJ IDEA 开发．熟悉 Git 和 SVN 代码版本管理工具
 
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+### 工作经历
+
+#### 23/07-至今：个人工作室｜项目技术负责人
+
+“项目负责人 && 后端开发，负责团队搭建、技术选型、培训分享和项目的开发等工作”
+
+<hr style="background:#dddddd"/>
+
+**项目名称：**底盘智能数字化平台（中国汽车工程研究院股份有限公司）
+
+**项目概述：**平台支持底盘性能开发，系统贯穿整个底盘开发阶段，包含急架K&C数和质心转动惯量数据、路车操稳数据和驾乘性能主观评价数据可视化。能够实现快速的车型数据、指标范围搜索，多车型数据对比和分析、报告的自动生成、用户权限自定义控制
+
+**项目技术栈：**以Java语言和SpringBoot框架为基础，JPA映射操作数据，MySQL持久化存储数据及Redis的Hash、String数据结构存储临时数据提高响应，数据报表导出工具POI，Nginx权重负载均衡，Minio对象存储，Matlab编译引擎执行实验脚本
+
+**职责与成就：**
+
+- 负责项目需求分析，编写接口文档，确保后续技术团队对项目目标有清晰的理解
+- 负责项目整体架构设计，技术选型，保证系统具有高可用性、可扩展性和易维护性
+- 负责权限模块设计与实现，基于 RBAC 模型完成用户与权限的解耦，构建用户、角色、权限；内置超级管理员根据需要管理用户账户和权限的管理
+- 负责Minio对象存储、Mysql、Redis、Nginx最小单元开发环境搭建和部署
+- 负责Matlab脚本在线编译运行方案设计和实现，基于Matlab支持的mcc设计编译脚本，基于Matlab的Javabuilder构建脚本执行器，自定义实现类加载器管理试验脚本
+- 负责项目性能系统优化，解决频繁FullGC问题，优化接口数据传输带宽
+
+#### 22/03-23/07：北京中科长鹰科技有限公司（物联网电力）
+
+“高级后端工程师，负责公司内部项目的开发和维护，系统模块设计和评审，培训组织等工作。”
+
+<hr style="background:#dddddd"/>
+
+**项目名称：**EdgeBox边缘智能网关
+
+**项目概述：** EdgeBox  边缘智能网关是一款面向电力、煤矿行业等应用场景，为用户提供环境数据实时分析、高清视频监控接入、视频智能分析与告警、远程设备控制的智能化一体机设备
+
+**项目技术栈：**基于Go语言和EdgeX Foundry框架构建，Sqlite元数据存储，Grom操作数据库，MQTT北上通信和数据流转，eKuiper规则引擎，Influx存储传感器数据，Python语言实现AI分析模块
+
+**职责与成就：**
+
+- 参与完善需求设计、需求评审、立项评审等
+- 负责网关支持GB28181协议，设计和实现SIP信令服务器，支持设备 注册、注销、实时监控、回放、云台控制
+- 负责网关支持Onvif协议，设计和实现设备 实时监控、回放、云台控制
+- 设计与实现RTSP客户端，支持拉流并转发、回放控制
+- 负责网关AI分析能力实现，支持人脸识别、人体检测、周界入侵检测、车辆识别等分析能力
+
+**项目名称：**IOT-Frame（云平台-网关）
+
+**项目概述：** 构建各种电力站房的视频，安防，环境，联动等设备监控业务平台
+
+**项目技术栈：**JDK8、SpringCloud、SpringBoot、Mysql、Influx、MQTT、SOFABoot、Influx、Sqlite、JPA、Mybatis-plus、Docker、Kuboard
+
+**职责描述：**
+
+-  参与完善需求设计、需求评审、立项评审等
+-  负责网关支持GB28181协议，设计和实现SIP信令服务器，支持设备 注册、注销、实时监控、回放、云台控制
+-  负责网关支持Onvif协议，设计和实现设备 实时监控、云台控制
+
+#### 19/08-22/01：北汽福田汽车股份有限公司（汽车生产）
+
+“Java开发工程师，负责国内外经销商系统的开发和维护工作。”
+
+<hr style="background:#dddddd"/>
+
+**项目名称：**经销商平台-ICM爱行销（双语）       
+
+**项目概述：** 经销商自己手动统计上报绩效，管理层无法统计快速统计经销商业务绩效，经销商通过本系统维护客户、线索、活动、交付情况，管理层不仅能分析经销商情况，同时可通过线索池、行销活动下发经销商任务及对经销商的交付进行政策兑现
+
+**项目技术栈：**以Java语言和**Spring Cloud**、**SpringBoot**框架为基础，**JPA**映射操作数据，**Eureka**注册中心，**Hystrix**服务通信熔断，**OpenFeign**服务之间通信，**MySQL**持久化存储、**Redis**运行时数据缓存，**POI**数据表导出工具，Python脚本处理附件打包并下载
+
+**系统难点：**
+
+1. 车库信息查询涉及表结构复杂，查询慢；
+
+   分析表结构和查询条件梳理及原SQL实现，减少子查询，优化SQL，响应提升60%，由18s下降到3-4s内.
+
+2. 线索状态同步节点多，同步状态时序可能会乱（网络、同步中断）；
+
+   Hystrix熔断持久化同步异常，设计实现自省定时任务，定时任务根据预设规则检查同步时序并补偿，提升系统稳定性，减少人工补偿排错.
+
+3. 数据报表涉及表复杂，响应慢；
+
+   凌晨统一定时多线程处理报表任务，处理完成附件上传OSS下载链接持久化，提高响应，毫秒级响应.
+
+4. 业务附件集合大，涉及服务多，重复代码多，响应慢；
+
+   通用API设计和任务线程池，任务式触发，任务完成打包并上传OSS下载链接持久化，短信通知经销商，可视化任务状态，减少源代码的重复性，任务完成率提升50%.
+
+5. 基础属性展示需要兼容多语言；
+
+   请求体header协定，设计字典表结构，统一消息处理，配置相关拦截器构建local（scope=request），消息、字典根据header响应对应的语言，避免整体重构，增加扩展性，缩短开发周期，提前半月完成
+
+**项目名称：**智慧云商城
+
+**项目概述：**为经销商制作线上店铺，通过**小程序**方便推广，从而产生留资信息转为爱行销线索
+
+**项目技术栈：**以**Java**语言和**SpringBoot**框架基础，**Mybatis-plus**映射操作数据，**MySQL**持久化存储数据及**Redis**的Hash、String数据结构存储临时数据提高响应，数据报表导出工具POI，**Nginx**权重负载均衡
+
+**系统难点：**
+
+1. 数据来源第三方系统，无法感知第三方数据修改；
+
+   每次打开PC端去检查校验数据是否需要更新，懒更新小程序的数据，提高了数据的准确度和实时性.
+
+2. 统计埋点多，不易维护；
+
+   AOP实现切点，通过灵活配置切点，减少源代码侵入，定期维度统计结果并持久化，提升响应速度60%.
+
+## 教育经历
+
+- [西安交通大学-计算机科学与技术-本科]()
+
+<hr style="background:#bcbfc3"/>
+<center><font size="2.3" color="#aaaaaa">感谢阅读，期待与您共事</font></center>

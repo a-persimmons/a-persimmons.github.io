@@ -1,6 +1,6 @@
 baseURL: "https://a-persimmons.github.io/"
 title: Home
-paginate: 3
+paginate: 5
 theme: PaperMod
 
 enableRobotsTXT: true
@@ -14,6 +14,12 @@ minify:
   disableXML: true
   minifyOutput: true
 
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # necessary for search
+
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Persimmon
@@ -26,8 +32,8 @@ params:
   defaultTheme: auto # dark, light
   disableThemeToggle: false
 
-  ShowReadingTime: true
-  ShowShareButtons: true
+  ShowReadingTime: true # 显示帖子阅读时间
+  ShowShareButtons: true # 帖子上的共享按钮
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
@@ -58,13 +64,19 @@ params:
 
   # profile-mode
   profileMode:
-    enabled: false # needs to be explicitly set
-    title: Monicool
-    subtitle: "This is subtitle"
-    imageUrl: "<img location>"
+    enabled: ture # needs to be explicitly set
+    title: 柿子
+    subtitle: >
+      记一忘二三
+      
+       👏分享生活、工作、技术...
+
+       *竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。*
+
+    imageUrl: "https://s2.loli.net/2024/05/31/ZoSPjtxUXDlLIC3.png"
     imageWidth: 120
     imageHeight: 120
-    imageTitle: my image
+    imageTitle: persimmons
     buttons:
       - name: Posts
         url: posts
@@ -95,7 +107,7 @@ params:
     # - name: stackoverflow
     #   url: "https://stackoverflow.com"
     - name: github
-      url: ""
+      url: "https://github.com/a-persimmons"
 
   analytics:
     google:
@@ -106,14 +118,20 @@ params:
       SiteVerificationTag: "XYZabc"
 
   cover:
-    hidden: true # hide everywhere but not in structured data
+    hidden: false # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: true # hide on single page
+    image: "https://cdn.pixabay.com/photo/2024/04/09/15/36/after-the-rain-8686213_1280.jpg"
+    # can also paste direct link from external site
+    # ex. https://i.ibb.co/K0HVPBd/paper-mod-profilemode.png
+    alt: "<alt text>"
+    caption: "<text>"
+    relative: false # To use relative path for cover image, used in hugo Page-bundles
 
   editPost:
-    URL: "https://github.com/<path_to_repo>/content"
+    URL: ""
     Text: "Suggest Changes" # edit text
-    appendFilePath: true # to append file path to Edit link
+    appendFilePath: false # to append file path to Edit link
 
   # for search
   # https://fusejs.io/api/options.html
@@ -136,6 +154,9 @@ menu:
       weight: 20
     - name: Search
       url: search/
+      weight: 10
+    - name: About
+      url: about/
       weight: 10
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
