@@ -29,11 +29,11 @@ params:
   # author: ["Me", "You"] # multiple authors
   images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "January 2, 2006"
-  defaultTheme: dark # dark, light
+  defaultTheme: auto # dark, light
   disableThemeToggle: false
 
   ShowReadingTime: true # 显示帖子阅读时间
-  ShowShareButtons: true # 帖子上的共享按钮
+  ShowShareButtons: false # 帖子上的共享按钮
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
@@ -78,6 +78,8 @@ params:
     imageHeight: 120
     imageTitle: persimmons
     buttons:
+      - name: About
+        url: about
       - name: Posts
         url: posts
       - name: Tags
