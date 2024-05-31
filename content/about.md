@@ -1,6 +1,6 @@
 +++
 title = "About"
-description = ""
+description = "期望职位：后端开发/Golong/Java/Python｜期望城市：重庆/远程"
 date = "2019-02-28"
 aliases = ["about-us", "about-hugo", "contact"]
 author = "柿子"
@@ -11,9 +11,7 @@ author = "柿子"
 
 ---
 
-- 刘春明｜期望职位：后端开发/Golong/Java/Python｜期望城市：重庆/远程
-
-- [156****8852]()｜niklechunming@163.com｜[感兴趣：*物联网、AIGC*]()
+> [156****8852]()｜niklechunming@163.com｜[感兴趣：*物联网、AIGC*]()
 
 ## 个人优势
 
