@@ -6,6 +6,7 @@ summary: "解释TOPS是什么"
 tags: ["AI","摘录","性能"]
 typora-root-url: ../../static
 typora-copy-images-to: ../../static/images
+UseHugoToc: false
 ---
 
 ![科技感十足的图片，主题字符'NPU'](https://th.bing.com/th/id/OIG4.Q9ZK6muyAYLaz6ZQIqIj?pid=ImgGn)
@@ -63,8 +64,8 @@ TOPS作为展示处理器计算能力的指标，是衡量NPU性能的核心。
 
 无论用户是优先考虑原始算力、能效还是模型准确度，骁龙X系列平台面向笔记本电脑，配备高达45TOPS的NPU，能够强力赋能PC，并将实际可用的AI体验引入用户的工作流程。
 
- 
+ ## 参考
 
-[深入了解面向计算的骁龙AI](https://www.qualcomm.cn/content/dam/qcomm-martech/dm-assets/documents/files/tong_guo_npu_he_yi_gou_ji_suan_kai_qi_zhong_duan_ce_sheng_cheng_shi_ai.pdf)
+- [深入了解面向计算的骁龙AI](https://www.qualcomm.cn/content/dam/qcomm-martech/dm-assets/documents/files/tong_guo_npu_he_yi_gou_ji_suan_kai_qi_zhong_duan_ce_sheng_cheng_shi_ai.pdf)
 
-[面向边缘终端优化生成式AI (qualcomm.cn)](https://www.qualcomm.cn/news/blogs/2024/05/blog-2024-05-30)
+- [面向边缘终端优化生成式AI (qualcomm.cn)](https://www.qualcomm.cn/news/blogs/2024/05/blog-2024-05-30)

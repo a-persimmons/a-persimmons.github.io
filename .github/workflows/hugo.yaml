@@ -6,6 +6,8 @@ on:
       - main
 
 jobs:
+  environment:
+    url: http://poster.codingfoyjoy.com
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
