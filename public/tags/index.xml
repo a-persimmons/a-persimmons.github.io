@@ -2,134 +2,162 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Home</title>
-    <link>https://a-persimmons.github.io/tags/</link>
+    <link>https://poster.codingforjoy.com/tags/</link>
     <description>Recent content in Tags on Home</description>
     <image>
       <title>Home</title>
-      <url>https://a-persimmons.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://a-persimmons.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo -- 0.122.0</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 24 May 2024 13:06:57 +0800</lastBuildDate>
-    <atom:link href="https://a-persimmons.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 07 Jun 2024 11:54:44 +0800</lastBuildDate>
+    <atom:link href="https://poster.codingforjoy.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Debug</title>
-      <link>https://a-persimmons.github.io/tags/debug/</link>
-      <pubDate>Fri, 24 May 2024 13:06:57 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/debug/</guid>
+      <title>AI</title>
+      <link>https://poster.codingforjoy.com/tags/ai/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/ai/</guid>
       <description></description>
     </item>
     <item>
-      <title>RocketMQ</title>
-      <link>https://a-persimmons.github.io/tags/rocketmq/</link>
-      <pubDate>Fri, 24 May 2024 13:06:57 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/rocketmq/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>源码</title>
-      <link>https://a-persimmons.github.io/tags/%E6%BA%90%E7%A0%81/</link>
-      <pubDate>Fri, 24 May 2024 13:06:57 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/%E6%BA%90%E7%A0%81/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>网络</title>
-      <link>https://a-persimmons.github.io/tags/%E7%BD%91%E7%BB%9C/</link>
-      <pubDate>Thu, 23 May 2024 14:19:11 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/%E7%BD%91%E7%BB%9C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>路由</title>
-      <link>https://a-persimmons.github.io/tags/%E8%B7%AF%E7%94%B1/</link>
-      <pubDate>Thu, 23 May 2024 14:19:11 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/%E8%B7%AF%E7%94%B1/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>docker</title>
-      <link>https://a-persimmons.github.io/tags/docker/</link>
-      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/docker/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>linux</title>
-      <link>https://a-persimmons.github.io/tags/linux/</link>
-      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/linux/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>top</title>
-      <link>https://a-persimmons.github.io/tags/top/</link>
-      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/top/</guid>
+      <title>性能</title>
+      <link>https://poster.codingforjoy.com/tags/%E6%80%A7%E8%83%BD/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E6%80%A7%E8%83%BD/</guid>
       <description></description>
     </item>
     <item>
       <title>摘录</title>
-      <link>https://a-persimmons.github.io/tags/%E6%91%98%E5%BD%95/</link>
-      <pubDate>Fri, 01 Mar 2024 01:22:55 +0800</pubDate>
-      <guid>https://a-persimmons.github.io/tags/%E6%91%98%E5%BD%95/</guid>
+      <link>https://poster.codingforjoy.com/tags/%E6%91%98%E5%BD%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E6%91%98%E5%BD%95/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>微服务</title>
+      <link>https://poster.codingforjoy.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>译</title>
+      <link>https://poster.codingforjoy.com/tags/%E8%AF%91/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E8%AF%91/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Debug</title>
+      <link>https://poster.codingforjoy.com/tags/debug/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/debug/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RocketMQ</title>
+      <link>https://poster.codingforjoy.com/tags/rocketmq/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/rocketmq/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>源码</title>
+      <link>https://poster.codingforjoy.com/tags/%E6%BA%90%E7%A0%81/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E6%BA%90%E7%A0%81/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>网络</title>
+      <link>https://poster.codingforjoy.com/tags/%E7%BD%91%E7%BB%9C/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E7%BD%91%E7%BB%9C/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>路由</title>
+      <link>https://poster.codingforjoy.com/tags/%E8%B7%AF%E7%94%B1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E8%B7%AF%E7%94%B1/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>docker</title>
+      <link>https://poster.codingforjoy.com/tags/docker/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>linux</title>
+      <link>https://poster.codingforjoy.com/tags/linux/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>top</title>
+      <link>https://poster.codingforjoy.com/tags/top/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/top/</guid>
       <description></description>
     </item>
     <item>
       <title>Mysql</title>
-      <link>https://a-persimmons.github.io/tags/mysql/</link>
-      <pubDate>Tue, 17 Aug 2021 19:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/mysql/</guid>
+      <link>https://poster.codingforjoy.com/tags/mysql/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/mysql/</guid>
       <description></description>
     </item>
     <item>
       <title>调优</title>
-      <link>https://a-persimmons.github.io/tags/%E8%B0%83%E4%BC%98/</link>
-      <pubDate>Tue, 17 Aug 2021 19:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/%E8%B0%83%E4%BC%98/</guid>
+      <link>https://poster.codingforjoy.com/tags/%E8%B0%83%E4%BC%98/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E8%B0%83%E4%BC%98/</guid>
       <description></description>
     </item>
     <item>
       <title>Java</title>
-      <link>https://a-persimmons.github.io/tags/java/</link>
-      <pubDate>Sun, 20 Jun 2021 20:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/java/</guid>
+      <link>https://poster.codingforjoy.com/tags/java/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/java/</guid>
       <description></description>
     </item>
     <item>
       <title>JDK</title>
-      <link>https://a-persimmons.github.io/tags/jdk/</link>
-      <pubDate>Sun, 20 Jun 2021 20:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/jdk/</guid>
+      <link>https://poster.codingforjoy.com/tags/jdk/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/jdk/</guid>
       <description></description>
     </item>
     <item>
       <title>GC</title>
-      <link>https://a-persimmons.github.io/tags/gc/</link>
-      <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/gc/</guid>
+      <link>https://poster.codingforjoy.com/tags/gc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/gc/</guid>
       <description></description>
     </item>
     <item>
       <title>JVM</title>
-      <link>https://a-persimmons.github.io/tags/jvm/</link>
-      <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/jvm/</guid>
+      <link>https://poster.codingforjoy.com/tags/jvm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/jvm/</guid>
       <description></description>
     </item>
     <item>
       <title>Thread</title>
-      <link>https://a-persimmons.github.io/tags/thread/</link>
-      <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/thread/</guid>
+      <link>https://poster.codingforjoy.com/tags/thread/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/thread/</guid>
       <description></description>
     </item>
     <item>
       <title>编程</title>
-      <link>https://a-persimmons.github.io/tags/%E7%BC%96%E7%A8%8B/</link>
-      <pubDate>Sun, 06 Jun 2021 17:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/tags/%E7%BC%96%E7%A8%8B/</guid>
+      <link>https://poster.codingforjoy.com/tags/%E7%BC%96%E7%A8%8B/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/tags/%E7%BC%96%E7%A8%8B/</guid>
       <description></description>
     </item>
   </channel>

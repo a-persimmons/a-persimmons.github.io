@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Java on Home</title>
-    <link>https://a-persimmons.github.io/tags/java/</link>
+    <link>https://poster.codingforjoy.com/tags/java/</link>
     <description>Recent content in Java on Home</description>
     <image>
       <title>Home</title>
-      <url>https://a-persimmons.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://a-persimmons.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo -- 0.122.0</generator>
     <language>en</language>
     <lastBuildDate>Sun, 20 Jun 2021 20:59:25 +0000</lastBuildDate>
-    <atom:link href="https://a-persimmons.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://poster.codingforjoy.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>浅入Class字节码</title>
-      <link>https://a-persimmons.github.io/posts/%E6%B5%85%E5%85%A5class%E5%AD%97%E8%8A%82%E7%A0%81/</link>
+      <link>https://poster.codingforjoy.com/posts/%E6%B5%85%E5%85%A5class%E5%AD%97%E8%8A%82%E7%A0%81/</link>
       <pubDate>Sun, 20 Jun 2021 20:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/posts/%E6%B5%85%E5%85%A5class%E5%AD%97%E8%8A%82%E7%A0%81/</guid>
+      <guid>https://poster.codingforjoy.com/posts/%E6%B5%85%E5%85%A5class%E5%AD%97%E8%8A%82%E7%A0%81/</guid>
       <description>浅入Class字节码.</description>
     </item>
     <item>
       <title>多线程下发生OOM其他线程不会停止</title>
-      <link>https://a-persimmons.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%91%E7%94%9Foom%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E4%B8%8D%E4%BC%9A%E5%81%9C%E6%AD%A2/</link>
+      <link>https://poster.codingforjoy.com/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%91%E7%94%9Foom%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E4%B8%8D%E4%BC%9A%E5%81%9C%E6%AD%A2/</link>
       <pubDate>Mon, 14 Jun 2021 08:03:23 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%91%E7%94%9Foom%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E4%B8%8D%E4%BC%9A%E5%81%9C%E6%AD%A2/</guid>
+      <guid>https://poster.codingforjoy.com/posts/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%91%E7%94%9Foom%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E4%B8%8D%E4%BC%9A%E5%81%9C%E6%AD%A2/</guid>
       <description>多线程下发生OOM其他线程不会停止.</description>
     </item>
     <item>
       <title>Java Core</title>
-      <link>https://a-persimmons.github.io/posts/java-core/</link>
+      <link>https://poster.codingforjoy.com/posts/java-core/</link>
       <pubDate>Sun, 06 Jun 2021 17:59:25 +0000</pubDate>
-      <guid>https://a-persimmons.github.io/posts/java-core/</guid>
+      <guid>https://poster.codingforjoy.com/posts/java-core/</guid>
       <description>Java 核心编程.</description>
     </item>
   </channel>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>译 on Home</title>
+    <link>https://poster.codingforjoy.com/tags/%E8%AF%91/</link>
+    <description>Recent content in 译 on Home</description>
+    <image>
+      <title>Home</title>
+      <url>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+    </image>
+    <generator>Hugo -- 0.122.0</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 31 May 2024 01:23:57 +0800</lastBuildDate>
+    <atom:link href="https://poster.codingforjoy.com/tags/%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>深入探索：利用CloudWeGo丰富Go语言微服务</title>
+      <link>https://poster.codingforjoy.com/posts/%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2%E5%88%A9%E7%94%A8cloudwego%E4%B8%B0%E5%AF%8Cgo%E8%AF%AD%E8%A8%80%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Fri, 31 May 2024 01:23:57 +0800</pubDate>
+      <guid>https://poster.codingforjoy.com/posts/%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2%E5%88%A9%E7%94%A8cloudwego%E4%B8%B0%E5%AF%8Cgo%E8%AF%AD%E8%A8%80%E5%BE%AE%E6%9C%8D%E5%8A%A1/</guid>
+      <description>通过实际示例深入了解 CloudWeGo 的 Kitex，其高性能和可扩展性重新定义了微服务卓越标准。
+[译]：https://www.cloudwego.io/blog/2024/02/21/delving-deeper-enriching-microservices-with-golang-with-cloudwego/
+如果存在一个 RPC 框架，它不仅提供高性能和可扩展性，还拥有一套强大的功能和繁荣的社区支持，那会怎样？
+CloudWeGo，一个由字节跳动开发并开源的高性能可扩展 Golang 和 Rust RPC 框架，因其完美契合需求而引起了我的注意。
+CloudWeGo 与其他 RPC 框架对比 尽管 gRPC 和 Apache Thrift 为微服务架构提供了良好的支持，但 CloudWeGo 凭借其先进特性和性能指标，脱颖而出，成为未来有前景的开源解决方案。
+CloudWeGo基于 Golang 和 Rust 打造，适应现代开发环境，提供先进功能与卓越性能指标。性能测试表明，Kitex 在 QPS 和延迟方面超越 gRPC 四倍以上，QPS 和延迟的吞吐量提升 51%至 70%。
+这为开发者提供了一个工具，它不仅满足了现代微服务的性能要求，而且明显超越了这些要求。让我们深入探讨一些具体用例，以理解 CloudWeGo 的潜力。
+Bookinfo：《交通处理的故事》 考虑 Bookinfo 这一 Istio 提供的示例应用，通过 CloudWeGo 的 Kitex 进行重写，以获得更卓越的性能和可扩展性。
+此用例展示了高流量服务如何显著受益于 CloudWeGo 的性能承诺。此次集成还展示了在流量处理和性能方面，CloudWeGo 如何超越传统的 Istio 服务网格。
+借助 Kitex 和 Hertz 处理流量重定向，Bookinfo 项目能够高效管理高流量，确保快速响应并提供更佳的用户体验。
+import ( &amp;#34;github.com/cloudwego/kitex/server&amp;#34; ) func main() { svr := echo.</description>
+    </item>
+  </channel>
+</rss>
