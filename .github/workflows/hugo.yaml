@@ -21,7 +21,7 @@ jobs:
           extended: true
 
       - name: Build Hugo
-        run: hugo --gc --minify --baseURL "https://a-persimmons.github.io/"
+        run: hugo --gc --minify --baseURL "https://poster.codingforjoy.com/"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
