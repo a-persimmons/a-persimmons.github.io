@@ -2,7 +2,7 @@
 author: ["柿子"]
 title: '深入探索：利用CloudWeGo丰富Go语言微服务'
 date: 2024-05-31T01:23:57+08:00
-summary: ""
+summary: "介绍CloudWeGo如何构建微服务"
 tags: ["微服务","译"]
 typora-root-url: ../../static
 typora-copy-images-to: ../../static/images
