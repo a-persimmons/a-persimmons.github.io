@@ -25,15 +25,15 @@
     --header-height: 60px;
     --footer-height: 60px;
     --radius: 8px;
-    --theme: rgb(131 255 250 / 75%);
-    --entry: rgb(162 255 251);
+    --theme: rgb(113 252 225 / 38%);
+    --entry: rgb(147 233 235);
     --primary: rgb(30, 30, 30);
     --secondary: rgb(108, 108, 108);
-    --tertiary: rgb(233 184 184);
+    --tertiary: rgb(184 233 222);
     --content: rgb(31, 31, 31);
     --code-block-bg: rgb(28, 29, 33);
-    --code-bg: rgb(167 216 255);
-    border: rgb(162 255 251);
+    --code-bg: rgb(91 237 230 / 48%);
+    border: #a2fffb;
 }
 
 .dark {
