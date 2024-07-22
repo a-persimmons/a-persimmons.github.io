@@ -1,4 +1,4 @@
-/* :root {
+:root {
     --gap: 24px;
     --content-gap: 20px;
     --nav-width: 1024px;
@@ -15,9 +15,9 @@
     --code-block-bg: rgb(28, 29, 33);
     --code-bg: rgb(245, 245, 245);
     --border: rgb(238, 238, 238);
-} */
+}
 
-:root {
+/* :root {
     --gap: 24px;
     --content-gap: 20px;
     --nav-width: 1024px;
@@ -34,7 +34,7 @@
     --code-block-bg: rgb(28, 29, 33);
     --code-bg: rgb(91 237 230 / 48%);
     border: #a2fffb;
-}
+} */
 
 .dark {
     --theme: rgb(29, 30, 32);
