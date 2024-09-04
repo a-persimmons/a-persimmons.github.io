@@ -484,11 +484,12 @@ possible_keys: NULL
 1 row in set, 1 warning (0.00 sec)
 ```
 
-#### id有三种情况
+#### id有几种情况
 
 1. id相同，顺序执行
 2. id不同，递增，id号越大，越先执行
 3. id相同和id不同同时存在，即第一种和第二种结合
+4. null，代表是中间结果集（在8.x有些情况被优化了，5.x中还是存在的，比如 `UNION RESULT`）
 
 #### select_type
 
@@ -850,7 +851,7 @@ order by input_date;
 
 ![image-20210819211421019](https://i.loli.net/2021/08/19/NMT7RE85UHnIciP.png)
 
-#### =>查询缓存
+#### =>查询缓存（8.x已经完全删除）
 
 mysql连接器后尝试去命中缓存，命中返回
 
