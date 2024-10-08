@@ -1,6 +1,6 @@
 baseURL: "https://poster.codingforjoy.com/"
 title: A-Persimmon`s
-paginate: 3
+paginate: 5
 theme: PaperMod
 
 enableRobotsTXT: true
