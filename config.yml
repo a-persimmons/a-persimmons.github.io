@@ -158,7 +158,7 @@ menu:
       url: search/
       weight: 10
     - name: About
-      url: about/
+      url: page/abort.html
       weight: 10
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
