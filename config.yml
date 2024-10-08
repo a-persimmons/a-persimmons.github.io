@@ -1,6 +1,6 @@
 baseURL: "https://poster.codingforjoy.com/"
-title: Persimmon`s
-paginate: 5
+title: A-Persimmon`s
+paginate: 3
 theme: PaperMod
 
 enableRobotsTXT: true
@@ -59,12 +59,12 @@ params:
 
   label:
     text: "Home"
-    icon: /apple-touch-icon.png
+    icon: https://s2.loli.net/2024/05/31/ZoSPjtxUXDlLIC3.png
     iconHeight: 35
 
   # profile-mode
   profileMode:
-    enabled: ture # needs to be explicitly set
+    enabled: false # needs to be explicitly set
     title: 柿子
     subtitle: >
       记一忘二三
@@ -90,17 +90,17 @@ params:
     Title: "柿子Talk"
     Content: >
 
-      👏欢迎，有生活、工作、技术。。。
+      👏欢迎，分享生活、工作、技术、照片 ···
 
-      - *莫听穿林打叶声，何妨吟啸且徐行。*
+#      - *莫听穿林打叶声，何妨吟啸且徐行。*
 
-      - *竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。*
+#      - *竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。*
 
-      - *料峭春风吹酒醒，微冷，山头斜照却相迎。*
+#      - *料峭春风吹酒醒，微冷，山头斜照却相迎。*
 
-      - *回首向来萧瑟处，归去，也无风雨也无晴。*
+#      - *回首向来萧瑟处，归去，也无风雨也无晴。*
 
-      -                    - 定风波/[宋]苏轼
+#      -                    - 定风波/[宋]苏轼
 
 
   socialIcons:
