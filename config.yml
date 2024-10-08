@@ -1,5 +1,5 @@
 baseURL: "https://poster.codingforjoy.com/"
-title: Home
+title: Persimmon`s
 paginate: 5
 theme: PaperMod
 
@@ -69,7 +69,7 @@ params:
     subtitle: >
       记一忘二三
       
-      👏分享生活、工作、技术...
+       👏分享生活、工作、技术...
 
 # *竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。*
 
