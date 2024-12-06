@@ -49,6 +49,20 @@
       <description>TOP 指令怎么准确定位容器的真实情况.</description>
     </item>
     <item>
+      <title>5. Spring 核心：AOP，面向切面编程</title>
+      <link>https://poster.codingforjoy.com/posts/spring%E6%A0%B8%E5%BF%83aop%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/</link>
+      <pubDate>Sat, 08 Oct 2022 20:01:00 +0000</pubDate>
+      <guid>https://poster.codingforjoy.com/posts/spring%E6%A0%B8%E5%BF%83aop%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/</guid>
+      <description>本文内容是逐段翻译spring-framework 1.1.x 官方文档第5章的内容。为什么不是1.0？因为1.1.x才开始有官方文档，之前的版本只有api文档。
+如果你想知道人为什么要这么搞，那么应该去看书/文档；如果你要知道让机器干了什么？那你应该看代码！——左耳朵耗子
+5.1. 概念 面向方面编程（AOP）提供了另一种思考程序结构的方法，是对 OOP 的补充。OO 将应用程序分解为对象的层次结构，而 AOP 则将程序分解为方面或关注点。这样就能将事务管理等关注点模块化，否则这些关注点就会跨越多个对象。(这类问题通常被称为交叉问题）。
+Spring 中使用了 AOP：
+提供声明式企业服务，尤其是作为 EJB 声明式服务的替代。其中最重要的服务是声明式事务管理，它建立在 Spring 的事务抽象之上。 允许用户实现自定义 AOP，用 AOP 补充他们对 OOP 的使用。 因此，您可以将 Spring AOP 视为一种使能技术，它允许 Spring 在不使用 EJB 的情况下提供声明式事务管理；或者使用 Spring AOP 框架的全部功能来实现自定义方面。
+如果你只对通用声明式服务或其他预打包的声明式中间件服务（如池化服务）感兴趣，就不需要直接使用 Spring AOP，也可以跳过本章的大部分内容。
+5.1.1. AOP 概念 首先，让我们定义一些 AOP 核心概念。这些术语并非 Spring 特有。遗憾的是，AOP 术语并不特别直观。不过，如果 Spring 使用自己的术语，那就更令人困惑了。
+切面(Aspect)：模块化的关注点，否则其实现可能会跨越多个对象。在 J2EE 应用程序中，事务管理就是横切关注点的一个很好的例子。方面使用 Spring 作为顾问或拦截器来实现。 连接点(Joinpoint)：程序执行过程中的点，如方法调用或抛出的特定异常。在 Spring AOP 中，连接点总是方法调用。Spring 并未在显著位置使用连接点一词；连接点信息可通过传递给拦截器的 MethodInvocation 参数上的方法访问，并通过 org.springframework.aop.Pointcut 接口的实现进行评估。 通知(Advice)：AOP 框架在特定连接点采取的行动。不同类型的通知包括 &amp;ldquo;around&amp;rdquo;、&amp;ldquo;before&amp;rdquo;、&amp;ldquo;throws&amp;rdquo; 通知。下面将讨论通知类型。包括 Spring 在内的许多 AOP 框架都将通知建模为拦截器，并在连接点 &amp;ldquo;around&amp;quot;维护一连串拦截器。 切点(Pointcut)：一组连接点，指定何时应触发通知。AOP 框架必须允许开发人员指定切点：例如，使用正则表达式。 引介(Introduction)：为通知类添加方法或字段。Spring 允许你为任何通知对象引介新的接口。例如，你可以使用导言让任何对象实现 IsModified 接口，以简化缓存。 目标对象(Target object)：包含连接点的对象。也称为通知对象或代理对象。 AOP 代理(AOP proxy)：由 AOP 框架创建的对象，包括通知。在 Spring 中，AOP 代理将是 JDK 动态代理或 CGLIB 代理。 编织(Weaving)：组装各个方面以创建通知对象。这可以在编译时完成（例如使用 AspectJ 编译器），也可以在运行时完成。Spring 和其他纯 Java AOP 框架一样，在运行时执行编织。 不同的通知类型包括：</description>
+    </item>
+    <item>
       <title>Mysql调优理论篇</title>
       <link>https://poster.codingforjoy.com/posts/mysql%E8%B0%83%E4%BC%98%E7%90%86%E8%AE%BA%E7%AF%87/</link>
       <pubDate>Tue, 17 Aug 2021 19:59:25 +0000</pubDate>
