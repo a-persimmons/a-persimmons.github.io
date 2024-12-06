@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>RocketMQ on A-Persimmon`s</title>
-    <link>http://localhost:1313/tags/rocketmq/</link>
+    <link>https://poster.codingforjoy.com/tags/rocketmq/</link>
     <description>Recent content in RocketMQ on A-Persimmon`s</description>
     <image>
       <title>A-Persimmon`s</title>
-      <url>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>http://localhost:1313/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
+      <link>https://poster.codingforjoy.com/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- 0.135.0</generator>
     <language>en</language>
     <lastBuildDate>Fri, 24 May 2024 13:06:57 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/rocketmq/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://poster.codingforjoy.com/tags/rocketmq/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何构建RocketMQ-5.2源码调试环境</title>
-      <link>http://localhost:1313/posts/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BArocketmq-5.2%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/</link>
+      <link>https://poster.codingforjoy.com/posts/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BArocketmq-5.2%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/</link>
       <pubDate>Fri, 24 May 2024 13:06:57 +0800</pubDate>
-      <guid>http://localhost:1313/posts/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BArocketmq-5.2%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/</guid>
+      <guid>https://poster.codingforjoy.com/posts/%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BArocketmq-5.2%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/</guid>
       <description>构建最小可调试环境</description>
     </item>
   </channel>

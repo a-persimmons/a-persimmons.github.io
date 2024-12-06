@@ -1,14 +1,12 @@
 ---
 author: ["柿子"]
-title: '{{ replace .File.ContentBaseName "-" " " | title }}'
-date: {{ .Date }}
+title: '5. Spring 核心：AOP，面向切面编程'
+date: '2022-10-08 20:01:00'
 summary: ""
 tags: [""]
 typora-root-url: ../../static
 typora-copy-images-to: ../../static/images
 ---
-
-# 5. Spring 核心：AOP，面向切面编程
 
 > 本文内容是逐段翻译[spring-framework 1.1.x 官方文档第5章](https://docs.spring.io/spring-framework/docs/1.1.x/reference/aop.html)的内容。为什么不是1.0？因为1.1.x才开始有官方文档，之前的版本只有api文档。
 >
