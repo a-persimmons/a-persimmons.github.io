@@ -53,7 +53,7 @@
       <link>https://poster.codingforjoy.com/posts/spring%E6%A0%B8%E5%BF%83aop%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/</link>
       <pubDate>Sat, 08 Oct 2022 20:01:00 +0000</pubDate>
       <guid>https://poster.codingforjoy.com/posts/spring%E6%A0%B8%E5%BF%83aop%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/</guid>
-      <description>本文内容是逐段翻译spring-framework 1.1.x 官方文档第5章的内容。为什么不是1.0？因为1.1.x才开始有官方文档，之前的版本只有api文档。
+      <description>本文内容是逐段翻译Spring-Framework 1.1.x 官方文档的第5章的内容。通过在翻译阅读过程中去尝试感受当年作者的意境。为什么不是1.0？因为1.1.x才开始有官方文档，之前的版本只有api文档。
 如果你想知道人为什么要这么搞，那么应该去看书/文档；如果你要知道让机器干了什么？那你应该看代码！——左耳朵耗子
 5.1. 概念 面向方面编程（AOP）提供了另一种思考程序结构的方法，是对 OOP 的补充。OO 将应用程序分解为对象的层次结构，而 AOP 则将程序分解为方面或关注点。这样就能将事务管理等关注点模块化，否则这些关注点就会跨越多个对象。(这类问题通常被称为交叉问题）。
 Spring 中使用了 AOP：
