@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思想领袖资源库 | 纳瓦尔与相似名人</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #1abc9c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: var(--light-text);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .nav-container {
+            background-color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+        
+        nav a {
+            color: var(--dark-color);
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-header .category {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-body p {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .card-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .card-links a {
+            display: flex;
+            align-items: center;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+        }
+        
+        .card-links a:hover {
+            color: var(--accent-color);
+            transform: translateX(5px);
+        }
+        
+        .card-links a i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .highlight {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent-color);
+        }
+        
+        .highlight h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .highlight p {
+            margin-bottom: 1.5rem;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-content p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+            }
+            
+            nav a {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>思想领袖资源库</h1>
+            <p>探索纳瓦尔及其他相似思想家的智慧、资源和核心思想</p>
+        </div>
+    </header>
+    
+    <div class="nav-container">
+        <nav class="container">
+            <a href="#" class="active">全部思想家</a>
+            <a href="#">思想与实践者</a>
+            <a href="#">财富与投资</a>
+            <a href="#">人生哲学</a>
+            <a href="#">科技与人文</a>
+        </nav>
+    </div>
+    
+    <main class="container">
+        <section class="highlight">
+            <h2>纳瓦尔·拉维康特 (Naval Ravikant)</h2>
+            <p>纳瓦尔是天使投资人、企业家和哲学家，以其关于财富、幸福和人生原则的深刻见解而闻名。他通过推特、播客和访谈分享他的思想，强调利用特定知识、杠杆和判断力来创造财富，同时追求内在的幸福。</p>
+            <div class="card-links">
+                <a href="https://nav.al/" target="_blank"><i class="fas fa-globe"></i> 官方网站: https://nav.al/</a>
+                <a href="https://twitter.com/naval" target="_blank"><i class="fab fa-twitter"></i> Twitter: @naval</a>
+                <a href="https://www.navalmanack.com/" target="_blank"><i class="fas fa-book"></i> Navalmanack (思想合集)</a>
+            </div>
+        </section>
+        
+        <h2 class="section-title">思想与实践者</h2>
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3>瑞·达利欧</h3>
+                    <div class="category">投资人、桥水基金创始人</div>
+                </div>
+                <div class="card-body">
+                    <p>全球最大对冲基金桥水创始人，著有《原则》一书，分享他的生活和工作原则，强调极度透明和创意择优。</p>
+                    <div class="card-links">
+                        <a href="https://www.principles.com/" target="_blank"><i class="fas fa-globe"></i> Principles.com</a>
+                        <a href="https://www.linkedin.com/in/raydalio/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="https://www.youtube.com/c/RayDalio" target="_blank"><i class="fab fa-youtube"></i> YouTube频道</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>尼克·西里洛</h3>
+                    <div class="category">企业家、思想家</div>
+                </div>
+                <div class="card-body">
+                    <p>创造了"海星模式"，专注于研究如何创造那些无法停止的创意和业务，思想深度和系统性非常强。</p>
+                    <div class="card-links">
+                        <a href="https://nickwrites.com/" target="_blank"><i class="fas fa-globe"></i> 个人博客</a>
+                        <a href="https://twitter.com/nireyal" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">财富与投资领域的"布道者"</h2>
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3>摩根·豪斯尔</h3>
+                    <div class="category">作家、投资人</div>
+                </div>
+                <div class="card-body">
+                    <p>《金钱心理学》作者，专注于行为金融学，强调财富积累更多取决于行为、情绪和心理学，而非纯粹的知识。</p>
+                    <div class="card-links">
+                        <a href="https://www.collaborativefund.com/blog/" target="_blank"><i class="fas fa-blog"></i> Collaborative Fund博客</a>
+                        <a href="https://www.morganhousel.com/" target="_blank"><i class="fas fa-globe"></i> 个人网站</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>沃伦·巴菲特</h3>
+                    <div class="category">投资家、伯克希尔·哈撒韦CEO</div>
+                </div>
+                <div class="card-body">
+                    <p>被誉为"奥马哈的先知"，价值投资哲学的代表人物，强调长期投资、护城河理论和市场理性。</p>
+                    <div class="card-links">
+                        <a href="https://www.berkshirehathaway.com/letters/letters.html" target="_blank"><i class="fas fa-file-alt"></i> 股东信合集</a>
+                        <a href="https://www.cnbc.com/warren-buffett/" target="_blank"><i class="fas fa-newspaper"></i> CNBC专题</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>查理·芒格</h3>
+                    <div class="category">投资家、伯克希尔·哈撒韦副主席</div>
+                </div>
+                <div class="card-body">
+                    <p>巴菲特的长期合作伙伴，以多元思维模型和人类误判心理学闻名，强调跨学科思考和理性决策。</p>
+                    <div class="card-links">
+                        <a href="https://fs.blog/tag/charlie-munger/" target="_blank"><i class="fas fa-book"></i> Farnam Street专题</a>
+                        <a href="https://www.youtube.com/results?search_query=charlie+munger" target="_blank"><i class="fab fa-youtube"></i> YouTube演讲</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">人生哲学与心智模型的传播者</h2>
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3>肖恩·帕里什</h3>
+                    <div class="category">Farnam Street创始人</div>
+                </div>
+                <div class="card-body">
+                    <p>Farnam Street博客和The Knowledge Project播客创始人，专注于心智模型、决策质量和终身学习。</p>
+                    <div class="card-links">
+                        <a href="https://fs.blog/" target="_blank"><i class="fas fa-blog"></i> Farnam Street博客</a>
+                        <a href="https://fs.blog/knowledge-project/" target="_blank"><i class="fas fa-podcast"></i> The Knowledge Project</a>
+                        <a href="https://twitter.com/seanbogus" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>蒂姆·费里斯</h3>
+                    <div class="category">作家、投资人、播客主</div>
+                </div>
+                <div class="card-body">
+                    <p>《每周工作4小时》作者，The Tim Ferriss Show播客主持人，擅长解构世界级成功者的方法。</p>
+                    <div class="card-links">
+                        <a href="https://tim.blog/" target="_blank"><i class="fas fa-blog"></i> Tim.blog</a>
+                        <a href="https://tim.blog/podcast/" target="_blank"><i class="fas fa-podcast"></i> The Tim Ferriss Show</a>
+                        <a href="https://twitter.com/tferriss" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">科技与人文的跨界思考者</h2>
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-header">
+                    <h3>马克·安德森</h3>
+                    <div class="category">投资人、a16z联合创始人</div>
+                </div>
+                <div class="card-body">
+                    <p>网景浏览器联合创始人，顶级风投a16z联合创始人，科技界重要思想领袖，关注科技未来和文化趋势。</p>
+                    <div class="card-links">
+                        <a href="https://a16z.com/" target="_blank"><i class="fas fa-globe"></i> a16z官网</a>
+                        <a href="https://twitter.com/pmarca" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>巴斯特·本森</h3>
+                    <div class="category">产品经理、作家</div>
+                </div>
+                <div class="card-body">
+                    <p>曾任亚马逊、推特产品经理，深度思考者，著有《为什么我总在纠结》，擅长将认知偏见系统化。</p>
+                    <div class="card-links">
+                        <a href="https://busterbenson.com/" target="_blank"><i class="fas fa-globe"></i> 个人网站</a>
+                        <a href="https://twitter.com/buster" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container footer-content">
+            <p>思想领袖资源库 &copy; 2023 - 探索智慧，启迪思维</p>
+            <p>本页面仅用于学习和参考，所有资源链接属于各自所有者</p>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的导航交互
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 在实际应用中，这里可以添加过滤内容的代码
+                // 为简化示例，我们只改变导航状态
+            });
+        });
+        
+        // 卡片悬停效果增强
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
