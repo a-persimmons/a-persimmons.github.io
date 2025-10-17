@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Desire Map - 基于感受的目标设定系统</title>
+    <style>
+        :root {
+            --primary: #6d5d94;
+            --secondary: #a58fbf;
+            --accent: #ff9a76;
+            --light: #f8f5f2;
+            --dark: #3a3042;
+            --success: #7db9b6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        nav li {
+            margin: 0 1.5rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .section {
+            padding: 4rem 0;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #ff7a4d;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #8f76b0;
+        }
+        
+        .life-area {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            background-color: rgba(109, 93, 148, 0.05);
+        }
+        
+        .life-area h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .feeling-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1rem 0;
+        }
+        
+        .feeling-word {
+            background-color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .feeling-word:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .feeling-word.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .core-feelings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 2rem 0;
+        }
+        
+        .core-feeling {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .core-feeling .remove {
+            margin-left: 10px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .goal-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .goal-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .progress-container {
+            margin: 2rem 0;
+        }
+        
+        .progress-container {
+            margin: 2rem 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--success);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .action-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .action-item input[type="checkbox"] {
+            margin-right: 1rem;
+        }
+        
+        .completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .quote {
+            font-style: italic;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: rgba(255, 154, 118, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>The Desire Map</h1>
+            <p>基于感受的目标设定系统 - 帮助你活出更有灵魂的生活</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#" class="nav-link active" data-section="intro">系统介绍</a></li>
+                <li><a href="#" class="nav-link" data-section="explore">探索感受</a></li>
+                <li><a href="#" class="nav-link" data-section="core-feelings">核心感受</a></li>
+                <li><a href="#" class="nav-link" data-section="goals">目标设定</a></li>
+                <li><a href="#" class="nav-link" data-section="action">行动计划</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <!-- 介绍部分 -->
+        <section id="intro" class="section active">
+            <h2 class="section-title">欢迎来到 The Desire Map 系统</h2>
+            
+            <div class="card">
+                <h3>系统核心理念</h3>
+                <p>传统目标设定关注"做什么"，而The Desire Map关注"感受什么"。我们相信，当你明确了自己真正想要体验的感受，你的目标和行动会自然与之对齐。</p>
+                
+                <div class="quote">
+                    "不是追求目标本身，而是追求实现目标时的那种感受。"
+                </div>
+                
+                <p>这个系统将引导你完成四个关键步骤：</p>
+                <ol>
+                    <li>探索你在生活各个领域中真正想要体验的感受</li>
+                    <li>提炼出3-5个核心期望感受</li>
+                    <li>基于这些感受设定有意义的目标</li>
+                    <li>制定日常行动计划，让这些感受成为现实</li>
+                </ol>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="btn start-journey">开始探索之旅</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 探索感受部分 -->
+        <section id="explore" class="section">
+            <h2 class="section-title">探索你的核心期望感受</h2>
+            
+            <div class="card">
+                <p>请思考：在生活的各个领域中，抛开所有"应该"，如果可以选择，你最想体验到什么样的感受？</p>
+                <p>以下是一些感受词汇供你参考，你可以选择它们，也可以添加自己的词汇。</p>
+                
+                <div class="feeling-words" id="feelingWords">
+                    <!-- 感受词汇将通过JavaScript动态生成 -->
+                </div>
+                
+                <input type="text" id="customFeeling" placeholder="添加自定义感受词汇..." style="width: 100%; padding: 0.8rem; margin: 1rem 0; border: 1px solid #ddd; border-radius: 8px;">
+                <button class="btn" id="addCustomFeeling">添加</button>
+            </div>
+            
+            <div class="life-area">
+                <h3>生计与生活方式</h3>
+                <p>职业、金钱、工作、家庭、空间、风格、旅行、资源等</p>
+                <div class="selected-feelings" data-area="livelihood"></div>
+                <textarea placeholder="在这里描述你在这个领域希望体验的感受..."></textarea>
+            </div>
+            
+            <div class="life-area">
+                <h3>身体与健康</h3>
+                <p>疗愈、健身、食物、休息与放松、心理健康、感官体验、运动等</p>
+                <div class="selected-feelings" data-area="wellness"></div>
+                <textarea placeholder="在这里描述你在这个领域希望体验的感受..."></textarea>
+            </div>
+            
+            <div class="life-area">
+                <h3>创造力与学习</h3>
+                <p>艺术与自我表达、兴趣、教育、爱好等</p>
+                <div class="selected-feelings" data-area="creativity"></div>
+                <textarea placeholder="在这里描述你在这个领域希望体验的感受..."></textarea>
+            </div>
+            
+            <div class="life-area">
+                <h3>本质与灵性</h3>
+                <p>灵魂、内在自我、真理、直觉、信念、实践等</p>
+                <div class="selected-feelings" data-area="spirituality"></div>
+                <textarea placeholder="在这里描述你在这个领域希望体验的感受..."></textarea>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="#" class="btn" id="toCoreFeelings">提炼核心感受</a>
+            </div>
+        </section>
+        
+        <!-- 核心感受部分 -->
+        <section id="core-feelings" class="section">
+            <h2 class="section-title">提炼你的核心期望感受</h2>
+            
+            <div class="card">
+                <p>现在，请从你在各个领域选择的感受中，提炼出3-5个最核心的感受。这些将成为你生活的指南针。</p>
+                
+                <div class="core-feelings" id="coreFeelingsContainer">
+                    <!-- 核心感受将通过JavaScript动态生成 -->
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <input type="text" id="newCoreFeeling" placeholder="添加核心感受..." style="width: 70%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+                    <button class="btn" id="addCoreFeeling" style="margin-left: 10px;">添加</button>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="btn" id="toGoals">基于感受设定目标</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 目标设定部分 -->
+        <section id="goals" class="section">
+            <h2 class="section-title">基于感受设定目标</h2>
+            
+            <div class="card">
+                <p>现在，请思考：为了体验你的核心感受，你需要做什么、拥有什么或成为什么？</p>
+                <p>请为每个核心感受设定1-2个具体目标。</p>
+                
+                <div id="goalsContainer">
+                    <!-- 目标将通过JavaScript动态生成 -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="#" class="btn" id="toAction">制定行动计划</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 行动计划部分 -->
+        <section id="action" class="section">
+            <h2 class="section-title">制定你的行动计划</h2>
+            
+            <div class="card">
+                <h3>本周行动计划</h3>
+                <p>为了体验你的核心感受并推进你的目标，本周你可以做些什么？</p>
+                
+                <div class="action-list">
+                    <div class="action-item">
+                        <input type="checkbox" id="action1">
+                        <label for="action1">每天早晨花5分钟冥想，专注于我的核心感受</label>
+                    </div>
+                    <div class="action-item">
+                        <input type="checkbox" id="action2">
+                        <label for="action2">与朋友安排一次深度对话，体验连接感</label>
+                    </div>
+                    <div class="action-item">
+                        <input type="checkbox" id="action3">
+                        <label for="action3">尝试一种新的创意表达方式</label>
+                    </div>
+                    <div class="action-item">
+                        <input type="checkbox" id="action4">
+                        <label for="action4">在大自然中散步，感受自由与活力</label>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <input type="text" id="newAction" placeholder="添加新的行动..." style="width: 70%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px;">
+                    <button class="btn" id="addAction" style="margin-left: 10px;">添加</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>进展追踪</h3>
+                <div class="progress-container">
+                    <p>核心感受体验度</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="feelingProgress"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <p>目标完成度</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="goalProgress"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <p>行动计划执行度</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="actionProgress"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quote">
+                "你的欲望就是你的祈祷。你的渴望将你与生命连接。"
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>The Desire Map 系统 - 基于 Danielle LaPorte 的方法论</p>
+            <p>帮助你创造基于感受的目标，活出更有灵魂的生活</p>
+        </div>
+    </footer>
+
+    <script>
+        // 感受词汇库
+        const feelingWords = [
+            "自由", "活力", "连接", "创造力", "平静", "喜悦", "爱", "勇气", 
+            "丰盛", "和谐", "灵感", "成长", "感恩", "自信", "优雅", "激情",
+            "专注", "轻盈", "力量", "温柔", "冒险", "安全感", "成就感", "被理解",
+            "被看见", "被珍视", "有意义", "有目标", "完整", "真实", "开放", "流动"
+        ];
+        
+        // 当前选中的感受
+        let selectedFeelings = {
+            livelihood: [],
+            wellness: [],
+            creativity: [],
+            relationships: [],
+            spirituality: []
+        };
+        
+        // 核心感受
+        let coreFeelings = [];
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化感受词汇
+            initFeelingWords();
+            
+            // 导航点击事件
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // 更新活跃导航
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应部分
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+            
+            // 开始旅程按钮
+            document.querySelector('.start-journey').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.nav-link[data-section="explore"]').click();
+            });
+            
+            // 添加自定义感受
+            document.getElementById('addCustomFeeling').addEventListener('click', function() {
+                const customFeeling = document.getElementById('customFeeling').value.trim();
+                if (customFeeling) {
+                    addFeelingWord(customFeeling);
+                    document.getElementById('customFeeling').value = '';
+                }
+            });
+            
+            // 添加核心感受
+            document.getElementById('addCoreFeeling').addEventListener('click', function() {
+                const newCoreFeeling = document.getElementById('newCoreFeeling').value.trim();
+                if (newCoreFeeling && coreFeelings.length < 5) {
+                    addCoreFeeling(newCoreFeeling);
+                    document.getElementById('newCoreFeeling').value = '';
+                }
+            });
+            
+            // 导航到核心感受
+            document.getElementById('toCoreFeelings').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.nav-link[data-section="core-feelings"]').click();
+                updateCoreFeelingsFromSelected();
+            });
+            
+            // 导航到目标
+            document.getElementById('toGoals').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.nav-link[data-section="goals"]').click();
+                renderGoals();
+            });
+            
+            // 导航到行动
+            document.getElementById('toAction').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.nav-link[data-section="action"]').click();
+            });
+            
+            // 添加行动
+            document.getElementById('addAction').addEventListener('click', function() {
+                const newAction = document.getElementById('newAction').value.trim();
+                if (newAction) {
+                    addActionItem(newAction);
+                    document.getElementById('newAction').value = '';
+                }
+            });
+            
+            // 初始化进度条
+            updateProgress();
+        });
+        
+        // 初始化感受词汇
+        function initFeelingWords() {
+            const container = document.getElementById('feelingWords');
+            feelingWords.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'feeling-word';
+                wordElement.textContent = word;
+                wordElement.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+                container.appendChild(wordElement);
+            });
+        }
+        
+        // 添加自定义感受词汇
+        function addFeelingWord(word) {
+            const container = document.getElementById('feelingWords');
+            const wordElement = document.createElement('div');
+            wordElement.className = 'feeling-word';
+            wordElement.textContent = word;
+            wordElement.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+            container.appendChild(wordElement);
+        }
+        
+        // 从选中的感受中更新核心感受
+        function updateCoreFeelingsFromSelected() {
+            // 收集所有选中的感受
+            const allSelected = document.querySelectorAll('.feeling-word.selected');
+            const selectedWords = Array.from(allSelected).map(el => el.textContent);
+            
+            // 去重
+            const uniqueWords = [...new Set(selectedWords)];
+            
+            // 更新核心感受（最多5个）
+            coreFeelings = uniqueWords.slice(0, 5);
+            
+            // 渲染核心感受
+            renderCoreFeelings();
+        }
+        
+        // 渲染核心感受
+        function renderCoreFeelings() {
+            const container = document.getElementById('coreFeelingsContainer');
+            container.innerHTML = '';
+            
+            coreFeelings.forEach((feeling, index) => {
+                const feelingElement = document.createElement('div');
+                feelingElement.className = 'core-feeling';
+                feelingElement.innerHTML = `
+                    ${feeling}
+                    <span class="remove" data-index="${index}">×</span>
+                `;
+                container.appendChild(feelingElement);
+            });
+            
+            // 添加删除事件
+            document.querySelectorAll('.core-feeling .remove').forEach(removeBtn => {
+                removeBtn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    coreFeelings.splice(index, 1);
+                    renderCoreFeelings();
+                });
+            });
+        }
+        
+        // 添加核心感受
+        function addCoreFeeling(feeling) {
+            coreFeelings.push(feeling);
+            renderCoreFeelings();
+        }
+        
+        // 渲染目标
+        function renderGoals() {
+            const container = document.getElementById('goalsContainer');
+            container.innerHTML = '';
+            
+            coreFeelings.forEach(feeling => {
+                const goalCard = document.createElement('div');
+                goalCard.className = 'goal-card';
+                goalCard.innerHTML = `
+                    <h3>为了体验 "${feeling}"，我想要：</h3>
+                    <textarea placeholder="描述你的目标..."></textarea>
+                `;
+                container.appendChild(goalCard);
+            });
+        }
+        
+        // 添加行动项
+        function addActionItem(action) {
+            const actionList = document.querySelector('.action-list');
+            const actionItem = document.createElement('div');
+            actionItem.className = 'action-item';
+            actionItem.innerHTML = `
+                <input type="checkbox" id="action-${Date.now()}">
+                <label for="action-${Date.now()}">${action}</label>
+            `;
+            actionList.appendChild(actionItem);
+            
+            // 添加完成事件
+            const checkbox = actionItem.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', function() {
+                updateProgress();
+            });
+        }
+        
+        // 更新进度
+        function updateProgress() {
+            // 模拟进度更新
+            document.getElementById('feelingProgress').style.width = '60%';
+            document.getElementById('goalProgress').style.width = '30%';
+            
+            // 计算行动完成度
+            const actionCheckboxes = document.querySelectorAll('.action-item input[type="checkbox"]');
+            const completedActions = Array.from(actionCheckboxes).filter(cb => cb.checked).length;
+            const totalActions = actionCheckboxes.length;
+            const actionProgress = totalActions > 0 ? (completedActions / totalActions) * 100 : 0;
+            
+            document.getElementById('actionProgress').style.width = `${actionProgress}%`;
+        }
+    </script>
+</body>
+</html>
