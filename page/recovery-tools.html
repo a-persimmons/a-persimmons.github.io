@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>复原：情绪陷阱逃离指南 —— 工具手册</title>
+  <style>
+    :root {
+      --bg-dark: #0a0a15;
+      --card-bg: #121220;
+      --border-glow: #00f3ff;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --highlight-yellow: #ffff00;
+      --highlight-blue: #00f3ff;
+      --glow: 0 0 10px rgba(0, 243, 255, 0.7);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      padding: 20px;
+      line-height: 1.6;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--highlight-blue);
+      text-shadow: var(--glow);
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    .section {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-title {
+      color: var(--highlight-blue);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .tool-card {
+      background-color: #1a1a2e;
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      border-radius: 10px;
+      padding: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 243, 255, 0.2);
+      border-color: var(--border-glow);
+    }
+
+    .tool-title {
+      color: var(--highlight-blue);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .tool-content {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .tool-content p {
+      margin-bottom: 10px;
+    }
+
+    .highlight {
+      color: var(--highlight-yellow);
+      font-weight: bold;
+      background: rgba(255, 255, 0, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .key-insight {
+      background: rgba(0, 243, 255, 0.05);
+      border-left: 4px solid var(--highlight-blue);
+      padding: 12px 16px;
+      margin-top: 12px;
+      border-radius: 6px;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .tool-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .section-title {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>复原：情绪陷阱逃离指南 🧠🌀</h1>
+
+  <!-- 引言 -->
+  <div class="section">
+    <div class="section-title">引言 · Introduction</div>
+    <div class="tool-card">
+      <p><strong>核心理念：</strong>问题不是敌人，而是成长的入口。痛苦不是障碍，而是通往潜能的通道。</p>
+      <p>本书主张主动“使用”情绪作为燃料，通过五种心理工具将焦虑、羞耻、拖延等转化为勇气、自信与创造力。</p>
+    </div>
+  </div>
+
+  <!-- 第一章：愿景 -->
+  <div class="section">
+    <div class="section-title">第一章 · 愿景（The Vision）</div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-title">🎯 核心问题</div>
+        <div class="tool-subtitle">缺乏方向感、动力不足、陷入琐事</div>
+        <div class="tool-content">
+          <p>不知道为何而活，被日常淹没，看不到人生意义。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">⚡ 工具原理</div>
+        <div class="tool-subtitle">连接内在召唤</div>
+        <div class="tool-content">
+          <p>愿景是你渴望成为的人——如勇敢、有爱、有创造力。它是灵魂的导航仪，驱动你超越恐惧。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">🔧 使用方法</div>
+        <div class="tool-content">
+          <p>1. 明确愿景：“我想成为什么样的人？”</p>
+          <p>2. 每日可视化：闭眼想象活出愿景的状态。</p>
+          <p>3. 困难时召唤：用愿景点燃行动力。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">💡 关键洞见</div>
+        <div class="key-insight">
+          愿景不是终点，而是持续行动的指南针。<br>
+          你不是在忍受困难，而是在<em>为愿景而战</em>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二章：影子工作 -->
+  <div class="section">
+    <div class="section-title">第二章 · 影子工作（The Shadow）</div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-title">🖤 核心问题</div>
+        <div class="tool-subtitle">自我批判、羞耻感、压抑阴暗面</div>
+        <div class="tool-content">
+          <p>对嫉妒、愤怒、自私感到羞耻，却不知这些正是未整合的“影子”。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">⚡ 工具原理</div>
+        <div class="tool-subtitle">整合被否认的自我</div>
+        <div class="tool-content">
+          <p>影子是潜意识中被压抑的特质，接纳它才能释放能量，而非让它操控行为。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">🔧 使用方法</div>
+        <div class="tool-content">
+          <p>1. 识别影子：他人让你反感的特质，常是你自己的投射。</p>
+          <p>2. 承认并接纳：“我也有这部分。”</p>
+          <p>3. 转化能量：压抑的能量会变成创造力或行动力。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">💡 关键洞见</div>
+        <div class="key-insight">
+          完整的人不是没有黑暗，而是敢于面对黑暗。<br>
+          羞耻感源于“我不该有”，但接纳带来<em>力量</em>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第三章：内在权威 -->
+  <div class="section">
+    <div class="section-title">第三章 · 内在权威（The Inner Authority）</div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-title">👑 核心问题</div>
+        <div class="tool-subtitle">过度在意他人看法、缺乏自信、讨好型人格</div>
+        <div class="tool-content">
+          <p>把评价权交给外界，导致内心空虚、焦虑、无法做决定。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">⚡ 工具原理</div>
+        <div class="tool-subtitle">建立与内在智慧的连接</div>
+        <div class="tool-content">
+          <p>真正的权威来自你与自己价值观、直觉的契约，而非社会标准。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">🔧 使用方法</div>
+        <div class="tool-content">
+          <p>1. 觉察依赖：问自己“我在寻求谁的认可？”</p>
+          <p>2. 建立内在对话：想象一个慈爱的“内在导师”为你指引。</p>
+          <p>3. 行动优先于感觉：即使害怕，也先忠于自己行动。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">💡 关键洞见</div>
+        <div class="key-insight">
+          自信不是“感觉良好”，而是“即使害怕也选择忠于自己”。<br>
+          真正的权威来自<em>与灵魂的契约</em>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第四章：流动 -->
+  <div class="section">
+    <div class="section-title">第四章 · 流动（The Flow）</div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-title">🌊 核心问题</div>
+        <div class="tool-subtitle">拖延、创造力枯竭、生活停滞</div>
+        <div class="tool-content">
+          <p>抗拒现实、追求完美、害怕开始，切断了生命能量的流动。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">⚡ 工具原理</div>
+        <div class="tool-subtitle">接受当下，参与其中</div>
+        <div class="tool-content">
+          <p>流动是宇宙能量，当你臣服现实并采取微小行动，就能重新接通生命力。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">🔧 使用方法</div>
+        <div class="tool-content">
+          <p>1. 承认抗拒：意识到自己正在拖延或抱怨。</p>
+          <p>2. 臣服流动：说“我接受此刻，我愿意参与”。</p>
+          <p>3. 微小行动：哪怕写一句话、打开文档，启动即连接。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">💡 关键洞见</div>
+        <div class="key-insight">
+          流动不在未来，就在你此刻的行动中。<br>
+          行动不是结果，而是<em>与生命能量重新连接的方式</em>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第五章：感恩 -->
+  <div class="section">
+    <div class="section-title">第五章 · 感恩（Gratitude）</div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-title">🙏 核心问题</div>
+        <div class="tool-subtitle">抱怨、愤怒、受害者心态</div>
+        <div class="tool-content">
+          <p>觉得世界亏欠自己，陷入匮乏循环，看不到已有资源。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">⚡ 工具原理</div>
+        <div class="tool-subtitle">主动选择看见光</div>
+        <div class="tool-content">
+          <p>感恩不是对好事的反应，而是一种态度——即使在痛苦中也能接收支持。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">🔧 使用方法</div>
+        <div class="tool-content">
+          <p>1. 在痛苦中练习：立刻找出一件可感恩的事（如“我还活着”）。</p>
+          <p>2. 具体化感恩：描述细节，如“阳光照在脸上的温暖”。</p>
+          <p>3. 日常仪式：早晚各花一分钟列出三件感恩事。</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-title">💡 关键洞见</div>
+        <div class="key-insight">
+          感恩不是否认痛苦，而是在痛苦中依然选择看见光。<br>
+          感恩是灵魂的氧气，让生命在逆境中<em>依然呼吸</em>。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结语 -->
+  <div class="section">
+    <div class="section-title">结语 · Integration & Practice</div>
+    <div class="tool-card">
+      <p><strong>工具的本质：</strong>不是一次性技巧，而是需要每日练习的生活方式。</p>
+      <p><strong>真正的复原：</strong>不是回到过去，而是成长为更完整、更有力量的自己。</p>
+      <p><strong>终极提醒：</strong>情绪是能量，关键在于转化；痛苦不会消失，但你可以学会与它共舞。</p>
+      <div class="key-insight">
+        <strong>五大工具 = 五大困境的出口：</strong><br>
+        无方向 → 愿景<br>
+        自我分裂 → 影子<br>
+        依赖外界 → 内在权威<br>
+        停滞不前 → 流动<br>
+        怨恨不满 → 感恩
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
