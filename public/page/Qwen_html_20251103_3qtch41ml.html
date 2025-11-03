@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>流媒体服务器开发工程师学习路线图</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ====== 全局样式 ====== */
+    :root {
+      --primary: #4facfe;
+      --primary-dark: #00c9ff;
+      --secondary: #00f2fe;
+      --accent: #8a2be2;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --phase1: #6366f1;
+      --phase2: #8b5cf6;
+      --phase3: #ec4899;
+      --phase4: #f43f5e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark), #1a1f30);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1600px; /* 更宽的容器 */
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0, 201, 255, 0.2);
+    }
+
+    /* ====== 进度条 ====== */
+    .progress-container {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+
+    /* ====== 时间总览 ====== */
+    .overview {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 30px;
+      border-left: 4px solid var(--primary);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .overview h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    .overview ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      list-style: none;
+    }
+
+    .overview li {
+      display: flex;
+      flex-direction: column;
+      min-width: 180px;
+    }
+
+    .overview li strong {
+      font-size: 1.3rem;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+
+    .overview li span {
+      color: var(--text-secondary);
+    }
+
+    /* ====== 阶段容器 ====== */
+    .phases {
+      display: grid;
+      gap: 25px;
+      grid-template-columns: repeat(4, 1fr); /* 固定4列布局 */
+    }
+
+    .phase {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .phase-header {
+      padding: 18px 20px;
+      color: white;
+      font-weight: bold;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .phase-header i.toggle-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .phase-body {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.5s ease;
+    }
+
+    .phase.expanded .phase-body {
+      max-height: 2000px; /* 足够大的值确保内容完全展开 */
+      padding: 0 20px 20px;
+    }
+
+    .phase-1 .phase-header { background: var(--phase1); }
+    .phase-2 .phase-header { background: var(--phase2); }
+    .phase-3 .phase-header { background: var(--phase3); }
+    .phase-4 .phase-header { background: var(--phase4); }
+
+    .week {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0 0 10px 10px;
+      padding: 18px 0;
+      margin: 15px 0;
+      border-left: 3px solid var(--accent);
+    }
+
+    .week-content {
+      padding: 0 20px;
+    }
+
+    .week-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      cursor: pointer;
+      padding: 0 20px;
+    }
+
+    .week-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .week-details {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .week.expanded .week-details {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .week ul {
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .week li {
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    /* Todo List 样式 */
+    .todo-list {
+      list-style: none;
+      margin-top: 15px;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .todo-checkbox {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .todo-text {
+      flex: 1;
+      color: var(--text-secondary);
+    }
+
+    .todo-text.completed {
+      text-decoration: line-through;
+      color: #64748b;
+    }
+
+    .week-project {
+      background: rgba(138, 43, 226, 0.15);
+      border: 1px dashed var(--accent);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 15px;
+    }
+
+    .week-project h5 {
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ====== 资源和建议 ====== */
+    .resources, .tips {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 25px;
+      margin-top: 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .resources h2, .tips h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .resource-category h3 {
+      color: var(--secondary);
+      margin-bottom: 12px;
+    }
+
+    .resource-category ul {
+      list-style: none;
+    }
+
+    .resource-category li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .tip-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .tip-card h3 {
+      color: var(--success);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checklist {
+      margin-top: 30px;
+    }
+
+    .checklist h2 {
+      color: var(--warning);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .checklist ul {
+      list-style: none;
+    }
+
+    .checklist li {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .checklist li i {
+      color: var(--success);
+    }
+
+    /* ====== 响应式 ====== */
+    @media (max-width: 1400px) {
+      .phases {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .phases {
+        grid-template-columns: 1fr;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+      .overview ul {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .progress-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-wave-square"></i> 流媒体服务器开发工程师学习路线图</h1>
+      <p>从零基础到能独立开发中型流媒体项目，6个月系统化进阶指南</p>
+    </header>
+
+    <!-- 全局进度条 -->
+    <div class="progress-container">
+      <div class="progress-header">
+        <span>整体学习进度</span>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- 学习总览 -->
+    <div class="overview">
+      <h2><i class="fas fa-tachometer-alt"></i> 学习规划总览</h2>
+      <ul>
+        <li><strong>6个月</strong><span>约26周</span></li>
+        <li><strong>工作日</strong><span>每晚2-3小时</span></li>
+        <li><strong>周末</strong><span>8-10小时/天</span></li>
+        <li><strong>目标</strong><span>独立开发中型流媒体项目</span></li>
+      </ul>
+    </div>
+
+    <!-- 四个阶段 -->
+    <div class="phases">
+      <!-- 第一阶段 -->
+      <div class="phase phase-1 expanded">
+        <div class="phase-header" data-phase="1">
+          <span><i class="fas fa-book-open"></i> 第一阶段：基础理论与协议 (第1-6周)</span>
+          <i class="fas fa-chevron-up toggle-icon"></i>
+        </div>
+        <div class="phase-body">
+          <div class="week expanded" data-week="1-2">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-music"></i>
+                <h4>第1-2周：音视频基础理论</h4>
+              </div>
+              <i class="fas fa-chevron-up toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>理解音视频编解码原理</li>
+                  <li>采样率、比特率、帧率、分辨率</li>
+                  <li>色彩空间：YUV、RGB转换</li>
+                  <li>H.264/265、I/P/B帧、GOP</li>
+                  <li>AAC/MP3/Opus音频编码</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task1">
+                    <span class="todo-text" data-task="week1-2-task1">理解采样率、比特率、帧率、分辨率概念</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task2">
+                    <span class="todo-text" data-task="week1-2-task2">掌握YUV与RGB转换原理</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task3">
+                    <span class="todo-text" data-task="week1-2-task3">理解H.264/265编码标准</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task4">
+                    <span class="todo-text" data-task="week1-2-task4">掌握I帧、P帧、B帧、GOP概念</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task5">
+                    <span class="todo-text" data-task="week1-2-task5">了解AAC、MP3、Opus音频编码</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task6">
+                    <span class="todo-text" data-task="week1-2-task6">用代码读取并解析YUV文件</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task7">
+                    <span class="todo-text" data-task="week1-2-task7">使用FFmpeg提取视频关键帧</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week1-2-task8">
+                    <span class="todo-text" data-task="week1-2-task8">用FFmpeg转换不同音频格式</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>编写音视频信息读取工具(Go/Java)</li>
+                    <li>使用FFmpeg库解析视频文件的元数据</li>
+                    <li>输出: 编解码格式、时长、码率等信息</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week1-2-proj1">
+                      <span class="todo-text" data-task="week1-2-proj1">完成音视频信息读取工具</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week1-2-proj2">
+                      <span class="todo-text" data-task="week1-2-proj2">成功解析视频元数据并输出信息</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week expanded" data-week="3-4">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-network-wired"></i>
+                <h4>第3-4周：流媒体协议基础</h4>
+              </div>
+              <i class="fas fa-chevron-up toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>掌握RTMP、HLS、HTTP-FLV协议</li>
+                  <li>RTMP握手过程、消息格式、Chunk机制</li>
+                  <li>HLS M3U8文件格式、TS切片原理</li>
+                  <li>HTTP-FLV协议与FLV文件格式</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task1">
+                    <span class="todo-text" data-task="week3-4-task1">理解RTMP握手过程</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task2">
+                    <span class="todo-text" data-task="week3-4-task2">掌握RTMP消息格式与Chunk机制</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task3">
+                    <span class="todo-text" data-task="week3-4-task3">用Wireshark抓包分析RTMP流</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task4">
+                    <span class="todo-text" data-task="week3-4-task4">理解HLS M3U8文件格式</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task5">
+                    <span class="todo-text" data-task="week3-4-task5">掌握TS切片原理</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task6">
+                    <span class="todo-text" data-task="week3-4-task6">手动编写M3U8播放列表</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task7">
+                    <span class="todo-text" data-task="week3-4-task7">理解HTTP-FLV协议</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task8">
+                    <span class="todo-text" data-task="week3-4-task8">掌握FLV文件格式与Tag结构</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week3-4-task9">
+                    <span class="todo-text" data-task="week3-4-task9">对比RTMP、HLS、HTTP-FLV优劣</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>搭建简单的RTMP推流环境(Nginx-RTMP)</li>
+                    <li>用OBS推流 + VLC播放验证</li>
+                    <li>编写RTMP握手协议的解析代码</li>
+                    <li>实现一个简单的FLV文件解析器</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week3-4-proj1">
+                      <span class="todo-text" data-task="week3-4-proj1">成功搭建RTMP推流环境</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week3-4-proj2">
+                      <span class="todo-text" data-task="week3-4-proj2">OBS推流 + VLC播放验证成功</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week3-4-proj3">
+                      <span class="todo-text" data-task="week3-4-proj3">完成RTMP握手协议解析代码</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week3-4-proj4">
+                      <span class="todo-text" data-task="week3-4-proj4">实现FLV文件解析器</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week expanded" data-week="5-6">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-bolt"></i>
+                <h4>第5-6周：WebRTC与现代协议</h4>
+              </div>
+              <i class="fas fa-chevron-up toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>了解低延迟流媒体方案</li>
+                  <li>WebRTC信令、ICE、STUN/TURN概念</li>
+                  <li>SDP协议格式</li>
+                  <li>SRT可靠传输机制</li>
+                  <li>QUIC在流媒体中的应用</li>
+                  <li>DASH协议与MPD文件格式</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task1">
+                    <span class="todo-text" data-task="week5-6-task1">理解WebRTC信令概念</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task2">
+                    <span class="todo-text" data-task="week5-6-task2">掌握ICE、STUN/TURN工作原理</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task3">
+                    <span class="todo-text" data-task="week5-6-task3">理解SDP协议格式</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task4">
+                    <span class="todo-text" data-task="week5-6-task4">了解SRT可靠传输机制</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task5">
+                    <span class="todo-text" data-task="week5-6-task5">了解QUIC在流媒体中的应用</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task6">
+                    <span class="todo-text" data-task="week5-6-task6">理解DASH协议</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task7">
+                    <span class="todo-text" data-task="week5-6-task7">掌握MPD文件格式</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week5-6-task8">
+                    <span class="todo-text" data-task="week5-6-task8">对比DASH与HLS优劣</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>搭建WebRTC一对一视频通话demo</li>
+                    <li>使用开源信令服务器(如coturn)</li>
+                    <li>测试不同网络环境下的表现</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week5-6-proj1">
+                      <span class="todo-text" data-task="week5-6-proj1">成功搭建WebRTC一对一视频通话demo</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week5-6-proj2">
+                      <span class="todo-text" data-task="week5-6-proj2">集成coturn信令服务器</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week5-6-proj3">
+                      <span class="todo-text" data-task="week5-6-proj3">完成不同网络环境测试</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二阶段 -->
+      <div class="phase phase-2">
+        <div class="phase-header" data-phase="2">
+          <span><i class="fas fa-cogs"></i> 第二阶段：核心技术实践 (第7-14周)</span>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="phase-body">
+          <div class="week" data-week="7-8">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-film"></i>
+                <h4>第7-8周：FFmpeg深度应用</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>熟练使用FFmpeg进行音视频处理</li>
+                  <li>FFmpeg命令行高级用法</li>
+                  <li>libavformat/libavcodec编程</li>
+                  <li>硬件加速与多线程处理</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task1">
+                    <span class="todo-text" data-task="week7-8-task1">掌握FFmpeg转码、转封装命令</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task2">
+                    <span class="todo-text" data-task="week7-8-task2">掌握FFmpeg滤镜使用</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task3">
+                    <span class="todo-text" data-task="week7-8-task3">编写批量转码脚本</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task4">
+                    <span class="todo-text" data-task="week7-8-task4">使用Go cgo调用FFmpeg库</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task5">
+                    <span class="todo-text" data-task="week7-8-task5">使用JavaCV调用FFmpeg</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task6">
+                    <span class="todo-text" data-task="week7-8-task6">实现硬件加速(NVENC/QSV)</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week7-8-task7">
+                    <span class="todo-text" data-task="week7-8-task7">实现多线程音视频处理</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>开发一个视频转码服务</li>
+                    <li>支持多格式输入输出</li>
+                    <li>实现进度回调</li>
+                    <li>添加水印功能</li>
+                    <li>性能监控</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week7-8-proj1">
+                      <span class="todo-text" data-task="week7-8-proj1">完成视频转码服务核心功能</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week7-8-proj2">
+                      <span class="todo-text" data-task="week7-8-proj2">实现进度回调功能</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week7-8-proj3">
+                      <span class="todo-text" data-task="week7-8-proj3">添加水印功能</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week7-8-proj4">
+                      <span class="todo-text" data-task="week7-8-proj4">集成性能监控</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="9-10">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-server"></i>
+                <h4>第9-10周：RTMP服务器开发</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>实现一个基础RTMP推流接收服务器</li>
+                  <li>TCP服务器框架搭建</li>
+                  <li>RTMP握手实现</li>
+                  <li>Chunk解析与音视频数据接收</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week9-10-task1">
+                    <span class="todo-text" data-task="week9-10-task1">使用Go net包搭建TCP服务器</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week9-10-task2">
+                    <span class="todo-text" data-task="week9-10-task2">使用Java Netty搭建TCP服务器</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week9-10-task3">
+                    <span class="todo-text" data-task="week9-10-task3">实现RTMP C0/C1/C2握手</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week9-10-task4">
+                    <span class="todo-text" data-task="week9-10-task4">处理connect、createStream、publish命令</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week9-10-task5">
+                    <span class="todo-text" data-task="week9-10-task5">实现Chunk拆包与组包逻辑</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week9-10-task6">
+                    <span class="todo-text" data-task="week9-10-task6">设计内存队列存储数据</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>完善RTMP服务器</li>
+                    <li>支持多路推流</li>
+                    <li>实现简单的鉴权机制</li>
+                    <li>添加日志系统</li>
+                    <li>用OBS推流测试</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week9-10-proj1">
+                      <span class="todo-text" data-task="week9-10-proj1">RTMP服务器支持多路推流</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week9-10-proj2">
+                      <span class="todo-text" data-task="week9-10-proj2">实现基础鉴权机制</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week9-10-proj3">
+                      <span class="todo-text" data-task="week9-10-proj3">添加日志系统</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week9-10-proj4">
+                      <span class="todo-text" data-task="week9-10-proj4">OBS推流测试成功</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="11-12">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-stream"></i>
+                <h4>第11-12周：HLS切片与分发</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>实现HLS直播切片服务</li>
+                  <li>MPEG-TS格式详解</li>
+                  <li>M3U8生成策略</li>
+                  <li>GOP对齐切片</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task1">
+                    <span class="todo-text" data-task="week11-12-task1">理解MPEG-TS格式</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task2">
+                    <span class="todo-text" data-task="week11-12-task2">掌握PES/PAT/PMT表结构</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task3">
+                    <span class="todo-text" data-task="week11-12-task3">实现M3U8生成策略</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task4">
+                    <span class="todo-text" data-task="week11-12-task4">实现滑动窗口机制</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task5">
+                    <span class="todo-text" data-task="week11-12-task5">设计DVR功能</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task6">
+                    <span class="todo-text" data-task="week11-12-task6">实现关键帧检测</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task7">
+                    <span class="todo-text" data-task="week11-12-task7">处理切片边界</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week11-12-task8">
+                    <span class="todo-text" data-task="week11-12-task8">实现文件存储策略</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>开发HLS切片服务</li>
+                    <li>接收RTMP流并切片</li>
+                    <li>生成动态M3U8</li>
+                    <li>实现3种切片模式(事件、直播、VOD)</li>
+                    <li>HTTP服务器提供HLS访问</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week11-12-proj1">
+                      <span class="todo-text" data-task="week11-12-proj1">HLS切片服务接收RTMP流</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week11-12-proj2">
+                      <span class="todo-text" data-task="week11-12-proj2">成功生成动态M3U8</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week11-12-proj3">
+                      <span class="todo-text" data-task="week11-12-proj3">实现三种切片模式</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week11-12-proj4">
+                      <span class="todo-text" data-task="week11-12-proj4">HTTP服务器提供HLS访问</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="13-14">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-tv"></i>
+                <h4>第13-14周：HTTP-FLV与播放器对接</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>实现低延迟HTTP-FLV分发</li>
+                  <li>FLV实时封装</li>
+                  <li>HTTP Chunked传输</li>
+                  <li>flv.js集成</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task1">
+                    <span class="todo-text" data-task="week13-14-task1">理解FLV Header/Tag格式</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task2">
+                    <span class="todo-text" data-task="week13-14-task2">实现FLV实时封装</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task3">
+                    <span class="todo-text" data-task="week13-14-task3">处理时间戳</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task4">
+                    <span class="todo-text" data-task="week13-14-task4">实现HTTP Chunked传输</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task5">
+                    <span class="todo-text" data-task="week13-14-task5">保持长连接</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task6">
+                    <span class="todo-text" data-task="week13-14-task6">处理背压</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task7">
+                    <span class="todo-text" data-task="week13-14-task7">集成flv.js</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week13-14-task8">
+                    <span class="todo-text" data-task="week13-14-task8">开发H5播放器</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>完整直播链路打通</li>
+                    <li>OBS推流 → RTMP服务器 → HTTP-FLV/HLS分发</li>
+                    <li>开发简单的Web播放器</li>
+                    <li>实现房间管理功能</li>
+                    <li>添加在线人数统计</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week13-14-proj1">
+                      <span class="todo-text" data-task="week13-14-proj1">完成完整直播链路</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week13-14-proj2">
+                      <span class="todo-text" data-task="week13-14-proj2">开发Web播放器</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week13-14-proj3">
+                      <span class="todo-text" data-task="week13-14-proj3">实现房间管理</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week13-14-proj4">
+                      <span class="todo-text" data-task="week13-14-proj4">添加在线人数统计</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第三阶段 -->
+      <div class="phase phase-3">
+        <div class="phase-header" data-phase="3">
+          <span><i class="fas fa-project-diagram"></i> 第三阶段：进阶与工程化 (第15-22周)</span>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="phase-body">
+          <div class="week" data-week="15-16">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-network-wired"></i>
+                <h4>第15-16周：集群与负载均衡</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>实现多节点分布式流媒体架构</li>
+                  <li>源站/边缘节点设计</li>
+                  <li>节点间通信</li>
+                  <li>负载均衡</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task1">
+                    <span class="todo-text" data-task="week15-16-task1">设计源站/边缘节点架构</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task2">
+                    <span class="todo-text" data-task="week15-16-task2">选型gRPC/RPC框架</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task3">
+                    <span class="todo-text" data-task="week15-16-task3">设计流转发协议</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task4">
+                    <span class="todo-text" data-task="week15-16-task4">实现推流负载均衡(一致性哈希)</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task5">
+                    <span class="todo-text" data-task="week15-16-task5">实现拉流负载均衡</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task6">
+                    <span class="todo-text" data-task="week15-16-task6">集成etcd/Consul</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week15-16-task7">
+                    <span class="todo-text" data-task="week15-16-task7">实现健康检查</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>改造单机版为集群版</li>
+                    <li>实现源站+2个边缘节点</li>
+                    <li>边缘节点自动从源站拉流</li>
+                    <li>实现流调度API</li>
+                    <li>添加监控面板</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week15-16-proj1">
+                      <span class="todo-text" data-task="week15-16-proj1">完成集群版改造</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week15-16-proj2">
+                      <span class="todo-text" data-task="week15-16-proj2">实现源站+2边缘节点</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week15-16-proj3">
+                      <span class="todo-text" data-task="week15-16-proj3">边缘节点自动拉流</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week15-16-proj4">
+                      <span class="todo-text" data-task="week15-16-proj4">实现流调度API</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week15-16-proj5">
+                      <span class="todo-text" data-task="week15-16-proj5">添加监控面板</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="17-18">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-video"></i>
+                <h4>第17-18周：录制与回放</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>实现直播录制和点播功能</li>
+                  <li>录制策略</li>
+                  <li>点播服务</li>
+                  <li>存储优化</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task1">
+                    <span class="todo-text" data-task="week17-18-task1">实现实时录制FLV/MP4</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task2">
+                    <span class="todo-text" data-task="week17-18-task2">实现分片录制与合并</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task3">
+                    <span class="todo-text" data-task="week17-18-task3">实现MP4封装(faststart)</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task4">
+                    <span class="todo-text" data-task="week17-18-task4">实现HTTP Range拖拽点播</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task5">
+                    <span class="todo-text" data-task="week17-18-task5">集成S3/OSS对象存储</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task6">
+                    <span class="todo-text" data-task="week17-18-task6">实现本地缓存策略</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task7">
+                    <span class="todo-text" data-task="week17-18-task7">实现异步转码队列</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week17-18-task8">
+                    <span class="todo-text" data-task="week17-18-task8">实现多码率切换</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>开发录制回放系统</li>
+                    <li>直播自动录制</li>
+                    <li>录制文件管理接口</li>
+                    <li>VOD点播服务</li>
+                    <li>简单的视频管理后台</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week17-18-proj1">
+                      <span class="todo-text" data-task="week17-18-proj1">实现直播自动录制</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week17-18-proj2">
+                      <span class="todo-text" data-task="week17-18-proj2">开发录制文件管理接口</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week17-18-proj3">
+                      <span class="todo-text" data-task="week17-18-proj3">实现VOD点播服务</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week17-18-proj4">
+                      <span class="todo-text" data-task="week17-18-proj4">开发视频管理后台</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="19-20">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-chart-line"></i>
+                <h4>第19-20周：性能优化与监控</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>系统性能调优</li>
+                  <li>性能分析工具</li>
+                  <li>内存优化</li>
+                  <li>并发优化</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task1">
+                    <span class="todo-text" data-task="week19-20-task1">使用pprof/JProfiler分析性能</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task2">
+                    <span class="todo-text" data-task="week19-20-task2">生成火焰图分析</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task3">
+                    <span class="todo-text" data-task="week19-20-task3">实现对象池</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task4">
+                    <span class="todo-text" data-task="week19-20-task4">实现零拷贝优化</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task5">
+                    <span class="todo-text" data-task="week19-20-task5">排查内存泄漏</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task6">
+                    <span class="todo-text" data-task="week19-20-task6">实现goroutine/线程池</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task7">
+                    <span class="todo-text" data-task="week19-20-task7">优化锁机制</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task8">
+                    <span class="todo-text" data-task="week19-20-task8">调优TCP参数</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task9">
+                    <span class="todo-text" data-task="week19-20-task9">实现零拷贝(sendfile)</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task10">
+                    <span class="todo-text" data-task="week19-20-task10">集成Prometheus</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week19-20-task11">
+                    <span class="todo-text" data-task="week19-20-task11">配置Grafana面板</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>全面性能优化</li>
+                    <li>压力测试(wrk/ab)</li>
+                    <li>优化到支持5000+并发</li>
+                    <li>搭建完整监控系统</li>
+                    <li>告警规则配置</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week19-20-proj1">
+                      <span class="todo-text" data-task="week19-20-proj1">完成压力测试</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week19-20-proj2">
+                      <span class="todo-text" data-task="week19-20-proj2">优化至5000+并发</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week19-20-proj3">
+                      <span class="todo-text" data-task="week19-20-proj3">搭建监控系统</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week19-20-proj4">
+                      <span class="todo-text" data-task="week19-20-proj4">配置告警规则</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="21-22">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-shield-alt"></i>
+                <h4>第21-22周：安全与鉴权</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>实现完善的安全机制</li>
+                  <li>推流鉴权</li>
+                  <li>播放鉴权</li>
+                  <li>DRM方案</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task1">
+                    <span class="todo-text" data-task="week21-22-task1">实现URL鉴权(时间戳+签名)</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task2">
+                    <span class="todo-text" data-task="week21-22-task2">实现Token鉴权</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task3">
+                    <span class="todo-text" data-task="week21-22-task3">实现IP白名单</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task4">
+                    <span class="todo-text" data-task="week21-22-task4">实现HLS AES-128加密</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task5">
+                    <span class="todo-text" data-task="week21-22-task5">实现防盗链</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task6">
+                    <span class="todo-text" data-task="week21-22-task6">了解Widevine/FairPlay</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task7">
+                    <span class="todo-text" data-task="week21-22-task7">实现简单加密方案</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task8">
+                    <span class="todo-text" data-task="week21-22-task8">配置HTTPS/WSS</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week21-22-task9">
+                    <span class="todo-text" data-task="week21-22-task9">实现防DoS攻击</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>添加安全模块</li>
+                    <li>完整鉴权系统</li>
+                    <li>用户权限管理</li>
+                    <li>鉴权SDK开发(客户端)</li>
+                    <li>安全测试</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week21-22-proj1">
+                      <span class="todo-text" data-task="week21-22-proj1">实现完整鉴权系统</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week21-22-proj2">
+                      <span class="todo-text" data-task="week21-22-proj2">开发用户权限管理</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week21-22-proj3">
+                      <span class="todo-text" data-task="week21-22-proj3">开发鉴权SDK</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week21-22-proj4">
+                      <span class="todo-text" data-task="week21-22-proj4">完成安全测试</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第四阶段 -->
+      <div class="phase phase-4">
+        <div class="phase-header" data-phase="4">
+          <span><i class="fas fa-rocket"></i> 第四阶段：专项提升 (第23-26周)</span>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="phase-body">
+          <div class="week" data-week="23">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-video"></i>
+                <h4>第23周：WebRTC实战</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>集成WebRTC低延迟直播</li>
+                  <li>SFU/MCU架构</li>
+                  <li>Pion/Jitsi源码阅读</li>
+                  <li>WHIP/WHEP协议</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week23-task1">
+                    <span class="todo-text" data-task="week23-task1">学习SFU/MCU架构</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week23-task2">
+                    <span class="todo-text" data-task="week23-task2">阅读Pion(Go)源码</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week23-task3">
+                    <span class="todo-text" data-task="week23-task3">阅读Jitsi(Java)源码</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week23-task4">
+                    <span class="todo-text" data-task="week23-task4">了解WHIP/WHEP协议</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>集成WebRTC推流</li>
+                    <li>实现RTMP转WebRTC</li>
+                    <li>延迟对比测试</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week23-proj1">
+                      <span class="todo-text" data-task="week23-proj1">集成WebRTC推流</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week23-proj2">
+                      <span class="todo-text" data-task="week23-proj2">实现RTMP转WebRTC</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week23-proj3">
+                      <span class="todo-text" data-task="week23-proj3">完成延迟对比测试</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="24">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-robot"></i>
+                <h4>第24周：实时转码与AI应用</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>探索高级功能</li>
+                  <li>实时转码架构</li>
+                  <li>自适应码率(ABR)</li>
+                  <li>AI美颜/虚拟背景集成</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week24-task1">
+                    <span class="todo-text" data-task="week24-task1">设计实时转码架构</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week24-task2">
+                    <span class="todo-text" data-task="week24-task2">实现自适应码率(ABR)</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week24-task3">
+                    <span class="todo-text" data-task="week24-task3">集成AI美颜功能</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week24-task4">
+                    <span class="todo-text" data-task="week24-task4">集成虚拟背景功能</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>开发转码集群</li>
+                    <li>集成第三方AI SDK</li>
+                    <li>性能测试</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week24-proj1">
+                      <span class="todo-text" data-task="week24-proj1">开发转码集群</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week24-proj2">
+                      <span class="todo-text" data-task="week24-proj2">集成第三方AI SDK</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week24-proj3">
+                      <span class="todo-text" data-task="week24-proj3">完成性能测试</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="25">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-docker"></i>
+                <h4>第25周：云原生改造</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>容器化与K8s部署</li>
+                  <li>Docker化各个服务</li>
+                  <li>Kubernetes基础</li>
+                  <li>Helm Chart编写</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week25-task1">
+                    <span class="todo-text" data-task="week25-task1">Docker化各个服务</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week25-task2">
+                    <span class="todo-text" data-task="week25-task2">学习Kubernetes基础</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week25-task3">
+                    <span class="todo-text" data-task="week25-task3">编写Helm Chart</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>K8s部署流媒体集群</li>
+                    <li>弹性伸缩配置</li>
+                    <li>灰度发布演练</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week25-proj1">
+                      <span class="todo-text" data-task="week25-proj1">K8s部署流媒体集群</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week25-proj2">
+                      <span class="todo-text" data-task="week25-proj2">配置弹性伸缩</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week25-proj3">
+                      <span class="todo-text" data-task="week25-proj3">完成灰度发布演练</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="week" data-week="26">
+            <div class="week-header">
+              <div class="week-title">
+                <i class="fas fa-crown"></i>
+                <h4>第26周：综合项目与总结</h4>
+              </div>
+              <i class="fas fa-chevron-down toggle-week"></i>
+            </div>
+            <div class="week-details">
+              <div class="week-content">
+                <ul>
+                  <li><strong>目标：</strong>完整项目整合</li>
+                  <li>代码重构与优化</li>
+                  <li>完善文档</li>
+                  <li>编写最佳实践指南</li>
+                </ul>
+                <ul class="todo-list">
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week26-task1">
+                    <span class="todo-text" data-task="week26-task1">代码重构与优化</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week26-task2">
+                    <span class="todo-text" data-task="week26-task2">完善项目文档</span>
+                  </li>
+                  <li class="todo-item">
+                    <input type="checkbox" class="todo-checkbox" data-task="week26-task3">
+                    <span class="todo-text" data-task="week26-task3">编写最佳实践指南</span>
+                  </li>
+                </ul>
+                <div class="week-project">
+                  <h5><i class="fas fa-laptop-code"></i> 周末项目</h5>
+                  <ul>
+                    <li>开发一个完整Demo应用(类似小型直播平台)</li>
+                    <li>前后端完整打通</li>
+                    <li>部署上线</li>
+                    <li>撰写技术博客</li>
+                  </ul>
+                  <ul class="todo-list">
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week26-proj1">
+                      <span class="todo-text" data-task="week26-proj1">开发完整Demo应用</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week26-proj2">
+                      <span class="todo-text" data-task="week26-proj2">前后端完整打通</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week26-proj3">
+                      <span class="todo-text" data-task="week26-proj3">部署上线</span>
+                    </li>
+                    <li class="todo-item">
+                      <input type="checkbox" class="todo-checkbox" data-task="week26-proj4">
+                      <span class="todo-text" data-task="week26-proj4">撰写技术博客</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 学习资源 -->
+    <div class="resources">
+      <h2><i class="fas fa-book"></i> 学习资源清单</h2>
+      <div class="resources-grid">
+        <div class="resource-category">
+          <h3><i class="fas fa-book"></i> 书籍</h3>
+          <ul>
+            <li>《音视频开发进阶指南》- 展晓凯</li>
+            <li>《FFmpeg从入门到精通》</li>
+            <li>《WebRTC权威指南》</li>
+            <li>《深入理解Nginx》</li>
+          </ul>
+        </div>
+        <div class="resource-category">
+          <h3><i class="fas fa-code"></i> 开源项目(必读源码)</h3>
+          <ul>
+            <li><strong>SRS</strong> (Simple RTMP Server) - C++</li>
+            <li><strong>MonaServer</strong> - C++</li>
+            <li><strong>Node-Media-Server</strong> - Node.js</li>
+            <li><strong>Pion</strong> (WebRTC) - Go</li>
+            <li><strong>Netty</strong> - Java</li>
+          </ul>
+        </div>
+        <div class="resource-category">
+          <h3><i class="fas fa-globe"></i> 在线资源</h3>
+          <ul>
+            <li>FFmpeg官方文档</li>
+            <li>MDN - Media相关API</li>
+            <li>WebRTC官方文档</li>
+            <li>雷霄骅博客</li>
+            <li>阮一峰的《WebRTC教程》</li>
+          </ul>
+        </div>
+        <div class="resource-category">
+          <h3><i class="fas fa-tools"></i> 工具</h3>
+          <ul>
+            <li><strong>开发</strong>: VSCode/GoLand/IntelliJ IDEA</li>
+            <li><strong>抓包</strong>: Wireshark</li>
+            <li><strong>推流</strong>: OBS Studio</li>
+            <li><strong>播放器</strong>: VLC、ffplay</li>
+            <li><strong>压测</strong>: wrk、ab</li>
+            <li><strong>监控</strong>: Prometheus + Grafana</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 学习建议 -->
+    <div class="tips">
+      <h2><i class="fas fa-lightbulb"></i> 学习建议</h2>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h3><i class="fas fa-clock"></i> 每日学习节奏</h3>
+          <ul>
+            <li><strong>8:00-9:00</strong>: 理论学习(视频/文档)</li>
+            <li><strong>9:00-10:30</strong>: 动手实践/写代码</li>
+            <li><strong>10:30-11:00</strong>: 总结笔记</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h3><i class="fas fa-calendar-week"></i> 周末学习节奏</h3>
+          <ul>
+            <li><strong>上午(9:00-12:00)</strong>: 项目开发</li>
+            <li><strong>下午(2:00-6:00)</strong>: 开发/调试</li>
+            <li><strong>晚上(7:00-9:00)</strong>: 代码Review/文档</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h3><i class="fas fa-check-circle"></i> 关键成功因素</h3>
+          <ul>
+            <li>动手为主：70%时间写代码</li>
+            <li>循序渐进：不跳跃阶段</li>
+            <li>源码阅读：精读2个开源项目</li>
+            <li>输出倒逼：写技术博客</li>
+            <li>实战项目：必须有完整作品</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 检验标准 -->
+      <div class="checklist">
+        <h2><i class="fas fa-clipboard-check"></i> 检验标准(中级工程师)</h2>
+        <ul>
+          <li><i class="fas fa-check-circle"></i> 能独立开发支持5000+并发的流媒体服务器</li>
+          <li><i class="fas fa-check-circle"></i> 理解RTMP/HLS/HTTP-FLV完整链路</li>
+          <li><i class="fas fa-check-circle"></i> 掌握FFmpeg音视频处理</li>
+          <li><i class="fas fa-check-circle"></i> 熟悉分布式流媒体架构</li>
+          <li><i class="fas fa-check-circle"></i> 能进行性能调优和问题排查</li>
+          <li><i class="fas fa-check-circle"></i> 了解WebRTC等新技术</li>
+        </ul>
+        <p style="margin-top: 20px; text-align: center; font-size: 1.2rem; color: var(--success);">
+          <strong>坚持6个月，你将具备中级流媒体服务器开发工程师的能力！</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 自动计算任务总数
+    function countTotalTasks() {
+      return document.querySelectorAll('.todo-checkbox').length;
+    }
+    
+    // 任务总数
+    let TOTAL_TASKS = 0;
+    
+    // 初始化折叠状态
+    function initCollapsible() {
+      // 默认只展开第一阶段
+      document.querySelectorAll('.phase').forEach((phase, index) => {
+        if (index === 0) {
+          phase.classList.add('expanded');
+        } else {
+          phase.classList.remove('expanded');
+        }
+      });
+      
+      // 默认展开所有周内容
+      document.querySelectorAll('.week').forEach(week => {
+        week.classList.add('expanded');
+      });
+    }
+
+    // 切换阶段折叠
+    function togglePhase(phaseHeader) {
+      const phase = phaseHeader.closest('.phase');
+      const toggleIcon = phaseHeader.querySelector('.toggle-icon');
+      
+      if (phase.classList.contains('expanded')) {
+        phase.classList.remove('expanded');
+        toggleIcon.classList.remove('fa-chevron-up');
+        toggleIcon.classList.add('fa-chevron-down');
+      } else {
+        phase.classList.add('expanded');
+        toggleIcon.classList.remove('fa-chevron-down');
+        toggleIcon.classList.add('fa-chevron-up');
+      }
+    }
+
+    // 切换周折叠
+    function toggleWeek(weekHeader) {
+      const week = weekHeader.closest('.week');
+      const toggleIcon = weekHeader.querySelector('.toggle-week');
+      
+      if (week.classList.contains('expanded')) {
+        week.classList.remove('expanded');
+        toggleIcon.classList.remove('fa-chevron-up');
+        toggleIcon.classList.add('fa-chevron-down');
+      } else {
+        week.classList.add('expanded');
+        toggleIcon.classList.remove('fa-chevron-down');
+        toggleIcon.classList.add('fa-chevron-up');
+      }
+    }
+
+    // 更新任务状态
+    function updateTask(taskId, completed) {
+      const todoText = document.querySelector(`[data-task="${taskId}"]`);
+      if (todoText) {
+        if (completed) {
+          todoText.classList.add('completed');
+        } else {
+          todoText.classList.remove('completed');
+        }
+      }
+      
+      // 保存到 localStorage
+      const progress = JSON.parse(localStorage.getItem('streamingLearningProgress') || '{}');
+      progress[taskId] = completed;
+      localStorage.setItem('streamingLearningProgress', JSON.stringify(progress));
+      
+      // 更新进度条
+      updateProgressBar();
+    }
+
+    // 更新进度条
+    function updateProgressBar() {
+      const progressData = JSON.parse(localStorage.getItem('streamingLearningProgress') || '{}');
+      const completedTasks = Object.values(progressData).filter(status => status).length;
+      const progressPercent = Math.round((completedTasks / TOTAL_TASKS) * 100);
+      
+      document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+      document.getElementById('progress-text').textContent = `${progressPercent}%`;
+    }
+
+    // 初始化页面
+    function initPage() {
+      // 计算总任务数
+      TOTAL_TASKS = countTotalTasks();
+      
+      initCollapsible();
+      
+      // 绑定事件
+      document.querySelectorAll('.phase-header').forEach(header => {
+        header.addEventListener('click', () => togglePhase(header));
+      });
+      
+      document.querySelectorAll('.week-header').forEach(header => {
+        header.addEventListener('click', () => toggleWeek(header));
+      });
+      
+      // 绑定任务复选框
+      document.querySelectorAll('.todo-checkbox').forEach(checkbox => {
+        const taskId = checkbox.dataset.task;
+        
+        // 从 localStorage 恢复状态
+        const progress = JSON.parse(localStorage.getItem('streamingLearningProgress') || '{}');
+        if (progress[taskId]) {
+          checkbox.checked = true;
+          document.querySelector(`[data-task="${taskId}"]`).classList.add('completed');
+        }
+        
+        checkbox.addEventListener('change', function() {
+          updateTask(taskId, this.checked);
+        });
+      });
+      
+      // 初始化进度条
+      updateProgressBar();
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', initPage);
+  </script>
+</body>
+</html>
