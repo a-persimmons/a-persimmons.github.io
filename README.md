@@ -1,3 +1,8 @@
+## README
+
+个人博客
+
+
 ## 利用Github Action 自动在 github Pages 托管 hugo blog
 
 1. 自行创建在本地blog根目录创建hugo workflow配置（`.github/workflows/hugo.yaml`）
