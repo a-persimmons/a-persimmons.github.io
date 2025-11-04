@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3入门学习计划</title>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #ff9e00;
+            --accent-color: #8338ec;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            margin: 40px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary-color);
+            transform: translateX(-50%);
+        }
+        
+        .month-section {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .month-label {
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            transform: translateX(-50%);
+            background: var(--secondary-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .week-card {
+            width: 45%;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .week-card.left {
+            margin-right: auto;
+        }
+        
+        .week-card.right {
+            margin-left: auto;
+        }
+        
+        .week-card::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            z-index: 5;
+        }
+        
+        .week-card.left::before {
+            right: -40px;
+        }
+        
+        .week-card.right::before {
+            left: -40px;
+        }
+        
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .week-title {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .week-number {
+            background: var(--light-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin: 15px 0 10px;
+        }
+        
+        .content-list {
+            list-style-type: none;
+        }
+        
+        .content-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .content-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .recommendation {
+            background: #f0f7ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .recommendation-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: var(--light-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .tag.required {
+            background: #ffe6e6;
+            color: #d63031;
+        }
+        
+        .tag.elective {
+            background: #e6f7ff;
+            color: #0984e3;
+        }
+        
+        .social-ref {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .month-section {
+                flex-direction: column;
+            }
+            
+            .week-card {
+                width: 100%;
+                margin-left: 40px !important;
+            }
+            
+            .week-card::before {
+                left: -30px !important;
+                right: auto;
+            }
+            
+            .month-label {
+                left: 20px;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Web3入门学习计划</h1>
+            <p class="subtitle">从零开始，系统掌握Web3核心知识与技能</p>
+        </header>
+        
+        <div class="timeline">
+            <!-- Month 1 -->
+            <div class="month-section">
+                <div class="month-label">Month 1</div>
+                
+                <!-- Week 1-2 -->
+                <div class="week-card left">
+                    <div class="week-header">
+                        <div class="week-title">Week 1 - Week 2</div>
+                        <div class="week-number">第1-2周</div>
+                    </div>
+                    
+                    <h3 class="section-title">建立认知 基础扫盲</h3>
+                    <ul class="content-list">
+                        <li>去B站观看小Lin的视频——《Web3到底是怎么回事》</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            小Lin的视频对初学者很友好，一些基本的概念都有，内容不深，可当做入门扫盲
+                        </li>
+                    </ul>
+                    
+                    <h3 class="section-title">了解背景 学习概念</h3>
+                    <ul class="content-list">
+                        <li>去Library of Web3网站进行学习Web3基础知识</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            美联社官方发布的Web3图书馆，内容非常全，基本都是Web3的重点概念，观察类文章居多，缺点是全英文，阅读麻烦些，建议边学边做笔记
+                        </li>
+                    </ul>
+                    
+                    <h3 class="section-title">学习建议：</h3>
+                    <div>
+                        <span class="tag required">必修</span>
+                        <span>Overview of Web3</span>
+                    </div>
+                    <div>
+                        <span class="tag required">必修</span>
+                        <span>NFTs</span>
+                    </div>
+                    <div>
+                        <span class="tag required">必修</span>
+                        <span>DAOs</span>
+                    </div>
+                    <div>
+                        <span class="tag required">必修</span>
+                        <span>Domains, Wallets, Portfolio</span>
+                    </div>
+                    <div>
+                        <span class="tag required">必修</span>
+                        <span>Layer 1s</span>
+                    </div>
+                    <div>
+                        <span class="tag required">必修</span>
+                        <span>Layer 2s</span>
+                    </div>
+                    <div>
+                        <span class="tag elective">选修</span>
+                        <span>DeFi/Crypto Terms and Definitions (先学优先级高的知识)</span>
+                    </div>
+                    <div>
+                        <span class="tag elective">选修</span>
+                        <span>Working in Web3 and Other Topics</span>
+                    </div>
+                    <div>Project Research: 学完重点概念再研究项目</div>
+                    <div>All-around Amazing Resources: 后期可当作补充内容</div>
+                </div>
+                
+                <!-- Week 3-4 -->
+                <div class="week-card right">
+                    <div class="week-header">
+                        <div class="week-title">Week 3 - Week 4</div>
+                        <div class="week-number">第3-4周</div>
+                    </div>
+                    
+                    <h3 class="section-title">系统学习 深入话题</h3>
+                    
+                    <ul class="content-list">
+                        <li>去Binance Academy学习区块链与加密知识</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            Binance在交易所领域是No.1，他们的学院版块内容更偏向于加密货币方向，知识体系比较完善，非常适合从事DeFi、NFT以及基础链的同学学习
+                        </li>
+                        
+                        <li>去DeSchool参与话题学习</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            DeSchool是Learn to Earn项目，孵化于DAO，可以边学边赚，里面的内容很多来自于DAO内的分享和探讨，目前内容不多，喜欢参与DAO的同学可以尝试关注
+                        </li>
+                        
+                        <li>参与Buidler DAO Meta Training新手训练营</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            这个训练营不仅能学到必要的区块链基础知识，而且还能参与实践，理论和实践相结合，非常立体化，非常适用于基础的开发者和急需实操经验的小白
+                        </li>
+                        
+                        <li>看DeFi Mooc的AMA活动回放</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            这个课程针对DeFi赛道，导师都是海外知名院校的教授和专家，课程内容对DeFi的讲解也很细致，很到位，适合想了解DeFi领域的小白，缺点是全英文
+                        </li>
+                        
+                        <li>去B站学习Web3通识课</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">推荐理由：</div>
+                            这是来自Web3项目方Biteye的视频课程，在B站找到BiteyeCN的官方账号进入主页就能看，目前更新了9期，也是用于扫盲的好内容，但近期更新不多，后续内容方向还不确定
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Month 2 -->
+            <div class="month-section">
+                <div class="month-label">Month 2</div>
+                
+                <!-- Week 5-6 -->
+                <div class="week-card left">
+                    <div class="week-header">
+                        <div class="week-title">Week 5 - Week 6</div>
+                        <div class="week-number">第5-6周</div>
+                    </div>
+                    
+                    <h3 class="section-title">了解生态 划分赛道</h3>
+                    <p>当你学完基础知识和重点概念后，你需要开始对整个Web3行业的生态和赛道深入了解，方便以后更深入地扎根到项目的研究中。这部分内容比较轻松，需要搞清楚几个问题就好：</p>
+                    
+                    <ul class="content-list">
+                        <li>Web3的生态分布是怎样的？</li>
+                        <li>具体分为哪些赛道？</li>
+                        <li>分类标准是什么？</li>
+                        <li>生态或赛道的架构是怎样的？</li>
+                        <li>每个赛道的玩法是怎样的？（产品逻辑、市场运作、社区参与等）</li>
+                        <li>每个赛道有哪些知名项目？</li>
+                        <li>他们的定位是怎样的？想解决什么问题？</li>
+                    </ul>
+                    
+                    <h3 class="section-title">具体的可以关注：</h3>
+                    <ul class="content-list">
+                        <li>了解Web3知名投资机构对行业赛道划分，浏览他们的投资版图，比如A16Z、YC等</li>
+                        <li>了解有哪些类型的项目构建在大的生态之上，比如Ethereum、Solana、Arweave、Mask Network等</li>
+                        <li>具体到某个项目，可以参考他们官网主页上的生态合作伙伴有哪些</li>
+                    </ul>
+                    
+                    <h3 class="section-title">分享几个推荐的博主：</h3>
+                    <ul class="content-list">
+                        <li>Vic_Talk的项目介绍 - Youtube</li>
+                        <li>Mr.Block区块先生 - Youtube</li>
+                        <li>鉴叔（J Club）- Youtube</li>
+                        <li>加密大聪明 - Youtube</li>
+                    </ul>
+                </div>
+                
+                <!-- Week 7-8 -->
+                <div class="week-card right">
+                    <div class="week-header">
+                        <div class="week-title">Week 7 - Week 8</div>
+                        <div class="week-number">第7-8周</div>
+                    </div>
+                    
+                    <h3 class="section-title">体验产品 研究逻辑</h3>
+                    <p>当你对Web3生态和赛道的情况有一定了解后，你需要沉下心来去深入研究项目，看看市场上那些爆火的产品是如何运作的，它们的产品逻辑是怎样的，这里我为大家分享几种常用的方式：</p>
+                    
+                    <ul class="content-list">
+                        <li>在Google搜你想了解的项目，去官方主页上看白皮书（如果你能把一个项目的白皮书研究透，就说明你对这个项目基本已经了如指掌了）</li>
+                        
+                        <li>多读实时新闻和深度文章，捕获最新的资讯</li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">中文App：</div>
+                            律动、深潮、PANews、Foresight News、巴比特、链捕手
+                        </li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">英文App：</div>
+                            Medium、Mirror、CoinDesk
+                        </li>
+                        <li class="recommendation">
+                            <div class="recommendation-title">公众号：</div>
+                            7Up DAO、深潮TechFlow、Web3大航海、web3中文
+                        </li>
+                        
+                        <li>去Twitter、Reddit、Discord、Telegram关注Web3信息，但上面的信息比较杂，需要学会过滤，通过关注、建立列表、分类、标签等工具来找到你想要的内容</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Month 3 -->
+            <div class="month-section">
+                <div class="month-label">Month 3</div>
+                
+                <!-- Week 9-10 -->
+                <div class="week-card left">
+                    <div class="week-header">
+                        <div class="week-title">Week 9 - Week 10</div>
+                        <div class="week-number">第9-10周</div>
+                    </div>
+                    
+                    <h3 class="section-title">技术学习 熟悉原理</h3>
+                    <p>学习区块链的基础知识。这一点很重要，有人问为什么不放在第一周学，因为这部分多涉及的技术性内容，理解起来会非常困难，所以当你有一定基础后再去学习会简单一些，比如：</p>
+                    
+                    <ul class="content-list">
+                        <li>密码学基础：区块链的底层逻辑，必学</li>
+                        <li>区块链基础：Web3的底层架构，必学</li>
+                        <li>学习以太坊原理：搞懂了以太坊，其他的链都不是问题</li>
+                    </ul>
+                    
+                    <h3 class="section-title">学习智能合约</h3>
+                    <p>智能合约是构建一切项目的基础，所以一定要搞懂，最起码需要对常见的合约标准和开发语言有一定认识，不需要你多么精通，搞懂原理就好，如果是开发者，建议实操去部署一个智能合约。</p>
+                    
+                    <ul class="content-list">
+                        <li>学习常见的智能合约标准：ERC20</li>
+                        <li>学习Solidity语言</li>
+                        <li>学习部署和开发一个简单的智能合约 (coding)</li>
+                    </ul>
+                </div>
+                
+                <!-- Week 11-12 -->
+                <div class="week-card right">
+                    <div class="week-header">
+                        <div class="week-title">Week 11 - Week 12</div>
+                        <div class="week-number">第11-12周</div>
+                    </div>
+                    
+                    <h3 class="section-title">拓展应用 实操设计</h3>
+                    <p>这部分的学习内容，可以在Google上都能搜到相关文章。内容侧重点有所区分，非技术人员可以只学习概念和原理，不需要动手开发；而技术人员建议一定要去上手实操，从技术角度拓展到不同应用的设计，把产品流程详细走一遍。</p>
+                    
+                    <h3 class="section-title">NFT生态与开发</h3>
+                    <ul class="content-list">
+                        <li>了解NFT生态</li>
+                        <li>掌握NFT铸造流程</li>
+                        <li>学习常见的智能合约标准：ERC721/ERC1155</li>
+                        <li>学习POAP相关概念、原理</li>
+                        <li>动手写一个简单的NFT合约</li>
+                    </ul>
+                    
+                    <h3 class="section-title">DeFi生态与开发</h3>
+                    <ul class="content-list">
+                        <li>了解DeFi生态</li>
+                        <li>了解DeFi中的金融逻辑</li>
+                        <li>了解现在DeFi头部项目的原理，例如Uniswap</li>
+                    </ul>
+                    
+                    <h3 class="section-title">设计开发中常见的问题</h3>
+                    <ul class="content-list">
+                        <li>前/后端服务如何连接钱包地址</li>
+                        <li>前/后端服务如何与智能合约交互</li>
+                        <li>了解常用的服务，如IPFS、Infura、quicknode等</li>
+                        <li>了解现在一些热门的Dapp设计</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="social-ref">
+            <p>小红书号: joelmavis_wei | 图文仅供参考，请根据个人情况调整学习进度</p>
+        </div>
+    </div>
+</body>
+</html>
