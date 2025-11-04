@@ -1,6 +1,6 @@
 ## README
 
-个人博客
+"柿子"的个人博客：喜欢原理的软硬件工程师，专注于 SLLM、Agent、RTC、CV、VA 领域
 
 
 ## 利用Github Action 自动在 github Pages 托管 hugo blog
