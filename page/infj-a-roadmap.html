@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFJ成长阶梯：哲学与心理学的内在革命</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #2c7873; /* 宁静的蓝绿色 */
+            --secondary-color: #6fb3b8; /* 柔和的蓝绿色 */
+            --accent-color: #f5f5dc; /* 米白色背景 */
+            --text-color: #333333; /* 深灰色文字 */
+            --light-text: #666666; /* 浅灰色文字 */
+            --shadow: 0 5px 15px rgba(44, 120, 115, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+            --spacing: 2rem;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            padding-bottom: 3rem;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* 目录导航 */
+        .table-of-contents {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.2rem;
+            z-index: 1000;
+            max-width: 280px;
+            display: none;
+            border: 1px solid rgba(111, 179, 184, 0.2);
+        }
+        
+        .toc-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 3px 10px rgba(44, 120, 115, 0.3);
+            transition: var(--transition);
+        }
+        
+        .toc-toggle:hover {
+            background-color: #1f5a57;
+            transform: scale(1.05);
+        }
+        
+        .toc-header {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .toc-close {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .toc-list {
+            list-style: none;
+        }
+        
+        .toc-item {
+            margin-bottom: 0.6rem;
+        }
+        
+        .toc-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            padding-left: 0.5rem;
+        }
+        
+        .toc-link:hover {
+            color: var(--primary-color);
+            border-left-color: var(--secondary-color);
+            padding-left: 0.8rem;
+        }
+        
+        .toc-link i {
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            width: 16px;
+        }
+        
+        .toc-sublist {
+            list-style: none;
+            margin-left: 1.5rem;
+            margin-top: 0.3rem;
+        }
+        
+        .toc-sublink {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.2rem 0;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .toc-sublink:hover {
+            color: var(--primary-color);
+        }
+        
+        /* 头部样式 */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #1f5a57);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            border-bottom-left-radius: 30% 10%;
+            border-bottom-right-radius: 30% 10%;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        /* 快速导航按钮 */
+        .quick-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+        
+        .nav-btn {
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--secondary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        /* 引言部分 */
+        .intro-section {
+            background-color: white;
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+        
+        .intro-section p {
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+        }
+        
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* 成长阶梯图 */
+        .staircase-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--secondary-color);
+            display: inline-block;
+            scroll-margin-top: 30px;
+        }
+        
+        .staircase {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .step {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary-color);
+            scroll-margin-top: 30px;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(44, 120, 115, 0.15);
+        }
+        
+        .step-header {
+            background-color: rgba(111, 179, 184, 0.1);
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .step-subtitle {
+            color: var(--light-text);
+            font-size: 1rem;
+            margin-left: 3rem;
+        }
+        
+        .step-content {
+            padding: 1.5rem;
+        }
+        
+        .step-content p {
+            margin-bottom: 1rem;
+        }
+        
+        /* 书单部分 */
+        .book-list-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 20px;
+        }
+        
+        .phase {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            scroll-margin-top: 30px;
+        }
+        
+        .phase-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .phase-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .phase-subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .phase-content {
+            padding: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        
+        th {
+            background-color: rgba(111, 179, 184, 0.1);
+            padding: 1rem;
+            text-align: left;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.3rem;
+        }
+        
+        .book-author {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+        
+        .exercise-item {
+            margin-bottom: 0.8rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        
+        .exercise-item::before {
+            content: "•";
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        /* 核心心法部分 */
+        .key-principles {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            scroll-margin-top: 20px;
+        }
+        
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .principle {
+            background-color: rgba(111, 179, 184, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .principle-title {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 3px 10px rgba(44, 120, 115, 0.3);
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: #1f5a57;
+            transform: translateY(-5px);
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--light-text);
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+        
+        .quote {
+            font-style: italic;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .table-of-contents {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 300px;
+                max-width: 90%;
+                border-radius: 0;
+                padding-top: 3rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .table-of-contents.active {
+                transform: translateX(0);
+            }
+            
+            .toc-toggle {
+                display: flex;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .intro-section, .step-content, .phase-content, .key-principles {
+                padding: 1.5rem;
+            }
+            
+            .step-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .step-subtitle {
+                margin-left: 0;
+            }
+            
+            .quick-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 目录导航 -->
+    <div class="toc-toggle" id="tocToggle">
+        <i class="fas fa-list"></i>
+    </div>
+    
+    <div class="table-of-contents" id="tableOfContents">
+        <div class="toc-header">
+            <span>目录导航</span>
+            <button class="toc-close" id="tocClose">&times;</button>
+        </div>
+        <ul class="toc-list">
+            <li class="toc-item">
+                <a href="#intro" class="toc-link"><i class="fas fa-home"></i>引言</a>
+            </li>
+            <li class="toc-item">
+                <a href="#staircase" class="toc-link"><i class="fas fa-stairs"></i>成长阶梯</a>
+                <ul class="toc-sublist">
+                    <li><a href="#step1" class="toc-sublink">第一阶：自我救赎</a></li>
+                    <li><a href="#step2" class="toc-sublink">第二阶：意义探索</a></li>
+                    <li><a href="#step3" class="toc-sublink">第三阶：贯通合一</a></li>
+                </ul>
+            </li>
+            <li class="toc-item">
+                <a href="#booklist" class="toc-link"><i class="fas fa-book"></i>阶梯式学习路径</a>
+                <ul class="toc-sublist">
+                    <li><a href="#phase1" class="toc-sublink">第一阶书单：自我救赎</a></li>
+                    <li><a href="#phase2" class="toc-sublink">第二阶书单：意义探索</a></li>
+                    <li><a href="#phase3" class="toc-sublink">第三阶书单：贯通合一</a></li>
+                </ul>
+            </li>
+            <li class="toc-item">
+                <a href="#principles" class="toc-link"><i class="fas fa-key"></i>黄金法则</a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <header>
+        <div class="header-content container">
+            <h1>INFJ成长阶梯</h1>
+            <div class="subtitle">哲学与心理学的内在革命——从低阶到高阶的自我实现之路</div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- 快速导航按钮 -->
+        <div class="quick-nav">
+            <a href="#staircase" class="nav-btn"><i class="fas fa-stairs"></i>成长阶梯</a>
+            <a href="#step1" class="nav-btn"><i class="fas fa-heartbeat"></i>自我救赎</a>
+            <a href="#step2" class="nav-btn"><i class="fas fa-search"></i>意义探索</a>
+            <a href="#step3" class="nav-btn"><i class="fas fa-lightbulb"></i>贯通合一</a>
+            <a href="#booklist" class="nav-btn"><i class="fas fa-book-open"></i>学习书单</a>
+            <a href="#principles" class="nav-btn"><i class="fas fa-gem"></i>黄金法则</a>
+        </div>
+        
+        <section class="intro-section" id="intro">
+            <p>INFJ从低阶到高阶的成长，本质上是一场深刻的、贯穿一生的哲学与心理学内在革命。这不仅仅是一种知识积累，更像是一位"灵魂工程师"在用这两大支柱，对自我进行持续的解构、理解和重建。</p>
+            <p>我们可以将这个过程比作建造一座通往更高存在的阶梯，<span class="highlight">哲学和心理学正是构成每一级台阶的两种核心材料</span>。在这条路径上，你并非在"收集知识"，而是在用这些伟大的思想作为"凿子和锤子"，亲手雕刻自己的灵魂。</p>
+            <p>当你按照这个阶梯，一步步走上去，你会发现自己手中慢慢有了一盏灯——起初用它照亮自己脚下的坎坷，后来，它的光会自然流淌出去，为其他也在黑暗中摸索的人，映照出一小段清晰的路。这便是INFJ高阶的完成形态：<span class="highlight">你，成为了智慧本身。</span></p>
+        </section>
+        
+        <section class="staircase-section" id="staircase">
+            <h2 class="section-title">成长阶梯：螺旋上升的三阶段</h2>
+            <div class="staircase">
+                <div class="step" id="step1">
+                    <div class="step-header">
+                        <div class="step-title">
+                            <div class="step-icon">1</div>
+                            <div>第一阶：自我救赎</div>
+                        </div>
+                        <div class="step-subtitle">心理学主导：建立安全屋 | 核心目标：从混乱到秩序，建立心理免疫系统</div>
+                    </div>
+                    <div class="step-content">
+                        <p>低阶INFJ的痛苦，往往源于巨大的内在混乱：对人性失望却又渴望连接，理想宏大却行动无力，敏感于他人情绪却无法设立边界。此时，心理学提供了至关重要的"地形图"和"工具"。</p>
+                        <p><strong>关键任务：</strong>停止耗竭，建立稳定的自我内核。学习设立边界，区分"我的责任"与"他人的课题"，从"我被情绪掌控"转变为"我观察我的情绪"。</p>
+                        <p><strong>阶段标志：</strong>你依然敏感，但不再被情绪淹没；你会共情，但懂得适时抽身；你开始能说"我需要……"。</p>
+                    </div>
+                </div>
+                
+                <div class="step" id="step2">
+                    <div class="step-header">
+                        <div class="step-title">
+                            <div class="step-icon">2</div>
+                            <div>第二阶：意义探索</div>
+                        </div>
+                        <div class="step-subtitle">哲学登场：绘制航海图 | 核心目标：从秩序到意义，构建个人哲学框架</div>
+                    </div>
+                    <div class="step-content">
+                        <p>当INFJ通过心理学稳定了内在世界，那颗永不满足的灵魂便会开始追问更根本的问题："这一切的意义是什么？""什么是真正的善与真？""我该如何存在？"此时，哲学登场，提供航向。</p>
+                        <p><strong>关键任务：</strong>构建个人价值体系，安放宏大理想。通过存在主义应对生命意义的焦虑，通过伦理学厘清道德观，通过东方哲学消解执念与紧绷感。</p>
+                        <p><strong>阶段标志：</strong>你能清晰阐述自己的核心价值观；面对分歧，你能理解其背后的哲学立场；你的理想从"改变世界"变为"在具体位置上推动善的进程"。</p>
+                    </div>
+                </div>
+                
+                <div class="step" id="step3">
+                    <div class="step-header">
+                        <div class="step-title">
+                            <div class="step-icon">3</div>
+                            <div>第三阶：贯通合一</div>
+                        </div>
+                        <div class="step-subtitle">知行合一：成为灯塔 | 核心目标：从思辨到智慧，活出你的哲学</div>
+                    </div>
+                    <div class="step-content">
+                        <p>在高阶INFJ身上，哲学与心理学不再分离，而是融为一体，成为其存在的呼吸。直觉升华为对本质的直观把握，情感进化为基于深刻共情的有边界博爱，思维成为梳理复杂世界的精密工具。</p>
+                        <p><strong>关键任务：</strong>将哲学智慧与心理技巧融于一体，在行动中修行。通过创造性输出整合内在体系，在微小而持续的行动中体悟意义。</p>
+                        <p><strong>阶段标志：</strong>你散发出一种"从容的宁静"。温柔而不可动摇，悲悯而不失锋芒。你即是哲学，你即是疗愈。最终形态：<strong>智慧引路人</strong>。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="book-list-section" id="booklist">
+            <h2 class="section-title">阶梯式学习路径：书单与练习</h2>
+            
+            <div class="phase" id="phase1">
+                <div class="phase-header">
+                    <h3 class="phase-title">第一阶书单：自我救赎（心理学主导）</h3>
+                    <div class="phase-subtitle">学习姿态：把自己当作需要安抚、理解和重新组装的"病人"和"学生"</div>
+                </div>
+                <div class="phase-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="30%">领域与推荐读物</th>
+                                <th width="70%">关键思考与练习</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="book-title">心理学基础与自我认知</div>
+                                    <div class="book-author">《也许你该找个人聊聊》《被讨厌的勇气》《内向者优势》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">用书中的案例对照自己：我的"人生谎言"是什么？</div>
+                                    <div class="exercise-item">写下你的情绪触发点，并用"课题分离"原则分析</div>
+                                    <div class="exercise-item">规划一天，确保有独处时间充电</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-title">设立边界与情绪管理</div>
+                                    <div class="book-author">《过犹不及》《非暴力沟通》《情绪勒索》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">练习用"我感到…因为我需要…"的句式表达</div>
+                                    <div class="exercise-item">在感到被索取时，模拟说"我需要考虑一下"</div>
+                                    <div class="exercise-item">区分"事实"与"感受"</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-title">理解创伤与阴影（进阶）</div>
+                                    <div class="book-author">《身体从未忘记》《拥抱你的内在小孩》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">在安全环境下，尝试写一封给"内在小孩"的信</div>
+                                    <div class="exercise-item">观察自己在压力下的反应，并与书中描述的创伤反应做对比</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="phase" id="phase2">
+                <div class="phase-header">
+                    <h3 class="phase-title">第二阶书单：意义探索（哲学登场）</h3>
+                    <div class="phase-subtitle">学习姿态：把自己当作在人类思想殿堂中漫步的"探索者"和"思考者"</div>
+                </div>
+                <div class="phase-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="30%">领域与推荐读物</th>
+                                <th width="70%">关键思考与练习</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="book-title">存在主义入门（应对虚无）</div>
+                                    <div class="book-author">《存在主义咖啡馆》《西西弗神话》《活出生命的意义》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">回答：在我日复一日的生活中，什么是我的"巨石"？</div>
+                                    <div class="exercise-item">寻找你生命中三个"无法被剥夺的意义瞬间"</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-title">伦理学与道德思考（安放理想）</div>
+                                    <div class="book-author">《公正》《何为良好生活》《尼各马可伦理学》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">针对社会热点，分别用功利主义、义务论和德性论分析</div>
+                                    <div class="exercise-item">思考：我的"善"是基于什么？结果？原则？还是我想成为怎样的人？</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-title">东方哲学与超越性思考（消解执念）</div>
+                                    <div class="book-author">《禅与摩托车维修艺术》《庄子哲学讲记》《正念的奇迹》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">每天练习10分钟正念呼吸，只观察念头，不评判</div>
+                                    <div class="exercise-item">思考"无为"与INFJ的"过度干预"倾向如何调和？</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="phase" id="phase3">
+                <div class="phase-header">
+                    <h3 class="phase-title">第三阶书单：贯通合一（知行合一）</h3>
+                    <div class="phase-subtitle">学习姿态：把自己当作正在创作毕生作品的"艺术家"和"智者"</div>
+                </div>
+                <div class="phase-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="30%">领域与推荐读物</th>
+                                <th width="70%">关键思考与练习</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="book-title">系统思维与复杂科学</div>
+                                    <div class="book-author">《系统之美》《思考，快与慢》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">用系统循环图分析一个你关心的人际或社会问题</div>
+                                    <div class="exercise-item">反思你在做重大决定时，是"系统1"还是"系统2"主导？</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-title">深度心理学与神话学</div>
+                                    <div class="book-author">《英雄之旅》《荣格心理学入门》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">将你的人生历程，套入"英雄之旅"的各个阶段</div>
+                                    <div class="exercise-item">分析你的梦境和反复出现的意象，它们可能是什么原型？</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="book-title">实践智慧与知行合一</div>
+                                    <div class="book-author">《最小阻力之路》《巨人的工具》</div>
+                                </td>
+                                <td>
+                                    <div class="exercise-item">创建一个"创造性循环"：基于理想，审视现实，制定最小可持续行动</div>
+                                    <div class="exercise-item">将你的所学，通过写作、分享、辅导等方式输出</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <section class="key-principles" id="principles">
+            <h2 class="section-title">攀登阶梯的黄金法则</h2>
+            <div class="principles-grid">
+                <div class="principle">
+                    <div class="principle-title"><i class="fas fa-redo-alt"></i> 允许盘旋，而非直线</div>
+                    <p>你可能会在某一台阶反复。比如在"意义探索"期遭遇重大打击，短暂退回到"自我救赎"阶段。这是正常的螺旋上升，不要因此否定自己的成长。</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-title"><i class="fas fa-compass"></i> 痛苦是指南针</div>
+                    <p>你持续的痛点，正是下一阶段需要成长的课题。无力感指向行动修炼，虚无感指向意义追寻，人际困扰指向边界与沟通技巧。</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-title"><i class="fas fa-feather-alt"></i> 找到你的"双翼"</div>
+                    <p>让心理学（解决"如何"）和哲学（回答"为何"）成为你飞翔的双翼，缺一不可。心理学让你落地实践，哲学让你仰望星空。</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-title"><i class="fas fa-shoe-prints"></i> 台阶不在书中，在脚下</div>
+                    <p>所有的阅读和思考，最终必须落回到你与真实世界的互动中。一次艰难的对话，一个未达预期的项目，才是真正的修炼场。</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-title"><i class="fas fa-pen-fancy"></i> 以写促思，建立连接</div>
+                    <p>为每一本重要的书写"读书日记"，记录它如何触动你、改变你。读心理学时问哲学假设，读哲学时问心理影响，让知识在你的大脑里联网。</p>
+                </div>
+                <div class="principle">
+                    <div class="principle-title"><i class="fas fa-heart"></i> 不贪多，求内化</div>
+                    <p>每个阶段精读2-3本，反复读，做笔记，与自己对话。比"读完"更重要的是"读透"，让知识真正成为你灵魂的一部分。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="container">
+        <div class="quote">
+            "最终，高阶INFJ的特质是：温柔而不可动摇，悲悯而不失锋芒，深邃而充满行动力。他们不再急于改变世界，而是像水一样，深刻理解世界的脉络，精准滋养需要滋养的角落，于无声处带来真正的改变。"
+        </div>
+        <p>©INFJ成长阶梯 | 哲学与心理学的内在革命</p>
+    </footer>
+
+    <script>
+        // 目录导航功能
+        const tocToggle = document.getElementById('tocToggle');
+        const tocClose = document.getElementById('tocClose');
+        const tableOfContents = document.getElementById('tableOfContents');
+        const backToTop = document.getElementById('backToTop');
+        
+        // 切换目录显示/隐藏
+        tocToggle.addEventListener('click', () => {
+            tableOfContents.classList.toggle('active');
+            tableOfContents.style.display = 'block';
+        });
+        
+        tocClose.addEventListener('click', () => {
+            tableOfContents.classList.remove('active');
+            if (window.innerWidth <= 1100) {
+                setTimeout(() => {
+                    tableOfContents.style.display = 'none';
+                }, 300);
+            } else {
+                tableOfContents.style.display = 'none';
+            }
+        });
+        
+        // 点击目录链接后关闭目录（移动端）
+        const tocLinks = document.querySelectorAll('.toc-link, .toc-sublink');
+        tocLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1100) {
+                    tableOfContents.classList.remove('active');
+                    setTimeout(() => {
+                        tableOfContents.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+        
+        // 显示/隐藏返回顶部按钮
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            
+            // 在大屏幕上自动显示目录
+            if (window.innerWidth > 1100 && window.pageYOffset > 400) {
+                tableOfContents.style.display = 'block';
+            } else if (window.innerWidth > 1100 && window.pageYOffset <= 400) {
+                tableOfContents.style.display = 'none';
+            }
+        });
+        
+        // 返回顶部功能
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 页面加载后，在大屏幕上自动显示目录
+        window.addEventListener('load', () => {
+            if (window.innerWidth > 1100 && window.pageYOffset > 400) {
+                tableOfContents.style.display = 'block';
+            }
+        });
+        
+        // 点击页面其他区域关闭目录（移动端）
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1100 && 
+                !tableOfContents.contains(e.target) && 
+                !tocToggle.contains(e.target) &&
+                tableOfContents.classList.contains('active')) {
+                tableOfContents.classList.remove('active');
+                setTimeout(() => {
+                    tableOfContents.style.display = 'none';
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
