@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尼采著作阅读指南：循序渐进的哲学旅程</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600&family=Philosopher:wght@400;700&display=swap">
+    <style>
+        :root {
+            --primary-dark: #0d0c14;
+            --secondary-dark: #1a1824;
+            --accent-gold: #c9a35e;
+            --accent-red: #8b0000;
+            --accent-blue: #3a506b;
+            --text-primary: #f0e6d2;
+            --text-secondary: #b8b2a3;
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Pro', serif;
+            background-color: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(57, 28, 58, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(40, 20, 40, 0.15) 0%, transparent 20%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background-color: rgba(13, 12, 20, 0.9);
+            border-bottom: 1px solid rgba(201, 163, 94, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-family: 'Philosopher', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(201, 163, 94, 0.3);
+        }
+        
+        .logo span {
+            color: var(--accent-red);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid rgba(58, 80, 107, 0.2);
+        }
+        
+        .hero h1 {
+            font-family: 'Philosopher', sans-serif;
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            color: var(--accent-gold);
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--text-secondary);
+        }
+        
+        .quote {
+            font-style: italic;
+            font-size: 1.5rem;
+            margin-top: 40px;
+            padding: 25px;
+            border-left: 3px solid var(--accent-red);
+            background-color: rgba(139, 0, 0, 0.05);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            padding: 60px 0;
+        }
+        
+        /* 阶段卡片样式 */
+        .stage {
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-left: 4px solid var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform var(--transition-speed);
+        }
+        
+        .stage:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .stage-number {
+            font-family: 'Philosopher', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-right: 15px;
+            min-width: 60px;
+        }
+        
+        .stage-title {
+            font-family: 'Philosopher', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+        
+        .stage-subtitle {
+            color: var(--accent-red);
+            font-size: 1rem;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .book-list {
+            list-style-type: none;
+        }
+        
+        .book-item {
+            padding: 18px 0;
+            border-bottom: 1px dashed rgba(201, 163, 94, 0.2);
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .book-item:last-child {
+            border-bottom: none;
+        }
+        
+        .book-item:before {
+            content: "⟡";
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .book-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+            border-top: 4px solid var(--accent-blue);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .sidebar-title {
+            font-family: 'Philosopher', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(201, 163, 94, 0.3);
+        }
+        
+        .recommendation {
+            margin-bottom: 30px;
+        }
+        
+        .recommendation h4 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .recommendation p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .reading-tip {
+            background-color: rgba(58, 80, 107, 0.1);
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border-left: 3px solid var(--accent-blue);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .quote {
+                font-size: 1.2rem;
+            }
+            
+            .stage {
+                padding: 20px;
+            }
+            
+            .stage-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* 底部 */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(201, 163, 94, 0.2);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .footer-quote {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            font-style: italic;
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stage, .sidebar {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .stage:nth-child(2) { animation-delay: 0.1s; }
+        .stage:nth-child(3) { animation-delay: 0.2s; }
+        .stage:nth-child(4) { animation-delay: 0.3s; }
+        .stage:nth-child(5) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">尼采<span>阅读指南</span></div>
+                    <div class="subtitle">思想的深渊与高峰</div>
+                </div>
+                <div>
+                    <div style="color: var(--accent-gold); font-size: 0.9rem;">从《悲剧的诞生》到《权力意志》</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>尼采著作阅读顺序指南</h1>
+            <p>理解尼采思想的演变过程——从古典语文学家到文化批判者，再到提出"超人"哲学的狂人。以下顺序兼顾了由浅入深和思想发展脉络。</p>
+            
+            <div class="quote">
+                "凡不能毁灭我的，必使我强大。"<br>
+                <span style="font-size: 1rem; color: var(--accent-gold); display: block; margin-top: 10px;">— 弗里德里希·尼采《偶像的黄昏》</span>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="stages">
+                <div class="stage">
+                    <div class="stage-header">
+                        <div class="stage-number">一</div>
+                        <div>
+                            <div class="stage-title">入门与奠基</div>
+                            <div class="stage-subtitle">感受其风格与核心问题</div>
+                        </div>
+                    </div>
+                    <ul class="book-list">
+                        <li class="book-item">
+                            <div class="book-title">《悲剧的诞生》 (1872)</div>
+                            <div class="book-desc">尼采的思想起点，探讨希腊艺术中"日神精神"与"酒神精神"的对抗。虽是其早期作品，但已蕴含对生命意义的根本追问。</div>
+                        </li>
+                        <li class="book-item">
+                            <div class="book-title">《不合时宜的沉思》 (1873-1876)</div>
+                            <div class="book-desc">四篇文化批判散文，尤其推荐《历史学对于生活的利与弊》。语言相对直白，能清晰看到尼采对现代文化的批判锋芒。</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="stage">
+                    <div class="stage-header">
+                        <div class="stage-number">二</div>
+                        <div>
+                            <div class="stage-title">核心"中期作品"</div>
+                            <div class="stage-subtitle">明晰、批判性最强</div>
+                        </div>
+                    </div>
+                    <ul class="book-list">
+                        <li class="book-item">
+                            <div class="book-title">《人性的，太人性的》 (1878)</div>
+                            <div class="book-desc">转折点之作，开始用格言体写作，展现冷静的心理剖析，标志其与瓦格纳、叔本华的决裂。</div>
+                        </li>
+                        <li class="book-item">
+                            <div class="book-title">《曙光》 (1881) & 《快乐的科学》 (1882，尤其第1-4卷)</div>
+                            <div class="book-desc">这两部是尼采最富有启发性、语言最轻盈的作品。探讨道德谱系、知识、宗教与科学，结尾已出现"上帝已死"和永恒轮回的雏形。</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="stage">
+                    <div class="stage-header">
+                        <div class="stage-number">三</div>
+                        <div>
+                            <div class="stage-title">成熟期核心著作</div>
+                            <div class="stage-subtitle">思想高峰</div>
+                        </div>
+                    </div>
+                    <ul class="book-list">
+                        <li class="book-item">
+                            <div class="book-title">《查拉图斯特拉如是说》 (1883-1885)</div>
+                            <div class="book-desc">尼采的哲学诗与宣言，提出了"超人"、"永恒轮回"、"末人"等核心意象。建议在此阶段阅读，因为需要前期的思想铺垫。</div>
+                        </li>
+                        <li class="book-item">
+                            <div class="book-title">《善恶的彼岸》 (1886)</div>
+                            <div class="book-desc">为《论道德的谱系》做准备，批判旧哲学，阐述"主人道德"与"奴隶道德"的区分。</div>
+                        </li>
+                        <li class="book-item">
+                            <div class="book-title">《论道德的谱系》 (1887，重中之重)</div>
+                            <div class="book-desc">尼采最系统、论证最严密的著作之一，深入剖析"愧疚"、"良心"、"禁欲主义"等道德概念的起源。必读。</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="stage">
+                    <div class="stage-header">
+                        <div class="stage-number">四</div>
+                        <div>
+                            <div class="stage-title">晚期与总结性作品</div>
+                            <div class="stage-subtitle">猛烈与自我总结</div>
+                        </div>
+                    </div>
+                    <ul class="book-list">
+                        <li class="book-item">
+                            <div class="book-title">《偶像的黄昏》 (1889) & 《反基督》 (1895)</div>
+                            <div class="book-desc">文风犀利如锤击，对苏格拉底、基督教等进行彻底批判。篇幅较短，冲击力强。</div>
+                        </li>
+                        <li class="book-item">
+                            <div class="book-title">《瞧，这个人》 (1908)</div>
+                            <div class="book-desc">尼采的自传，评价自己的所有作品。风格狂妄自大，应放在最后阅读，作为理解其自我解读的参考（需保持批判距离）。</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="stage">
+                    <div class="stage-header">
+                        <div class="stage-number">五</div>
+                        <div>
+                            <div class="stage-title">遗稿与笔记</div>
+                            <div class="stage-subtitle">研究参考</div>
+                        </div>
+                    </div>
+                    <ul class="book-list">
+                        <li class="book-item">
+                            <div class="book-title">《权力意志》（及遗稿）</div>
+                            <div class="book-desc">由后人编纂，争议较大。建议在读完主要著作后，作为研究资料谨慎参考，因其并非尼采本人定稿。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <h3 class="sidebar-title">阅读建议</h3>
+                
+                <div class="recommendation">
+                    <h4>对于初次接触者</h4>
+                    <p>可从《快乐的科学》或《悲剧的诞生》开始，感受其文风与核心问题。</p>
+                </div>
+                
+                <div class="recommendation">
+                    <h4>想快速把握核心</h4>
+                    <p>按此顺序精读：《快乐的科学》→《查拉图斯特拉如是说》→《论道德的谱系》→《偶像的黄昏》。</p>
+                </div>
+                
+                <div class="recommendation">
+                    <h4>进阶研究</h4>
+                    <p>按出版年代顺序阅读，并搭配生平传记（如萨弗兰斯基《尼采思想传记》）。</p>
+                </div>
+                
+                <div class="recommendation">
+                    <h4>版本选择</h4>
+                    <p>中文推荐孙周兴译本（上海人民出版社）或刘崎译本（台湾版本），注释详尽可靠。</p>
+                </div>
+                
+                <div class="reading-tip">
+                    <h4>重要提醒</h4>
+                    <p>尼采不是体系哲学家，他的力量在于激发思考。不必强求一次性"读懂"，可在不同人生阶段重读，常读常新。</p>
+                </div>
+                
+                <div class="reading-tip">
+                    <h4>为什么此顺序有效？</h4>
+                    <p>1. 遵循思想演变：从批判到建构，从文学化表述到系统分析。<br>
+                    2. 难度梯度：格言体（中期）比寓言体（《查》）更容易切入。<br>
+                    3. 主题衔接："上帝之死"→"超人"→"道德谱系"形成逻辑链条。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-quote">
+                "我是炸药，但我更是那不毁于爆炸而诞生于爆炸的事物。"<br>
+                <span style="color: var(--accent-gold);">— 尼采《瞧，这个人》</span>
+            </div>
+            <p>尼采著作阅读指南 &copy; 2023 | 设计理念：体现尼采思想的深邃与爆发力</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">建议阅读时做笔记，记录你的共鸣与质疑，这才是与尼采对话的正确方式。</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 为书籍项目添加简单的交互效果
+        document.querySelectorAll('.book-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = 'rgba(201, 163, 94, 0.05)';
+                this.style.transition = 'background-color 0.3s';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+            });
+        });
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
