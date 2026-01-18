@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elasticsearch索引可视化查看工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 头部配置区域 */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .header-title h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .config-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 1.2rem;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .config-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .config-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .config-input {
+            padding: 0.7rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .config-input:focus {
+            outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        
+        .config-select {
+            padding: 0.7rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3d8b40;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-danger {
+            background-color: #ff5252;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #e04848;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* 主要内容区域 */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* 左侧索引列表 */
+        .index-sidebar {
+            width: 320px;
+            background-color: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-collapsed {
+            width: 60px;
+        }
+        
+        .sidebar-header {
+            padding: 1.2rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.3rem;
+            color: #444;
+        }
+        
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #667eea;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .toggle-sidebar:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .index-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+        
+        .index-item {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .index-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .index-item.active {
+            background-color: #eef2ff;
+            border-left: 4px solid #667eea;
+        }
+        
+        .index-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+            word-break: break-word;
+        }
+        
+        .index-stats {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #666;
+            flex-shrink: 0;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 右侧主内容区 */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 1.5rem;
+            background-color: #f9fafc;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .content-header h2 {
+            color: #444;
+            font-size: 1.5rem;
+            word-break: break-word;
+        }
+        
+        .index-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn:hover {
+            color: #333;
+        }
+        
+        .tab-btn.active {
+            color: #667eea;
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #667eea;
+        }
+        
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 映射字段样式 */
+        .field-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .field-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .field-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+        
+        .field-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .field-item:last-child {
+            border-bottom: none;
+        }
+        
+        .field-name {
+            font-weight: 600;
+            color: #333;
+            word-break: break-word;
+        }
+        
+        .field-type {
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        .field-format, .field-analyzer {
+            color: #666;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+        
+        .field-description {
+            color: #777;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+        
+        /* 统计信息样式 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            margin-bottom: 1rem;
+            color: #444;
+            font-size: 1.2rem;
+        }
+        
+        /* 状态信息 */
+        .status-bar {
+            padding: 1rem 1.5rem;
+            background-color: #f0f7ff;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+        
+        .status-indicator.connected {
+            background-color: #4caf50;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* 错误信息样式 */
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .error-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #999;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+        
+        /* 配置选项样式 */
+        .config-options {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+        
+        .option-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .option-label {
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .index-sidebar {
+                width: 280px;
+            }
+            
+            .field-header, .field-item {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+            
+            .field-format, .field-analyzer {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .index-sidebar {
+                width: 100%;
+                height: 300px;
+            }
+            
+            .sidebar-collapsed {
+                width: 100%;
+                height: 60px;
+            }
+            
+            .config-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .field-header, .field-item {
+                grid-template-columns: 2fr 1fr;
+                padding: 0.8rem 1rem;
+            }
+            
+            .field-description {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .field-header, .field-item {
+                grid-template-columns: 2fr 1fr;
+                padding: 0.8rem;
+            }
+            
+            .field-format, .field-analyzer, .field-description {
+                display: none;
+            }
+            
+            .header-title h1 {
+                font-size: 1.4rem;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .tab-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部配置区域 -->
+        <header>
+            <div class="header-title">
+                <i class="fas fa-search"></i>
+                <h1>Elasticsearch索引可视化工具</h1>
+            </div>
+            
+            <div class="config-section">
+                <div class="config-group">
+                    <label for="connection-mode">连接方式</label>
+                    <select id="connection-mode" class="config-select">
+                        <option value="direct">直接连接</option>
+                        <option value="proxy" selected>通过代理连接</option>
+                    </select>
+                </div>
+                
+                <div class="config-group">
+                    <label for="es-url">Elasticsearch地址</label>
+                    <input type="text" id="es-url" class="config-input" placeholder="http://localhost:9200" value="http://localhost:9200">
+                </div>
+                
+                <div class="config-group">
+                    <label for="proxy-url">代理服务器地址</label>
+                    <input type="text" id="proxy-url" class="config-input" placeholder="http://localhost:3001" value="http://localhost:3001">
+                </div>
+                
+                <div class="config-group">
+                    <label for="es-username">用户名 (可选)</label>
+                    <input type="text" id="es-username" class="config-input" placeholder="留空表示无认证">
+                </div>
+                
+                <div class="config-group">
+                    <label for="es-password">密码 (可选)</label>
+                    <input type="password" id="es-password" class="config-input" placeholder="留空表示无认证">
+                </div>
+                
+                <div class="config-group button-group">
+                    <button id="connect-btn" class="btn btn-primary">
+                        <i class="fas fa-plug"></i> 连接
+                    </button>
+                    <button id="refresh-btn" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i> 刷新
+                    </button>
+                </div>
+            </div>
+            
+            <div class="config-options">
+                <div class="option-row">
+                    <span class="option-label">CORS解决方案:</span>
+                    <span>如果遇到CORS错误，请启用ES的CORS配置或使用代理服务器</span>
+                </div>
+                <div class="option-row">
+                    <span class="option-label">代理服务器:</span>
+                    <span>需要先运行代理服务器 (node es-proxy-server.js)</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 左侧索引列表 -->
+            <div class="index-sidebar" id="index-sidebar">
+                <div class="sidebar-header">
+                    <h2>索引列表</h2>
+                    <button class="toggle-sidebar" id="toggle-sidebar">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                
+                <div class="index-list" id="index-list">
+                    <!-- 索引列表将通过JS动态加载 -->
+                    <div class="empty-state">
+                        <i class="fas fa-database"></i>
+                        <p>请先连接到Elasticsearch</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧内容区域 -->
+            <div class="content-area">
+                <div class="content-header">
+                    <h2 id="selected-index-name">选择索引查看详情</h2>
+                    <div class="index-actions">
+                        <button class="btn btn-secondary" id="refresh-index-btn" disabled>
+                            <i class="fas fa-redo"></i> 刷新索引
+                        </button>
+                        <button class="btn btn-danger" id="delete-index-btn" disabled>
+                            <i class="fas fa-trash"></i> 删除索引
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 选项卡导航 -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" data-tab="mapping">
+                        <i class="fas fa-list-alt"></i> 映射字段
+                    </button>
+                    <button class="tab-btn" data-tab="stats">
+                        <i class="fas fa-chart-bar"></i> 统计信息
+                    </button>
+                    <button class="tab-btn" data-tab="settings">
+                        <i class="fas fa-cog"></i> 索引设置
+                    </button>
+                </div>
+                
+                <!-- 选项卡内容 -->
+                <div class="tab-content">
+                    <!-- 映射字段标签页 -->
+                    <div class="tab-pane active" id="mapping-tab">
+                        <div class="field-list" id="field-list">
+                            <div class="empty-state">
+                                <i class="fas fa-database"></i>
+                                <p>请选择一个索引以查看其映射字段</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 统计信息标签页 -->
+                    <div class="tab-pane" id="stats-tab">
+                        <div class="stats-grid" id="stats-grid">
+                            <div class="empty-state">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>请选择一个索引以查看其统计信息</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-title">索引文档数量趋势</div>
+                            <canvas id="doc-count-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- 设置标签页 -->
+                    <div class="tab-pane" id="settings-tab">
+                        <div id="settings-content">
+                            <div class="empty-state">
+                                <i class="fas fa-cogs"></i>
+                                <p>请选择一个索引以查看其设置</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 状态栏 -->
+                <div class="status-bar">
+                    <div class="connection-status">
+                        <div class="status-indicator" id="status-indicator"></div>
+                        <span id="status-text">未连接</span>
+                    </div>
+                    <div id="last-updated">最后更新: 从未更新</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 全局状态
+        const state = {
+            esUrl: 'http://localhost:9200',
+            proxyUrl: 'http://localhost:3001',
+            connectionMode: 'proxy', // 'direct' 或 'proxy'
+            esAuth: null,
+            indices: [],
+            selectedIndex: null,
+            isConnected: false,
+            isSidebarCollapsed: false,
+            esVersion: null
+        };
+        
+        // DOM元素
+        const connectionModeSelect = document.getElementById('connection-mode');
+        const esUrlInput = document.getElementById('es-url');
+        const proxyUrlInput = document.getElementById('proxy-url');
+        const esUsernameInput = document.getElementById('es-username');
+        const esPasswordInput = document.getElementById('es-password');
+        const connectBtn = document.getElementById('connect-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const indexList = document.getElementById('index-list');
+        const indexSidebar = document.getElementById('index-sidebar');
+        const selectedIndexName = document.getElementById('selected-index-name');
+        const fieldList = document.getElementById('field-list');
+        const statsGrid = document.getElementById('stats-grid');
+        const refreshIndexBtn = document.getElementById('refresh-index-btn');
+        const deleteIndexBtn = document.getElementById('delete-index-btn');
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        const lastUpdated = document.getElementById('last-updated');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        const settingsContent = document.getElementById('settings-content');
+        
+        // 图表实例
+        let docCountChart = null;
+        
+        // 初始化函数
+        function init() {
+            // 设置事件监听器
+            connectBtn.addEventListener('click', connectToES);
+            refreshBtn.addEventListener('click', loadIndices);
+            toggleSidebarBtn.addEventListener('click', toggleSidebar);
+            refreshIndexBtn.addEventListener('click', loadSelectedIndexDetails);
+            deleteIndexBtn.addEventListener('click', deleteSelectedIndex);
+            
+            // 连接方式变化
+            connectionModeSelect.addEventListener('change', function() {
+                state.connectionMode = this.value;
+                updateUIForConnectionMode();
+            });
+            
+            // 选项卡切换
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // 初始化UI状态
+            updateConnectionStatus(false);
+            updateUIForConnectionMode();
+        }
+        
+        // 根据连接模式更新UI
+        function updateUIForConnectionMode() {
+            if (state.connectionMode === 'proxy') {
+                proxyUrlInput.disabled = false;
+                proxyUrlInput.style.opacity = '1';
+            } else {
+                proxyUrlInput.disabled = true;
+                proxyUrlInput.style.opacity = '0.6';
+            }
+        }
+        
+        // 显示错误信息
+        function showError(message, details = null) {
+            console.error('Error:', message, details);
+            
+            let errorHtml = `
+                <div class="error-message">
+                    <div class="error-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>${message}</span>
+                    </div>
+            `;
+            
+            if (details) {
+                errorHtml += `<div style="font-size: 0.9rem; margin-top: 0.5rem;">${details}</div>`;
+            }
+            
+            errorHtml += `</div>`;
+            
+            // 显示在field-list区域
+            fieldList.innerHTML = errorHtml;
+            statsGrid.innerHTML = errorHtml;
+        }
+        
+        // 显示加载状态
+        function showLoading(element, message = '加载中...') {
+            element.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+        
+        // 连接到Elasticsearch
+        async function connectToES() {
+            const url = esUrlInput.value.trim();
+            const proxyUrl = proxyUrlInput.value.trim();
+            const username = esUsernameInput.value.trim();
+            const password = esPasswordInput.value;
+            const connectionMode = connectionModeSelect.value;
+            
+            if (!url) {
+                alert('请输入Elasticsearch地址');
+                return;
+            }
+            
+            // 验证URL格式
+            try {
+                new URL(url);
+                if (connectionMode === 'proxy') {
+                    new URL(proxyUrl);
+                }
+            } catch (e) {
+                alert('请输入有效的URL地址');
+                return;
+            }
+            
+            state.esUrl = url;
+            state.proxyUrl = proxyUrl;
+            state.connectionMode = connectionMode;
+            
+            // 准备认证信息
+            if (username) {
+                state.esAuth = btoa(`${username}:${password}`);
+            } else {
+                state.esAuth = null;
+            }
+            
+            // 更新连接按钮状态
+            connectBtn.disabled = true;
+            connectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 连接中...';
+            
+            try {
+                // 测试连接并获取ES版本信息
+                const response = await makeRequest('/', 'GET');
+                
+                if (!response.ok) {
+                    throw new Error(`连接失败: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.version) {
+                    throw new Error('无效的Elasticsearch响应');
+                }
+                
+                state.esVersion = data.version.number;
+                
+                // 更新连接状态
+                updateConnectionStatus(true);
+                
+                // 加载索引列表
+                await loadIndices();
+                
+            } catch (error) {
+                console.error('连接错误:', error);
+                let errorMsg = '连接Elasticsearch失败';
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg = '无法连接到服务器，请检查地址和网络连接';
+                    if (state.connectionMode === 'direct') {
+                        errorMsg += '\n\n如果是CORS错误，请：\n1. 启用Elasticsearch的CORS配置\n2. 或切换到代理连接模式';
+                    }
+                } else if (error.message.includes('401') || error.message.includes('403')) {
+                    errorMsg = '认证失败，请检查用户名和密码';
+                }
+                
+                alert(`${errorMsg}\n\n详细错误: ${error.message}`);
+                updateConnectionStatus(false);
+            } finally {
+                // 恢复连接按钮状态
+                connectBtn.disabled = false;
+                connectBtn.innerHTML = '<i class="fas fa-plug"></i> 连接';
+            }
+        }
+        
+        // 通用的请求函数，支持直接连接和代理连接
+        async function makeRequest(path, method = 'GET', body = null) {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (state.esAuth) {
+                headers['Authorization'] = `Basic ${state.esAuth}`;
+            }
+            
+            let url;
+            let options = {
+                method: method,
+                headers: headers,
+                mode: 'cors'
+            };
+            
+            if (state.connectionMode === 'direct') {
+                // 直接连接
+                url = `${state.esUrl}${path}`;
+            } else {
+                // 通过代理连接
+                url = `${state.proxyUrl}/proxy`;
+                
+                // 添加查询参数
+                const params = new URLSearchParams({
+                    es_url: state.esUrl,
+                    path: path
+                });
+                
+                url = `${url}?${params}`;
+            }
+            
+            if (body && method !== 'GET' && method !== 'HEAD') {
+                options.body = JSON.stringify(body);
+            }
+            
+            return fetch(url, options);
+        }
+        
+        // 加载索引列表
+        async function loadIndices() {
+            if (!state.isConnected) {
+                alert('请先连接到Elasticsearch');
+                return;
+            }
+            
+            // 显示加载状态
+            showLoading(indexList, '加载索引列表中...');
+            
+            try {
+                // 获取索引列表（使用_cat/indices API）
+                const response = await makeRequest('/_cat/indices?format=json&bytes=b', 'GET');
+                
+                if (!response.ok) {
+                    throw new Error(`获取索引列表失败: ${response.status}`);
+                }
+                
+                const indices = await response.json();
+                
+                // 格式化索引数据
+                const formattedIndices = indices.map(index => {
+                    // 计算索引大小（转换为合适的单位）
+                    const sizeInBytes = parseInt(index['store.size']) || 0;
+                    let sizeFormatted;
+                    
+                    if (sizeInBytes >= 1024 * 1024 * 1024) {
+                        sizeFormatted = (sizeInBytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+                    } else if (sizeInBytes >= 1024 * 1024) {
+                        sizeFormatted = (sizeInBytes / (1024 * 1024)).toFixed(2) + ' MB';
+                    } else if (sizeInBytes >= 1024) {
+                        sizeFormatted = (sizeInBytes / 1024).toFixed(2) + ' KB';
+                    } else {
+                        sizeFormatted = sizeInBytes + ' B';
+                    }
+                    
+                    return {
+                        name: index.index,
+                        docs: parseInt(index['docs.count']) || 0,
+                        size: sizeFormatted,
+                        sizeBytes: sizeInBytes,
+                        shards: parseInt(index['pri']) || 0,
+                        status: index.status,
+                        health: index.health
+                    };
+                });
+                
+                // 按名称排序
+                formattedIndices.sort((a, b) => a.name.localeCompare(b.name));
+                
+                // 渲染索引列表
+                renderIndexList(formattedIndices);
+                updateLastUpdated();
+                
+            } catch (error) {
+                console.error('加载索引列表错误:', error);
+                indexList.innerHTML = `
+                    <div class="error-message">
+                        <div class="error-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>加载索引列表失败</span>
+                        </div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">${error.message}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">
+                            建议：<br>
+                            1. 检查Elasticsearch是否正在运行<br>
+                            2. 如果是直接连接模式，请确保ES已启用CORS<br>
+                            3. 或者切换到代理连接模式
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // 渲染索引列表
+        function renderIndexList(indices) {
+            state.indices = indices;
+            
+            if (indices.length === 0) {
+                indexList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-database"></i>
+                        <p>未找到任何索引</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            indices.forEach((index, i) => {
+                const isActive = state.selectedIndex && state.selectedIndex.name === index.name;
+                
+                // 根据索引健康状态设置颜色
+                let healthColor = '#666';
+                if (index.health === 'green') healthColor = '#4caf50';
+                if (index.health === 'yellow') healthColor = '#ff9800';
+                if (index.health === 'red') healthColor = '#f44336';
+                
+                html += `
+                    <div class="index-item ${isActive ? 'active' : ''}" data-index="${i}">
+                        <div class="index-name">${index.name}</div>
+                        <div class="index-stats">
+                            <div class="stat-item" title="文档数量">
+                                <i class="fas fa-file" style="color: ${healthColor}"></i>
+                                <span>${index.docs.toLocaleString()}</span>
+                            </div>
+                            <div class="stat-item" title="索引大小">
+                                <i class="fas fa-hdd"></i>
+                                <span>${index.size}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            indexList.innerHTML = html;
+            
+            // 添加索引点击事件
+            document.querySelectorAll('.index-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const index = state.indices[this.getAttribute('data-index')];
+                    selectIndex(index);
+                });
+            });
+            
+            // 如果没有选中的索引，自动选择第一个
+            if (!state.selectedIndex && indices.length > 0) {
+                selectIndex(indices[0]);
+            }
+        }
+        
+        // 选择索引
+        function selectIndex(index) {
+            state.selectedIndex = index;
+            
+            // 更新UI
+            selectedIndexName.textContent = index.name;
+            refreshIndexBtn.disabled = false;
+            deleteIndexBtn.disabled = false;
+            
+            // 更新索引列表中的活动项
+            document.querySelectorAll('.index-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const selectedItem = document.querySelector(`.index-item[data-index="${state.indices.indexOf(index)}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('active');
+            }
+            
+            // 加载索引详情
+            loadSelectedIndexDetails();
+            
+            // 默认显示映射标签页
+            switchTab('mapping');
+        }
+        
+        // 加载选中索引的详情
+        async function loadSelectedIndexDetails() {
+            if (!state.selectedIndex) return;
+            
+            // 启用加载状态
+            refreshIndexBtn.disabled = true;
+            refreshIndexBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 加载中...';
+            
+            try {
+                // 并行获取映射、统计和设置信息
+                await Promise.all([
+                    loadIndexMapping(),
+                    loadIndexStats(),
+                    loadIndexSettings()
+                ]);
+                
+            } catch (error) {
+                console.error('加载索引详情错误:', error);
+                showError('加载索引详情失败', error.message);
+            } finally {
+                // 恢复按钮状态
+                refreshIndexBtn.disabled = false;
+                refreshIndexBtn.innerHTML = '<i class="fas fa-redo"></i> 刷新索引';
+                updateLastUpdated();
+            }
+        }
+        
+        // 加载索引映射
+        async function loadIndexMapping() {
+            if (!state.selectedIndex) return;
+            
+            showLoading(fieldList, '加载映射字段中...');
+            
+            try {
+                const response = await makeRequest(`/${state.selectedIndex.name}/_mapping`, 'GET');
+                
+                if (!response.ok) {
+                    throw new Error(`获取映射失败: ${response.status}`);
+                }
+                
+                const mappingData = await response.json();
+                
+                // 解析映射数据
+                const fields = extractFieldsFromMapping(mappingData);
+                renderFieldList(fields);
+                
+            } catch (error) {
+                console.error('加载映射错误:', error);
+                showError('加载映射字段失败', error.message);
+            }
+        }
+        
+        // 从映射数据中提取字段信息
+        function extractFieldsFromMapping(mappingData) {
+            const fields = [];
+            
+            // 获取索引的映射
+            const indexName = Object.keys(mappingData)[0];
+            if (!indexName || !mappingData[indexName].mappings) {
+                return fields;
+            }
+            
+            // 提取字段（处理可能的多个类型映射）
+            const mappings = mappingData[indexName].mappings;
+            
+            // 递归提取字段
+            function extractFields(obj, parentPath = '') {
+                if (obj.properties) {
+                    for (const [fieldName, fieldConfig] of Object.entries(obj.properties)) {
+                        const fullPath = parentPath ? `${parentPath}.${fieldName}` : fieldName;
+                        
+                        // 提取字段信息
+                        const fieldInfo = {
+                            name: fullPath,
+                            type: fieldConfig.type || 'object',
+                            format: fieldConfig.format || null,
+                            analyzer: fieldConfig.analyzer || null,
+                            description: fieldConfig.doc_values !== undefined ? `doc_values: ${fieldConfig.doc_values}` : ''
+                        };
+                        
+                        fields.push(fieldInfo);
+                        
+                        // 递归处理嵌套字段
+                        if (fieldConfig.properties || fieldConfig.type === 'nested') {
+                            extractFields(fieldConfig, fullPath);
+                        }
+                    }
+                }
+            }
+            
+            // 从映射中提取字段
+            extractFields(mappings);
+            
+            return fields;
+        }
+        
+        // 渲染字段列表
+        function renderFieldList(fields) {
+            if (fields.length === 0) {
+                fieldList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-list"></i>
+                        <p>此索引没有定义映射字段</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <div class="field-header">
+                    <div>字段名</div>
+                    <div>类型</div>
+                    <div>格式</div>
+                    <div>分析器</div>
+                    <div>描述</div>
+                </div>
+            `;
+            
+            fields.forEach(field => {
+                html += `
+                    <div class="field-item">
+                        <div class="field-name">${field.name}</div>
+                        <div class="field-type">${field.type}</div>
+                        <div class="field-format">${field.format || '-'}</div>
+                        <div class="field-analyzer">${field.analyzer || '-'}</div>
+                        <div class="field-description">${field.description || '-'}</div>
+                    </div>
+                `;
+            });
+            
+            fieldList.innerHTML = html;
+        }
+        
+        // 加载索引统计信息
+        async function loadIndexStats() {
+            if (!state.selectedIndex) return;
+            
+            showLoading(statsGrid, '加载统计信息中...');
+            
+            try {
+                const response = await makeRequest(`/${state.selectedIndex.name}/_stats`, 'GET');
+                
+                if (!response.ok) {
+                    throw new Error(`获取统计信息失败: ${response.status}`);
+                }
+                
+                const statsData = await response.json();
+                
+                // 渲染统计信息
+                renderStats(statsData);
+                
+            } catch (error) {
+                console.error('加载统计信息错误:', error);
+                showError('加载统计信息失败', error.message);
+            }
+        }
+        
+        // 渲染统计信息
+        function renderStats(statsData) {
+            const indices = statsData.indices;
+            if (!indices || !indices[state.selectedIndex.name]) {
+                statsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>无法获取统计信息</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const indexStats = indices[state.selectedIndex.name];
+            const total = indexStats.total || {};
+            
+            // 计算索引大小
+            const storeSizeBytes = total.store ? total.store.size_in_bytes : 0;
+            let storeSizeFormatted;
+            
+            if (storeSizeBytes >= 1024 * 1024 * 1024) {
+                storeSizeFormatted = (storeSizeBytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+            } else if (storeSizeBytes >= 1024 * 1024) {
+                storeSizeFormatted = (storeSizeBytes / (1024 * 1024)).toFixed(2) + ' MB';
+            } else if (storeSizeBytes >= 1024) {
+                storeSizeFormatted = (storeSizeBytes / 1024).toFixed(2) + ' KB';
+            } else {
+                storeSizeFormatted = storeSizeBytes + ' B';
+            }
+            
+            // 渲染统计卡片
+            let html = '';
+            const statItems = [
+                { 
+                    label: '文档总数', 
+                    value: (total.docs ? total.docs.count : 0).toLocaleString(), 
+                    icon: 'fa-file' 
+                },
+                { 
+                    label: '索引大小', 
+                    value: storeSizeFormatted, 
+                    icon: 'fa-hdd' 
+                },
+                { 
+                    label: '主分片数', 
+                    value: indexStats.shards ? Object.keys(indexStats.shards).length : 0, 
+                    icon: 'fa-cube' 
+                },
+                { 
+                    label: '删除文档', 
+                    value: (total.docs ? total.docs.deleted : 0).toLocaleString(), 
+                    icon: 'fa-trash' 
+                },
+                { 
+                    label: '段数量', 
+                    value: (total.segments ? total.segments.count : 0).toLocaleString(), 
+                    icon: 'fa-layer-group' 
+                },
+                { 
+                    label: '索引状态', 
+                    value: state.selectedIndex.status || 'unknown', 
+                    icon: 'fa-info-circle' 
+                }
+            ];
+            
+            statItems.forEach(stat => {
+                html += `
+                    <div class="stat-card">
+                        <i class="fas ${stat.icon}"></i>
+                        <div class="stat-value">${stat.value}</div>
+                        <div class="stat-label">${stat.label}</div>
+                    </div>
+                `;
+            });
+            
+            statsGrid.innerHTML = html;
+            
+            // 渲染图表
+            renderChart(indexStats);
+        }
+        
+        // 加载索引设置
+        async function loadIndexSettings() {
+            if (!state.selectedIndex) return;
+            
+            try {
+                const response = await makeRequest(`/${state.selectedIndex.name}/_settings`, 'GET');
+                
+                if (!response.ok) {
+                    throw new Error(`获取设置失败: ${response.status}`);
+                }
+                
+                const settingsData = await response.json();
+                renderSettings(settingsData);
+                
+            } catch (error) {
+                console.error('加载设置错误:', error);
+                // 不显示错误，因为设置不是必需功能
+            }
+        }
+        
+        // 渲染索引设置
+        function renderSettings(settingsData) {
+            const indexSettings = settingsData[state.selectedIndex.name];
+            if (!indexSettings || !indexSettings.settings) {
+                settingsContent.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-cogs"></i>
+                        <p>此索引没有特殊设置</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 格式化设置信息为JSON字符串
+            const settingsStr = JSON.stringify(indexSettings.settings, null, 2);
+            
+            settingsContent.innerHTML = `
+                <div class="chart-container">
+                    <div class="chart-title">索引设置</div>
+                    <pre style="background: #f5f5f5; padding: 1rem; border-radius: 6px; overflow: auto; max-height: 500px; font-family: monospace; font-size: 0.9rem;">${settingsStr}</pre>
+                </div>
+            `;
+        }
+        
+        // 渲染图表
+        function renderChart(indexStats) {
+            const ctx = document.getElementById('doc-count-chart');
+            if (!ctx) return;
+            
+            const totalDocs = indexStats.total && indexStats.total.docs ? indexStats.total.docs.count : 0;
+            
+            // 生成模拟时间序列数据（实际应用中可以从ES获取历史数据）
+            const labels = [];
+            const data = [];
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString());
+                
+                // 基于总文档数生成模拟变化
+                const variation = Math.floor(Math.random() * totalDocs * 0.05);
+                data.push(totalDocs + (i % 2 === 0 ? variation : -variation));
+            }
+            
+            // 销毁之前的图表实例
+            if (docCountChart) {
+                docCountChart.destroy();
+            }
+            
+            // 创建新图表
+            const chartCtx = ctx.getContext('2d');
+            docCountChart = new Chart(chartCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '文档数量',
+                        data: data,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: '文档数量'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '日期'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 删除选中索引
+        async function deleteSelectedIndex() {
+            if (!state.selectedIndex) return;
+            
+            const indexName = state.selectedIndex.name;
+            const confirmDelete = confirm(`确定要删除索引 "${indexName}" 吗？此操作不可撤销！`);
+            
+            if (!confirmDelete) return;
+            
+            try {
+                const response = await makeRequest(`/${indexName}`, 'DELETE');
+                
+                if (!response.ok) {
+                    throw new Error(`删除失败: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.acknowledged) {
+                    alert(`索引 "${indexName}" 已成功删除`);
+                    
+                    // 从状态中移除索引并更新UI
+                    state.indices = state.indices.filter(i => i.name !== indexName);
+                    state.selectedIndex = null;
+                    
+                    renderIndexList(state.indices);
+                    selectedIndexName.textContent = '选择索引查看详情';
+                    deleteIndexBtn.disabled = true;
+                    refreshIndexBtn.disabled = true;
+                    
+                    fieldList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-database"></i>
+                            <p>请选择一个索引以查看其映射字段</p>
+                        </div>
+                    `;
+                    
+                    statsGrid.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>请选择一个索引以查看其统计信息</p>
+                        </div>
+                    `;
+                    
+                    settingsContent.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-cogs"></i>
+                            <p>请选择一个索引以查看其设置</p>
+                        </div>
+                    `;
+                } else {
+                    throw new Error('删除操作未被确认');
+                }
+                
+            } catch (error) {
+                console.error('删除索引错误:', error);
+                alert(`删除索引失败: ${error.message}`);
+            }
+        }
+        
+        // 切换侧边栏状态
+        function toggleSidebar() {
+            state.isSidebarCollapsed = !state.isSidebarCollapsed;
+            
+            if (state.isSidebarCollapsed) {
+                indexSidebar.classList.add('sidebar-collapsed');
+                toggleSidebarBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            } else {
+                indexSidebar.classList.remove('sidebar-collapsed');
+                toggleSidebarBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            }
+        }
+        
+        // 切换标签页
+        function switchTab(tabId) {
+            // 更新活动标签按钮
+            tabBtns.forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // 显示对应的标签页内容
+            tabPanes.forEach(pane => {
+                if (pane.id === `${tabId}-tab`) {
+                    pane.classList.add('active');
+                } else {
+                    pane.classList.remove('active');
+                }
+            });
+            
+            // 如果切换到统计标签页并且有选中的索引，确保图表正确渲染
+            if (tabId === 'stats' && state.selectedIndex && docCountChart) {
+                setTimeout(() => {
+                    docCountChart.resize();
+                }, 100);
+            }
+        }
+        
+        // 更新连接状态
+        function updateConnectionStatus(connected) {
+            state.isConnected = connected;
+            
+            if (connected) {
+                statusIndicator.className = 'status-indicator connected';
+                statusText.textContent = `已连接到 ${state.esUrl} (${state.connectionMode}模式)`;
+                if (state.esVersion) {
+                    statusText.textContent += ` - ES v${state.esVersion}`;
+                }
+            } else {
+                statusIndicator.className = 'status-indicator';
+                statusText.textContent = '未连接';
+            }
+        }
+        
+        // 更新最后更新时间
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            lastUpdated.textContent = `最后更新: ${timeStr}`;
+        }
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
