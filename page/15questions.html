@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杨天真：问自己 15 个问题 - 价值排序自测</title>
+    <style>
+        :root {
+            --primary-color: #5D737E;
+            --accent-color: #D4A373;
+            --bg-color: #F9F7F2;
+            --card-bg: #FFFFFF;
+            --text-main: #333333;
+            --text-light: #666666;
+            --font-serif: "STSong", "SimSun", "Songti SC", "Noto Serif SC", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .intro-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        #content-to-print {
+            background: white;
+            padding: 30px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .q-number {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .q-text {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            resize: vertical;
+            background-color: #fafafa;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #fff;
+        }
+
+        .answer-display {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            color: #444;
+            white-space: pre-wrap;
+            border-top: 1px dashed #eee;
+            padding-top: 15px;
+            margin-top: 10px;
+            min-height: 20px;
+            display: none;
+        }
+
+        .answer-placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .action-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex;
+            gap: 15px;
+            border: 1px solid rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover { background-color: #4a5d66; }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn-secondary:hover { background-color: #f0f4f6; }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        .btn-success:hover { background-color: #219a52; }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 打印/PDF 模式 */
+        body.print-mode textarea {
+            display: none !important;
+        }
+        body.print-mode .answer-display {
+            display: block !important;
+        }
+        body.print-mode .action-bar {
+            display: none !important;
+        }
+        body.print-mode .container {
+            padding: 0;
+            max-width: 100%;
+        }
+        body.print-mode {
+            background: white;
+            background-image: none;
+        }
+        body.print-mode .intro-box {
+            box-shadow: none;
+            border: 1px solid #eee;
+        }
+        body.print-mode .question-card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
+
+        /* 打印样式 */
+        @media print {
+            .action-bar { display: none !important; }
+            textarea { display: none !important; }
+            .answer-display { display: block !important; }
+            body { background: white; background-image: none; }
+            .container { padding: 0; max-width: 100%; }
+            .question-card { page-break-inside: avoid; break-inside: avoid; }
+        }
+
+        @media (max-width: 600px) {
+            .action-bar {
+                flex-direction: column;
+                border-radius: 20px;
+                bottom: 10px;
+                width: 80%;
+                padding: 15px;
+            }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div id="loading-text">正在准备打印...</div>
+</div>
+
+<div class="container">
+    <header>
+        <h1>问自己 15 个问题</h1>
+        <p class="subtitle">清楚自己的价值排序，你会活得更清晰</p>
+    </header>
+
+    <div class="intro-box">
+        <p><strong>建议：</strong> 每个人找一个安静的时间，不要凭本能的第一反应，而是认真地跟自己对话，反复地琢磨自己的真答案。</p>
+    </div>
+
+    <div id="content-to-print">
+        <form id="reflectionForm"></form>
+        
+        <div style="text-align: center; margin-top: 50px; color: #999; font-size: 0.9rem; page-break-inside: avoid;">
+            <p>生成时间：<span id="print-date"></span></p>
+            <p>源自：杨天真</p>
+        </div>
+    </div>
+
+    <div style="height: 80px;"></div>
+</div>
+
+<div class="action-bar">
+    <button type="button" class="btn-secondary" onclick="copyToClipboard()">📋 复制文本</button>
+    <button type="button" class="btn-success" onclick="saveProgress()">💾 保存进度</button>
+    <button type="button" class="btn-primary" onclick="printToPDF()">🖨️ 打印/导出 PDF</button>
+</div>
+
+<script>
+    const questions = [
+        "你对你的工作现状满意吗？",
+        "如果你对一个事情满意，你会希望不断地重复这件令你满意的事情，从而不断地得到正反馈，还是去做新的事情，找到新的刺激？",
+        "如果你对一个事情不满意，你是选择改变自己，还是去改变这件事情？",
+        "是事情给你的满足更大，还是人给你的满足更大？",
+        "如果你不是你自己，是你的敌人，对你做什么事情，或者说什么话，最容易拿捏你，能够在短时间令你建立对 TA 的信任，而你比较不容易发现 TA 的潜在目的？",
+        "假如你一个人在餐厅吃饭，这时候有一个陌生人走过来，想要加入你。如果是同性，什么样的同性你会允许？如果是异性，什么样的异性你会允许？",
+        "你在工作中最好的状态是什么样子？通常要具备哪些条件才能帮助你达到最好的状态？而最糟呢？它是怎么发生的？",
+        "如果你拥有了一个许愿就一定会实现的能力，而这个愿望只能是关于你自己的，你会实现什么愿望？",
+        "你最喜欢听到别人夸你的内容是什么？最讨厌听到的评价是什么？",
+        "如果你决定和一个人合作，最看重对方什么品质？而对方一旦什么品质出现，不管 TA 能力有多强，你就绝对不会跟 TA 再合作了？",
+        "如果还有三天，你就要离开这个世界了，你只能和一个人待在一起，只有一个名额，你会选择谁？",
+        "如果一件事情，你必须做十年，别的什么事情都不能做，你会选择做什么事情？",
+        "如果你必须和一个人在一起待十年，每一天都不可以分开，不可以选择自己待着，和 TA 要时时刻刻在一起，你会选择谁？",
+        "如果可以回到过去的任何一个时间点，让你改变一件事情，你会回到什么时间，改变什么事情？",
+        "你来定义一下，什么是成长？你的偶像是谁？你喜欢 TA 什么？而 TA 如果失去了什么样的特质，你就不会再喜欢 TA 了？你喜欢 TA 的特质，会不会帮助你成为一个更好的人？请用 200 个字总结一下自己的人生。"
+    ];
+
+    const formContainer = document.getElementById('reflectionForm');
+    document.getElementById('print-date').textContent = new Date().toLocaleString();
+
+    // 初始化问题
+    questions.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        
+        const number = document.createElement('span');
+        number.className = 'q-number';
+        number.textContent = `问题 ${index + 1}`;
+        
+        const text = document.createElement('div');
+        text.className = 'q-text';
+        text.textContent = q;
+
+        const textarea = document.createElement('textarea');
+        textarea.name = `q${index + 1}`;
+        textarea.placeholder = "在此处写下你的思考...";
+        textarea.id = `textarea_q${index + 1}`;
+        textarea.addEventListener('input', function() {
+            localStorage.setItem(`answer_q${index + 1}`, this.value);
+            updateAnswerDisplay(index, this.value);
+        });
+
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'answer-display answer-placeholder';
+        answerDiv.id = `answer_q${index + 1}`;
+        answerDiv.textContent = "(未回答)";
+
+        card.appendChild(number);
+        card.appendChild(text);
+        card.appendChild(textarea);
+        card.appendChild(answerDiv);
+        formContainer.appendChild(card);
+    });
+
+    function updateAnswerDisplay(index, value) {
+        const answerDiv = document.getElementById(`answer_q${index + 1}`);
+        if (value && value.trim() !== "") {
+            answerDiv.textContent = value;
+            answerDiv.classList.remove('answer-placeholder');
+        } else {
+            answerDiv.textContent = "(未回答)";
+            answerDiv.classList.add('answer-placeholder');
+        }
+    }
+
+    window.addEventListener('load', () => {
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach((ta, index) => {
+            const saved = localStorage.getItem(`answer_q${index + 1}`);
+            if (saved) {
+                ta.value = saved;
+                updateAnswerDisplay(index, saved);
+            }
+        });
+    });
+
+    function printToPDF() {
+        // 先同步所有答案到显示层
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach((ta, index) => {
+            updateAnswerDisplay(index, ta.value);
+        });
+
+        // 进入打印模式
+        document.body.classList.add('print-mode');
+        
+        const loading = document.getElementById('loading-overlay');
+        loading.style.display = 'flex';
+        
+        setTimeout(() => {
+            loading.style.display = 'none';
+            // 使用浏览器原生打印，选择"另存为 PDF"
+            window.print();
+            // 打印后恢复
+            setTimeout(() => {
+                document.body.classList.remove('print-mode');
+            }, 1000);
+        }, 800);
+    }
+
+    function saveProgress() {
+        localStorage.setItem('last_saved', new Date().toLocaleString());
+        const btn = document.querySelector('.btn-success');
+        const originalText = btn.textContent;
+        btn.textContent = "✅ 已保存";
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 2000);
+    }
+
+    function copyToClipboard() {
+        let text = "杨天真：问自己 15 个问题 - 价值排序自测\n";
+        text += "生成时间：" + new Date().toLocaleString() + "\n\n";
+        
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach((ta, index) => {
+            text += `【问题 ${index + 1}】${questions[index]}\n`;
+            text += `我的回答：${ta.value || "(未回答)"}\n`;
+            text += "----------------------------------------\n\n";
+        });
+        
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.querySelector('.btn-secondary');
+            const originalText = btn.textContent;
+            btn.textContent = "✅ 已复制";
+            setTimeout(() => btn.textContent = originalText, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
