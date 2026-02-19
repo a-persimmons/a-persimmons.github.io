@@ -11,6 +11,7 @@
             --card-bg: #ffffff;
             --text-primary: #2c2c2c;
             --text-secondary: #666666;
+            --text-muted: #999999;
             --accent-color: #5d7a76;
             --accent-light: #e8efee;
             --accent-hover: #4a6360;
@@ -201,6 +202,22 @@
             color: #444;
             line-height: 1.6;
         }
+        
+        /* ✅ AI 生成声明样式 */
+        .ai-disclaimer {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ai-disclaimer::before {
+            content: "🤖";
+            font-size: 12px;
+        }
 
         .action-bar {
             display: flex;
@@ -269,6 +286,23 @@
             font-style: italic;
             border-radius: 0 8px 8px 0;
         }
+        
+        /* ✅ 报告页 AI 声明样式 */
+        .report-disclaimer {
+            background: var(--accent-light);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 20px 0 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .report-disclaimer::before {
+            content: "💡";
+            font-size: 14px;
+        }
 
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease; }
@@ -294,6 +328,24 @@
             margin-bottom: 15px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ✅ 底部来源样式 */
+        .footer-source {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .footer-source a {
+            color: var(--accent-color);
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .footer-source a:hover {
+            text-decoration: underline;
+        }
 
         @media (max-width: 600px) {
             .container { padding: 25px; margin: 0; border-radius: 0; height: 100vh; }
@@ -357,6 +409,8 @@
             <div id="aiFeedbackBox" class="ai-feedback-box">
                 <div class="ai-label">✨ AI 教练反馈</div>
                 <div id="aiFeedbackContent" class="ai-content"></div>
+                <!-- ✅ 添加 AI 生成声明 -->
+                <div class="ai-disclaimer">以上反馈由 AI 生成，仅供参考。真正的洞察，来自你对自己的诚实。</div>
             </div>
         </div>
 
@@ -380,11 +434,22 @@
             <h1 style="font-family: var(--font-serif);">评测分析报告</h1>
             <p style="color: #888;">基于你的 15 个深度回答生成</p>
         </div>
+        
+        <!-- ✅ 添加报告页 AI 声明 -->
+        <div class="report-disclaimer">
+            本报告由 AI 基于你的回答智能生成，旨在辅助自我探索。所有洞察仅供个人参考，人生的答案始终在你心中。
+        </div>
+        
         <div id="reportContent" class="report-content"></div>
         
         <div style="margin-top: 50px; display: flex; gap: 15px; justify-content: center;">
             <button class="submit-btn" onclick="window.print()">🖨️ 打印 / 存为 PDF</button>
             <button class="nav-btn" style="border-color: var(--accent-color); color: var(--accent-color);" onclick="location.reload()">🔄 重新开始</button>
+        </div>
+        
+        <!-- ✅ 添加底部来源 -->
+        <div class="footer-source">
+            来源：杨天真《<a href="http://xhslink.com/o/4qaakVc4c2P" target="_blank" rel="noopener">问自己 15 个问题，你会活得更清晰</a>》
         </div>
     </div>
 </div>
@@ -473,7 +538,6 @@
         });
     }
 
-    // ✅ 修复：loadQuestion 函数中重置所有按钮状态
     function loadQuestion(index) {
         currentIndex = index;
         const data = answersData[index];
@@ -488,7 +552,6 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
 
-        // 重置输入框和反馈区
         textarea.value = data.answer;
         feedbackBox.style.display = data.completed ? 'block' : 'none';
         if (data.completed) {
@@ -506,7 +569,6 @@
             actionBtn.classList.remove('next-mode');
         }
 
-        // ✅ 修复：确保按钮始终是可点击的（除非在 loading 状态）
         actionBtn.disabled = false;
         prevBtn.disabled = index === 0;
         nextBtn.disabled = false;
@@ -521,7 +583,6 @@
         const actionBtn = document.getElementById('actionBtn');
 
         if (data.completed) {
-            // 修改模式
             textarea.disabled = false;
             data.completed = false;
             data.feedback = '';
@@ -537,7 +598,6 @@
         const answer = textarea.value.trim();
         if (!answer) return alert('请写下你的想法');
 
-        // Loading 状态
         actionBtn.disabled = true;
         actionBtn.innerText = 'AI 分析中...';
         
@@ -552,7 +612,6 @@
             }, 100);
         }).catch(err => {
             alert('AI 响应失败：' + err.message);
-            // ✅ 修复：失败后也要重置按钮状态
             actionBtn.disabled = false;
             actionBtn.innerText = '提交回答';
         });
