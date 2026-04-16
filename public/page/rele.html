@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>沉潜 · 重塑书单 | 亲密关系·三观·自信</title>
+  <!-- 字体采用中性内敛的宋体/明澈无衬线组合，整体低饱和度 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 优雅宋体+系统无衬线 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1e1e1c;    /* 深灰基底，不刺眼 */
+      color: #d6d5cb;               /* 暖纸白 */
+      font-family: 'Inter', 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+      line-height: 1.65;
+      font-weight: 350;
+      padding: 2rem 1.5rem;
+    }
+
+    .page {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* 主色调：低饱和橄榄绿 / 岩灰，呼应「生长·重塑」 */
+    :root {
+      --accent: #6a7a6d;        /* 苔绿灰，低调沉稳 */
+      --accent-soft: #4a5a4f;
+      --border-light: #3a3a36;
+      --card-bg: #262623;
+      --card-hover: #2e2e2a;
+      --quote-bg: #242522;
+      --text-muted: #b1b2a8;
+    }
+
+    header {
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: #ece7dc;
+      font-family: 'Noto Serif SC', serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .subhead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-top: 0.3rem;
+      font-weight: 350;
+      border-left: 3px solid var(--accent);
+      padding-left: 1.2rem;
+    }
+
+    .intro-note {
+      background: var(--quote-bg);
+      padding: 1.6rem 2rem;
+      border-radius: 20px;
+      margin: 2.5rem 0 2.8rem 0;
+      font-style: normal;
+      border: 1px solid #3c3c36;
+      color: #cccbc0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .intro-note p {
+      margin-bottom: 0.75rem;
+    }
+    .intro-note strong {
+      color: #dbdad0;
+      font-weight: 500;
+    }
+
+    .badge-section {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .pill {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: #c0bfb5;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      backdrop-filter: blur(2px);
+    }
+
+    .pill.accent {
+      border-color: var(--accent);
+      color: #cfd6cd;
+    }
+
+    /* 卡片网格 */
+    .section-title {
+      font-size: 1.9rem;
+      font-weight: 420;
+      margin: 3.5rem 0 1.8rem 0;
+      color: #e1dfd5;
+      font-family: 'Noto Serif SC', serif;
+      border-bottom: 1px dashed #44443f;
+      padding-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    .section-title span {
+      background: var(--accent-soft);
+      width: 6px;
+      height: 28px;
+      display: inline-block;
+      margin-right: 16px;
+      border-radius: 6px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .book-card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 1.6rem 1.5rem 1.8rem 1.5rem;
+      border: 1px solid #3a3a35;
+      transition: all 0.18s ease;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-card:hover {
+      background: var(--card-hover);
+      border-color: #5b6258;
+      transform: translateY(-3px);
+    }
+
+    .book-index {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      font-weight: 400;
+      border-bottom: 1px dotted #4b4b43;
+      padding-bottom: 0.4rem;
+    }
+
+    .book-title {
+      font-size: 1.45rem;
+      font-weight: 480;
+      line-height: 1.3;
+      margin-bottom: 0.3rem;
+      color: #edeae0;
+      font-family: 'Noto Serif SC', serif;
+    }
+
+    .book-author {
+      font-size: 0.9rem;
+      color: #9c9d91;
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+
+    .book-desc {
+      font-size: 0.95rem;
+      color: #c5c5b8;
+      margin-top: 0.5rem;
+      flex: 1;
+    }
+
+    .highlight {
+      color: #d4cfbe;
+      font-weight: 450;
+    }
+
+    .tag-row {
+      margin-top: 1.3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tag {
+      background: #2d2e28;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      color: #b7b9ab;
+      border: 1px solid #4a4b43;
+    }
+
+    /* 整合路径区块 */
+    .pathway-box {
+      margin-top: 4rem;
+      background: #1f201e;
+      border-radius: 24px;
+      padding: 2.2rem 2.2rem;
+      border: 1px solid #4b4f46;
+    }
+
+    .pathway-title {
+      font-size: 1.8rem;
+      font-weight: 380;
+      color: #dbd9cd;
+      margin-bottom: 1.8rem;
+      font-family: 'Noto Serif SC', serif;
+    }
+
+    .step-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: baseline;
+      border-bottom: 1px solid #3d3e37;
+      padding-bottom: 1rem;
+    }
+
+    .step-num {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--accent);
+      min-width: 40px;
+    }
+
+    .step-text {
+      color: #cacbc0;
+    }
+
+    .step-text strong {
+      color: #e2e1d5;
+      font-weight: 500;
+    }
+
+    .quote-footer {
+      margin-top: 3.2rem;
+      text-align: right;
+      font-style: italic;
+      color: #a7a89c;
+      border-top: 1px solid #373833;
+      padding-top: 2rem;
+      font-size: 1.1rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #383933;
+      margin: 2rem 0;
+    }
+
+    /* 致男性的小提示 */
+    .gentle-reminder {
+      background: #20211e;
+      padding: 1.2rem 2rem;
+      border-radius: 40px;
+      color: #b7b9ab;
+      font-size: 0.95rem;
+      margin: 2rem 0 0;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 1.2rem 1rem; }
+      h1 { font-size: 2rem; }
+      .section-title { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>沉潜·根脉书单</h1>
+    <div class="subhead">亲密关系 · 三观重塑 · 自信的锚点 —— 给愿意先理解自己的男性</div>
+    <div class="badge-section">
+      <span class="pill">陌生不是缺陷</span>
+      <span class="pill accent">从阅读开始扎根</span>
+      <span class="pill">非暴力·非鸡汤</span>
+    </div>
+  </header>
+
+  <!-- 整合引言 —— 呼应三次对话 -->
+  <div class="intro-note">
+    <p><strong>“我对爱情、结婚、亲密关系都很陌生，我想从书上学习……还想重塑三观……以及重塑自信。”</strong></p>
+    <p>这三重诉求，其实指向同一件事：<strong>成为一个根基稳固、能给出爱、也敢接受爱的人。</strong> 下面的书单按照「认知奠基 → 沟通修心 → 身心合一」整理，全部采用沉静岩灰色调，没有刺眼亮色，只有文字本身的力量。</p>
+    <p style="margin-bottom:0;">先读通自己，再进入关系 —— 这是对彼此最大的尊重。</p>
+  </div>
+
+  <!-- 第一部分：亲密关系奠基 (阶段123) -->
+  <div class="section-title"><span></span> Ⅰ · 亲密关系通识 · 从陌生到理解</div>
+  <div class="card-grid">
+    <!-- 1 -->
+    <div class="book-card">
+      <div class="book-index">01 奠基</div>
+      <div class="book-title">爱的艺术</div>
+      <div class="book-author">埃里希·弗洛姆</div>
+      <div class="book-desc">爱不是被爱的问题，而是能力问题。薄薄一册，击碎“爱等于吸引”的幻觉。<span class="highlight">适合作为亲密关系第一课。</span></div>
+      <div class="tag-row"><span class="tag">#爱是能力</span><span class="tag">#弗洛姆</span></div>
+    </div>
+    <!-- 2 -->
+    <div class="book-card">
+      <div class="book-index">02 实证</div>
+      <div class="book-title">亲密关系（第8版）</div>
+      <div class="book-author">罗兰·米勒</div>
+      <div class="book-desc">社会学大部头，用数据解释择偶、热恋、冲突。读完超越90%同龄人的认知，不被网络对立带节奏。</div>
+      <div class="tag-row"><span class="tag">#科学读本</span><span class="tag">#清醒</span></div>
+    </div>
+    <!-- 3 -->
+    <div class="book-card">
+      <div class="book-index">03 沟通</div>
+      <div class="book-title">非暴力沟通</div>
+      <div class="book-author">马歇尔·卢森堡</div>
+      <div class="book-desc">把指责变成请求。“你从不关心我”背后是“我需要陪伴”。学会听出需求而非反击。</div>
+      <div class="tag-row"><span class="tag">#沟通必修</span><span class="tag">#情绪翻译</span></div>
+    </div>
+    <!-- 4 -->
+    <div class="book-card">
+      <div class="book-index">04 差异</div>
+      <div class="book-title">男人来自火星，女人来自金星</div>
+      <div class="book-author">约翰·格雷</div>
+      <div class="book-desc">经典但实用：为什么她抱怨时别给解决方案？情绪共鸣先于逻辑。避免直男式炸毛。</div>
+      <div class="tag-row"><span class="tag">#性别语言</span><span class="tag">#共鸣</span></div>
+    </div>
+    <!-- 5 -->
+    <div class="book-card">
+      <div class="book-index">05 行动</div>
+      <div class="book-title">爱的五种语言</div>
+      <div class="book-author">盖瑞·查普曼</div>
+      <div class="book-desc">肯定的言辞、精心的时刻……找到彼此的主要爱语，就像拿到感情说明书，告别“付出却错位”。</div>
+      <div class="tag-row"><span class="tag">#仪式感</span><span class="tag">#具体行动</span></div>
+    </div>
+    <!-- 6 -->
+    <div class="book-card">
+      <div class="book-index">06 语境</div>
+      <div class="book-title">李银河说爱情</div>
+      <div class="book-author">李银河</div>
+      <div class="book-desc">中国人的现实语境，聊婚姻制度、性、生育。帮你卸下社会时钟的焦虑，想清楚为何结婚。</div>
+      <div class="tag-row"><span class="tag">#本土视角</span><span class="tag">#通透</span></div>
+    </div>
+    <!-- 7 进阶 -->
+    <div class="book-card">
+      <div class="book-index">07 修复</div>
+      <div class="book-title">爱的博弈</div>
+      <div class="book-author">约翰·戈特曼</div>
+      <div class="book-desc">“婚姻教皇”实证：修复裂痕、识别四大杀手（批评、蔑视、防御、筑墙）。长期关系必读。</div>
+      <div class="tag-row"><span class="tag">#戈特曼</span><span class="tag">#危机干预</span></div>
+    </div>
+  </div>
+
+  <!-- 第二部分：三观重塑——不空洞的思辨 -->
+  <div class="section-title"><span></span> Ⅱ · 重塑三观 · 不被单一标准裹挟</div>
+  <div class="card-grid">
+    <div class="book-card">
+      <div class="book-index">世界观</div>
+      <div class="book-title">刘擎西方现代思想讲义</div>
+      <div class="book-author">刘擎</div>
+      <div class="book-desc">理解现代人的孤独与结婚难背后的结构性原因。工具理性vs价值理性，不再为“应该几岁结婚”焦虑。</div>
+      <div class="tag-row"><span class="tag">#哲学导览</span><span class="tag">#现代性</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">破除执念</div>
+      <div class="book-title">人类简史</div>
+      <div class="book-author">尤瓦尔·赫拉利</div>
+      <div class="book-desc">婚姻、金钱、国家都是想象的故事。既然故事，你就有权编写自己的版本，对规训一笑置之。</div>
+      <div class="tag-row"><span class="tag">#认知升维</span><span class="tag">#故事</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">课题分离</div>
+      <div class="book-title">被讨厌的勇气</div>
+      <div class="book-author">岸见一郎/古贺史健</div>
+      <div class="book-desc">“别人怎么看你，是别人的课题。” 剥离愧疚感、催婚压力，拥有被讨厌的勇气，人格独立。</div>
+      <div class="tag-row"><span class="tag">#阿德勒</span><span class="tag">#自由</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">男性教养</div>
+      <div class="book-title">杀死一只知更鸟</div>
+      <div class="book-author">哈珀·李</div>
+      <div class="book-desc">真正的男子气概：明知会输仍坚持正确，平视弱者。高贵普通人的范本，尊重女性与责任感的具象。</div>
+      <div class="tag-row"><span class="tag">#勇气</span><span class="tag">#正直</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">意义感</div>
+      <div class="book-title">活出生命的意义</div>
+      <div class="book-author">维克多·弗兰克尔</div>
+      <div class="book-desc">集中营中的观察：活下去靠意义感。不要等找到爱再去生活，认真生活时爱的能力随之生长。</div>
+      <div class="tag-row"><span class="tag">#意义疗法</span><span class="tag">#绝境重生</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">幸福祛魅</div>
+      <div class="book-title">纳瓦尔宝典</div>
+      <div class="book-author">埃里克·乔根森</div>
+      <div class="book-desc">财富与幸福观。把结婚从必选项变成可选项，不为想象中的明天牺牲今天。</div>
+      <div class="tag-row"><span class="tag">#杠杆</span><span class="tag">#清醒</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">柔软之力</div>
+      <div class="book-title">给一个未出生孩子的信</div>
+      <div class="book-author">奥里亚娜·法拉奇</div>
+      <div class="book-desc">记者的冷峻与细腻：承认脆弱、渴望联结是成熟标志，不是耻辱。软化被社会磨硬的心。</div>
+      <div class="tag-row"><span class="tag">#男性柔情</span><span class="tag">#敬畏生命</span></div>
+    </div>
+  </div>
+
+  <!-- 第三部分：重塑自信 —— 从身体到边界 -->
+  <div class="section-title"><span></span> Ⅲ · 重塑自信 · 根系与铠甲</div>
+  <div class="card-grid">
+    <div class="book-card">
+      <div class="book-index">疗愈创伤</div>
+      <div class="book-title">不原谅也没关系</div>
+      <div class="book-author">皮特·沃克</div>
+      <div class="book-desc">CPTSD自救手册。缩小内在批判者，放大自我同情。讨好、害怕冲突的根源在此。</div>
+      <div class="tag-row"><span class="tag">#复杂性创伤</span><span class="tag">#自我接纳</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">自卑动力</div>
+      <div class="book-title">自卑与超越</div>
+      <div class="book-author">阿尔弗雷德·阿德勒</div>
+      <div class="book-desc">自卑不是缺陷，是进步的动力。真正的自信是带着自卑勇敢行动。</div>
+      <div class="tag-row"><span class="tag">#阿德勒</span><span class="tag">#超越</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">生理自信</div>
+      <div class="book-title">运动改造大脑</div>
+      <div class="book-author">约翰·瑞迪</div>
+      <div class="book-desc">脑科学证据：有氧运动提升多巴胺、优化前额叶。最快建立自信的生理捷径。</div>
+      <div class="tag-row"><span class="tag">#神经科学</span><span class="tag">#执行力</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">肢体外挂</div>
+      <div class="book-title">高能量姿势</div>
+      <div class="book-author">埃米·卡迪</div>
+      <div class="book-desc">两分钟“神奇女侠姿势”改变睾酮与皮质醇。约会、社交前的低成本自信开关。</div>
+      <div class="tag-row"><span class="tag">#肢体语言</span><span class="tag">#在场</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">经济底气</div>
+      <div class="book-title">百万富翁快车道</div>
+      <div class="book-author">MJ·德马科</div>
+      <div class="book-desc">打破打工-消费慢车道。抗风险能力提升后，“我养不起你”的怯懦转为“我能兜底”的从容。</div>
+      <div class="tag-row"><span class="tag">#财富思维</span><span class="tag">#自由</span></div>
+    </div>
+    <div class="book-card">
+      <div class="book-index">边界语言</div>
+      <div class="book-title">强势</div>
+      <div class="book-author">曼纽尔·J·史密斯</div>
+      <div class="book-desc">10条法则，温和而坚定说“不”。能拒绝的人，他的“是”才有分量。</div>
+      <div class="tag-row"><span class="tag">#边界感</span><span class="tag">#话术</span></div>
+    </div>
+  </div>
+
+  <!-- 整合阅读路径 —— 闭环地图 -->
+  <div class="pathway-box">
+    <div class="pathway-title">📖 从自信到自在 · 阅读闭环</div>
+    <div class="step-container">
+      <div class="step-item">
+        <div class="step-num">1.</div>
+        <div class="step-text"><strong>先动身 · 自信篇</strong> —— 《运动改造大脑》《高能量姿势》同时启动。身体改变，读书才能入心。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2.</div>
+        <div class="step-text"><strong>再修心 · 三观篇</strong> —— 运动两周后，啃《被讨厌的勇气》《刘擎西方现代思想讲义》。焦虑降低，更能承接思辨。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3.</div>
+        <div class="step-text"><strong>后习术 · 亲密关系篇</strong> —— 三观稳固，回头看《亲密关系》《非暴力沟通》。此时技巧不再是讨好，而是强大个体的合作方式。</div>
+      </div>
+    </div>
+    <div style="margin-top: 2rem; color: #b2b4a5; font-size: 0.95rem; border-left: 2px solid var(--accent); padding-left: 1.2rem;">
+      “人只有在感觉自己有价值的时候，才可能获得勇气。” —— 阿德勒
+    </div>
+  </div>
+
+  <!-- 给男性的温柔提醒 -->
+  <div class="gentle-reminder">
+    ⚡ 给正在重塑的你：阅读这些书时，可能会感到短暂的迷茫或刺痛——那是思想肌肉在生长。<br>
+    无需急于求成。每天读几页，配合运动与独处，亲密关系的陌生感会逐渐转化为从容的好奇。
+  </div>
+
+  <!-- 页脚留白 -->
+  <hr>
+  <div style="display: flex; justify-content: space-between; color: #7e7f74; font-size: 0.8rem; padding-bottom: 0.5rem;">
+    <span>沉潜书单 · 为自我重塑者准备</span>
+    <span>设计 · 深灰/岩绿 · 不刺眼主题</span>
+  </div>
+  <div class="quote-footer">
+    —— 你愿意学习，已是价值的证明。
+  </div>
+</div>
+</body>
+</html>
