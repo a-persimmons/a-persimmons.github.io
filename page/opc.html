@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>旁路智能 · 企业AI接入架构</title>
+  <!-- 字体与图标 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f7fc;
+      background-image: linear-gradient(145deg, #f0f4fa 0%, #e9eef6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      font-family: 'Inter', sans-serif;
+      color: #1c2333;
+    }
+
+    .home-card {
+      max-width: 1320px;
+      width: 100%;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 40px;
+      border: 1px solid rgba(90, 120, 190, 0.15);
+      box-shadow: 0 30px 50px -20px rgba(0,15,45,0.2);
+      padding: 2.8rem 2.8rem 2.5rem;
+    }
+
+    /* 头部区域 */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-emblem {
+      background: #1a2e5c;
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 8px 12px -6px #1a2e5c40;
+    }
+
+    .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: #0b1a32;
+    }
+
+    .logo-sub {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #4a6085;
+      margin-left: 4px;
+    }
+
+    .tagline {
+      background: #dce5f5;
+      padding: 6px 18px;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1d3461;
+      border: 1px solid #b7c9e6;
+    }
+
+    /* 主视觉 — 务实价值主张 */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .hero-left {
+      flex: 2 1 300px;
+    }
+
+    .pill {
+      background: #ffffffd0;
+      border-radius: 40px;
+      padding: 6px 20px;
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid #cfdef5;
+      color: #1f3e77;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      color: #0e1a2b;
+      margin-bottom: 1.2rem;
+    }
+
+    .h1-accent {
+      color: #1f4fcf;
+      border-bottom: 3px solid #8aacf0;
+      padding-bottom: 2px;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: #2a3a56;
+      max-width: 550px;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .metrics {
+      display: flex;
+      gap: 28px;
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-num {
+      font-family: 'Space Grotesk', monospace;
+      font-weight: 600;
+      font-size: 2rem;
+      color: #0f2647;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      color: #4f6183;
+    }
+
+    .hero-right {
+      flex: 1.2 1 240px;
+      background: #eaf0fd70;
+      border-radius: 34px;
+      padding: 1.8rem 1.8rem;
+      border: 1px solid #ccddfa;
+      backdrop-filter: blur(6px);
+    }
+
+    .service-highlight {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
+    }
+
+    .service-list {
+      list-style: none;
+    }
+
+    .service-list li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+    }
+
+    .check-icon {
+      color: #1f5fcf;
+    }
+
+    /* 能力卡片 — 不夸大，只讲具体能力 */
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 1.8rem;
+      margin: 2.8rem 0 1.5rem;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .title-line {
+      flex:1;
+      height: 1px;
+      background: linear-gradient(to right, #bacff0, transparent);
+    }
+
+    .capability-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .cap-card {
+      background: #ffffffb5;
+      backdrop-filter: blur(4px);
+      border-radius: 26px;
+      padding: 1.8rem 1.6rem;
+      border: 1px solid #d2e0fd;
+      transition: all 0.2s;
+    }
+
+    .cap-card:hover {
+      background: white;
+      border-color: #a3bbec;
+    }
+
+    .cap-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      color: #1b3d8a;
+    }
+
+    .cap-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .cap-desc {
+      color: #374b6b;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .real-price {
+      font-family: 'Space Grotesk', monospace;
+      font-weight: 500;
+      font-size: 0.9rem;
+      background: #ecf2fd;
+      padding: 4px 14px;
+      border-radius: 30px;
+      display: inline-block;
+      color: #1b3360;
+    }
+
+    /* 务实案例摘要 */
+    .case-row {
+      background: #1b264080;
+      backdrop-filter: blur(8px);
+      border-radius: 30px;
+      padding: 1.6rem 2rem;
+      margin: 2rem 0 1.5rem;
+      border: 1px solid #afc6ef;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .case-quote {
+      flex:2;
+      font-size: 1rem;
+      color: #0e1c34;
+    }
+
+    .case-source {
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .case-meta {
+      color: #22407c;
+    }
+
+    .badge-outline {
+      border: 1px solid #2f5090;
+      padding: 8px 22px;
+      border-radius: 60px;
+      font-weight: 500;
+      background: #ffffff50;
+    }
+
+    /* 接入原则与适配器哲学 */
+    .principle-box {
+      display: flex;
+      flex-wrap: wrap;
+      background: #eef3fe;
+      border-radius: 26px;
+      padding: 1.8rem 2rem;
+      margin: 1.5rem 0;
+      gap: 1.5rem;
+    }
+
+    .principle-item {
+      flex:1 1 180px;
+    }
+
+    .principle-item i {
+      color: #1d3f89;
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+
+    /* 底部 */
+    .footer {
+      margin-top: 3.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #3c5780;
+      font-size: 0.85rem;
+      border-top: 1px solid #bacdf0;
+      padding-top: 2rem;
+    }
+
+    .footer a {
+      color: #1d3a73;
+      text-decoration: none;
+      border-bottom: 1px dotted #7f9bd5;
+    }
+
+    .btn {
+      background: #132b52;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 14px -8px #0a1e3c;
+      transition: 0.15s;
+      cursor: default;
+      border: 1px solid #365e9e;
+    }
+
+    .btn-light {
+      background: transparent;
+      color: #132b52;
+      box-shadow: none;
+      border: 1px solid #8da5da;
+    }
+
+    @media (max-width: 700px) {
+      .home-card { padding: 1.8rem; }
+      h1 { font-size: 2.3rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="home-card">
+  
+  <!-- 头部导航 -->
+  <div class="navbar">
+    <div class="logo-area">
+      <div class="icon-emblem">
+        <i class="fas fa-diagram-project"></i>
+      </div>
+      <div>
+        <span class="logo-text">旁路智能 <span class="logo-sub">bypass·ai</span></span>
+        <div style="font-size:0.7rem; opacity:0.7; letter-spacing:0.5px;">企业AI接入架构 · 适配器模式</div>
+      </div>
+    </div>
+    <div class="tagline">
+      <i class="fas fa-map-pin" style="margin-right: 6px;"></i>重庆 · 两江新区OPC社区
+    </div>
+  </div>
+
+  <!-- hero 务实介绍 -->
+  <div class="hero">
+    <div class="hero-left">
+      <span class="pill"><i class="far fa-building"></i> 面向制造·汽配·服务业</span>
+      <h1>
+        不重写老系统，<br>
+        <span class="h1-accent">给它装上AI外挂大脑</span>
+      </h1>
+      <div class="hero-desc">
+        我是后端架构师转型OPC，专注帮中小企业打通旧软件与AI之间的“最后一公里”。
+        不夸大、不卖概念——只提供旁路网关、聚合查询、规则提取等可落地的接入服务。
+      </div>
+      <div class="metrics">
+        <div class="metric-item">
+          <span class="metric-num">四层诊断</span>
+          <span class="metric-label">可达性·数据·性能·规则</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">0入侵</span>
+          <span class="metric-label">不改老代码·旁路接入</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="service-highlight"><i class="fas fa-bolt" style="margin-right: 8px; color:#1f5fcf;"></i>当前可落地服务</div>
+      <ul class="service-list">
+        <li><i class="fas fa-check-circle check-icon"></i> 系统开口连接器 · 老旧软件API化</li>
+        <li><i class="fas fa-check-circle check-icon"></i> 智能聚合查询 · 钉钉/微信助手</li>
+        <li><i class="fas fa-check-circle check-icon"></i> 业务规则提取 · 硬编码剥离</li>
+        <li><i class="fas fa-check-circle check-icon"></i> AI就绪度体检 · 四层诊断报告</li>
+      </ul>
+      <div style="margin-top: 22px; background: #d9e6ff70; border-radius: 20px; padding: 10px 12px;">
+        <i class="fas fa-shield-hal"></i> 基于适配器/防腐层架构，对现有系统零破坏。
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心能力 (不夸大，写实) -->
+  <div class="section-title">
+    务实能力 <span style="font-size: 0.9rem; font-weight: 400; margin-left: 6px; color:#49659c;">后端架构思维 · 语言无关</span>
+    <span class="title-line"></span>
+  </div>
+  <div class="capability-grid">
+    <div class="cap-card">
+      <div class="cap-icon"><i class="fas fa-database"></i></div>
+      <div class="cap-title">旁路数据网关</div>
+      <div class="cap-desc">针对无API老系统 (C/S, 单机版)，通过DB只读/UI自动化暴露RESTful接口，不侵入原系统。</div>
+      <span class="real-price">一次性部署 8k-20k · 年维护3k-5k</span>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon"><i class="fas fa-message"></i></div>
+      <div class="cap-title">聚合查询助手</div>
+      <div class="cap-desc">打通多套老系统数据孤岛，员工在企业微信/钉钉直接查询，减少切屏。含缓存护栏避免拖垮老库。</div>
+      <span class="real-price">年费 4.8k-15.8k (按接入系统)</span>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon"><i class="fas fa-sitemap"></i></div>
+      <div class="cap-title">规则提取引擎</div>
+      <div class="cap-desc">将代码中固化的促销/审批逻辑提取为可配置规则，业务人员可自行调整，同时供AI调用。</div>
+      <span class="real-price">按复杂度 1.5w-5w/套</span>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon"><i class="fas fa-clipboard-check"></i></div>
+      <div class="cap-title">AI就绪度诊断</div>
+      <div class="cap-desc">2h现场+四层诊断表(可达性/数据/性能/规则)，给出接入可行性报告，不强行推销。</div>
+      <span class="real-price">免费/199元 (可抵扣项目)</span>
+    </div>
+  </div>
+
+  <!-- 真实案例参照 (避免浮夸) -->
+  <div class="case-row">
+    <div class="case-quote">
+      <i class="fas fa-quote-left" style="opacity: 0.5; margin-right: 6px;"></i> 
+      曾协助某运动机构将老系统数据与AI客服打通，通过旁路网关+规则映射，客服人力从14人降至0，利润率提升至60%。——这并非承诺，而是说明“非侵入集成”的可能性。
+      <div class="case-source">参考案例 · Edge404工作室 (星运社区首批)</div>
+    </div>
+    <div class="case-meta">
+      <span class="badge-outline"><i class="far fa-building"></i> 制造业 · 汽配 · 商贸</span>
+    </div>
+  </div>
+
+  <!-- 原则：不夸大，防腐层哲学 -->
+  <div class="principle-box">
+    <div class="principle-item">
+      <i class="fas fa-circle-notch"></i> <strong>防腐层模式</strong><br>
+      <span style="font-size:0.9rem;">隔离AI与老系统，避免污染核心业务。</span>
+    </div>
+    <div class="principle-item">
+      <i class="fas fa-code-branch"></i> <strong>异步非阻塞</strong><br>
+      <span style="font-size:0.9rem;">AI查询不拖垮老系统，通过队列/缓存回填。</span>
+    </div>
+    <div class="principle-item">
+      <i class="fas fa-language"></i> <strong>语义映射中间件</strong><br>
+      <span style="font-size:0.9rem;">将A001字段翻译为“订单状态”，提升AI准确率。</span>
+    </div>
+    <div class="principle-item">
+      <i class="fas fa-hand-holding-heart"></i> <strong>社区派单+补贴</strong><br>
+      <span style="font-size:0.9rem;">入驻两江星运社区，场景机会清单对接，享10%补贴。</span>
+    </div>
+  </div>
+
+  <!-- 额外生态（内训/顾问）不夸大 -->
+  <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+    <div style="display: flex; gap: 14px;">
+      <span style="background: #e3eafa; padding: 6px 20px; border-radius: 60px;"><i class="far fa-clock"></i> 企业内训 · 半天3k-5k</span>
+      <span style="background: #e3eafa; padding: 6px 20px; border-radius: 60px;"><i class="fas fa-user-tie"></i> 架构顾问 1.5w-3w/年</span>
+    </div>
+    <span style="color: #1e3e7a;"><i class="fas fa-phone-alt"></i> 先诊断 · 后提案 · 无硬销</span>
+  </div>
+
+  <!-- 底部：联系与OPC身份 -->
+  <div class="footer">
+    <div>
+      <i class="far fa-copyright"></i> 旁路智能 · 独立OPC (一人公司)  ·  后端架构师主理<br>
+      <span style="font-size:0.75rem;">📍 重庆两江新区星运社区 · 可约线下诊断</span>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <a href="#" style="pointer-events:none;"><i class="fab fa-weixin"></i> 微信预约</a>
+      <a href="#" style="pointer-events:none;"><i class="far fa-envelope"></i> 获取诊断表</a>
+      <span class="btn btn-light" style="padding: 8px 18px;">📋 四层诊断白皮书</span>
+    </div>
+  </div>
+
+  <!-- 微说明 -->
+  <div style="margin-top: 12px; text-align: right; opacity:0.6; font-size:0.7rem;">
+    基于适配器/防腐层 · 承诺：不修改客户原系统代码，不影响现有业务。
+  </div>
+</div>
+</body>
+</html>
