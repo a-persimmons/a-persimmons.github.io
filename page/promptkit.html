@@ -1404,41 +1404,263 @@ function exportPDF() {
     const rate = total ? Math.round(passed/total*100) : 0;
     
     tempDiv.innerHTML = `
-      <div style="font-family: 'SimSun', 'Microsoft YaHei', sans-serif; padding: 20px;">
-        <h2>PromptKit Test Report</h2>
-        <p style="color: #666;">${new Date().toLocaleString('zh-CN')}</p>
+      <div style="
+        font-family: 'SimSun', 'Microsoft YaHei', 'Arial', sans-serif; 
+        padding: 30px;
+        background-color: #ffffff;
+        color: #1a1a1a;
+        line-height: 1.6;
+      ">
+        <!-- Report Header -->
+        <div style="
+          border-bottom: 3px solid #5b8dee; 
+          padding-bottom: 15px; 
+          margin-bottom: 25px;
+        ">
+          <h1 style="
+            color: #1a1a1a; 
+            font-size: 24px; 
+            margin: 0 0 8px 0;
+            font-weight: 700;
+          ">PromptKit Test Report</h1>
+          <p style="
+            color: #666666; 
+            font-size: 12px; 
+            margin: 0;
+          ">${new Date().toLocaleString('zh-CN')}</p>
+        </div>
         
-        <h3>Summary</h3>
-        <p>Total: ${total}  Pass: ${passed}  Fail: ${total-passed}  Rate: ${rate}%</p>
+        <!-- Summary Cards -->
+        <div style="
+          display: flex; 
+          gap: 15px; 
+          margin-bottom: 30px;
+          flex-wrap: wrap;
+        ">
+          <div style="
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+          ">
+            <div style="font-size: 12px; color: #666666; margin-bottom: 5px;">总用例</div>
+            <div style="font-size: 28px; color: #1a1a1a; font-weight: 700;">${total}</div>
+          </div>
+          
+          <div style="
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+          ">
+            <div style="font-size: 12px; color: #666666; margin-bottom: 5px;">结构通过</div>
+            <div style="font-size: 28px; color: #28a745; font-weight: 700;">${passed}</div>
+          </div>
+          
+          <div style="
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+          ">
+            <div style="font-size: 12px; color: #666666; margin-bottom: 5px;">结构失败</div>
+            <div style="font-size: 28px; color: #dc3545; font-weight: 700;">${total-passed}</div>
+          </div>
+          
+          <div style="
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+          ">
+            <div style="font-size: 12px; color: #666666; margin-bottom: 5px;">通过率</div>
+            <div style="font-size: 28px; color: #ffc107; font-weight: 700;">${rate}%</div>
+          </div>
+        </div>
         
-        <h3>Results</h3>
+        <!-- Results Section -->
+        <h2 style="
+          color: #1a1a1a; 
+          font-size: 18px; 
+          margin: 0 0 20px 0;
+          padding-bottom: 10px;
+          border-bottom: 2px solid #f0f0f0;
+        ">测试结果详情</h2>
+        
         ${state.testResults.map((r,i) => `
-          <div style="margin: 15px 0; border: 1px solid #ddd; padding: 10px;">
-            <p style="color: ${r.status==='pass' ? '#28a050' : '#c83c3c'}; font-weight: bold;">
-              #${i+1} [${r.status.toUpperCase()}]
-            </p>
-            <p><strong>Input:</strong> ${r.input}</p>
-            ${r.output ? `<p><strong>Output:</strong> ${r.output.substring(0, 200)}${r.output.length > 200 ? '...' : ''}</p>` : ''}
-            <p><strong>Eval:</strong></p>
-            <ul>
-              ${(r.evalResult||[]).map(c => `
-                <li>${c.field}: ${c.pass ? 'OK' : 'FAIL: ' + c.error}</li>
-              `).join('')}
-            </ul>
+          <div style="
+            margin: 20px 0;
+            border: 2px solid ${r.status === 'pass' ? '#d4edda' : '#f8d7da'};
+            border-radius: 8px;
+            overflow: hidden;
+          ">
+            <!-- Case Header -->
+            <div style="
+              background-color: ${r.status === 'pass' ? '#d4edda' : '#f8d7da'};
+              padding: 12px 15px;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            ">
+              <span style="
+                font-weight: 700;
+                color: #1a1a1a;
+                font-size: 14px;
+              ">#${i+1}</span>
+              <span style="
+                padding: 3px 10px;
+                border-radius: 12px;
+                font-size: 11px;
+                font-weight: 600;
+                background-color: ${r.status === 'pass' ? '#28a745' : '#dc3545'};
+                color: #ffffff;
+              ">${r.status === 'pass' ? '✓ 通过' : '✗ 失败'}</span>
+            </div>
+            
+            <!-- Case Body -->
+            <div style="
+              background-color: #ffffff;
+              padding: 15px;
+            ">
+              <!-- Input -->
+              <div style="margin-bottom: 15px;">
+                <div style="
+                  font-size: 11px;
+                  color: #999999;
+                  margin-bottom: 5px;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                ">输入 (Input)</div>
+                <div style="
+                  background-color: #f8f9fa;
+                  padding: 12px;
+                  border-radius: 6px;
+                  color: #333333;
+                  font-size: 12px;
+                  line-height: 1.6;
+                  white-space: pre-wrap;
+                  word-break: break-word;
+                  border: 1px solid #e9ecef;
+                ">${r.input}</div>
+              </div>
+              
+              <!-- Output (if exists) -->
+              ${r.output ? `
+              <div style="margin-bottom: 15px;">
+                <div style="
+                  font-size: 11px;
+                  color: #999999;
+                  margin-bottom: 5px;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                ">输出 (Output)</div>
+                <div style="
+                  background-color: #f8f9fa;
+                  padding: 12px;
+                  border-radius: 6px;
+                  color: #333333;
+                  font-size: 11px;
+                  line-height: 1.6;
+                  white-space: pre-wrap;
+                  word-break: break-word;
+                  max-height: 200px;
+                  overflow: hidden;
+                  border: 1px solid #e9ecef;
+                  font-family: 'Courier New', monospace;
+                ">${r.output.substring(0, 300)}${r.output.length > 300 ? '...' : ''}</div>
+              </div>
+              ` : ''}
+              
+              <!-- Evaluation Results -->
+              ${r.evalResult && r.evalResult.length > 0 ? `
+              <div>
+                <div style="
+                  font-size: 11px;
+                  color: #999999;
+                  margin-bottom: 8px;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                ">结构评估 (Evaluation)</div>
+                ${r.evalResult.map(c => `
+                  <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 6px 0;
+                    border-bottom: 1px solid #f0f0f0;
+                  ">
+                    <span style="
+                      font-size: 14px;
+                      color: ${c.pass ? '#28a745' : '#dc3545'};
+                      font-weight: 700;
+                    ">${c.pass ? '✓' : '✗'}</span>
+                    <span style="
+                      font-weight: 600;
+                      color: #333333;
+                      font-size: 12px;
+                      font-family: 'Courier New', monospace;
+                    ">${c.field}</span>
+                    <span style="
+                      color: ${c.pass ? '#666666' : '#dc3545'};
+                      font-size: 11px;
+                    ">${c.pass ? c.rule : c.error}</span>
+                  </div>
+                `).join('')}
+              </div>
+              ` : ''}
+            </div>
           </div>
         `).join('')}
+        
+        <!-- Footer -->
+        <div style="
+          margin-top: 30px;
+          padding-top: 15px;
+          border-top: 2px solid #f0f0f0;
+          color: #999999;
+          font-size: 10px;
+          text-align: center;
+        ">
+          Generated by PromptKit · ${new Date().toLocaleString('zh-CN')}
+        </div>
       </div>
     `;
+
+    // 配置 html2pdf 选项
+    const opt = {
+      margin: [10, 10, 10, 10],
+      filename: 'promptkit-report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      },
+      jsPDF: { 
+        unit: 'mm', 
+        format: 'a4', 
+        orientation: 'portrait' 
+      }
+    };
+
+    // 生成并下载 PDF
+    html2pdf().set(opt).from(tempDiv).save();
     
-    // 使用 html2pdf 导出
-    html2pdf().from(tempDiv).save('promptkit-report.pdf');
   } catch(e) {
-    // 如果 html2pdf 也不可用，回退到 jsPDF 的基本导出
-    try {
-      basicPDFExport();
-    } catch(e2) {
-      alert('PDF 导出失败：' + e.message);
-    }
+    alert('PDF 导出失败：' + e.message + '\n\n请尝试使用 JSON 导出。');
+    console.error('PDF export error:', e);
   }
 }
 
