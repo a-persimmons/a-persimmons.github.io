@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptKit</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f10;
+    --bg2: #18181b;
+    --bg3: #222226;
+    --bg4: #2a2a2f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8e8ea;
+    --text2: #9999a8;
+    --text3: #5a5a6a;
+    --accent: #5b8dee;
+    --accent-dim: rgba(91,141,238,0.15);
+    --accent-border: rgba(91,141,238,0.35);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251,191,36,0.12);
+    --font: 'Instrument Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --r: 8px;
+    --r2: 12px;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+
+  /* ── Layout ── */
+  .app { display: flex; height: 100vh; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 210px; min-width: 210px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    padding: 0;
+  }
+  .sidebar-logo {
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .name { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+  .sidebar-logo .tagline { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  .sidebar-section { padding: 10px 0 4px; }
+  .sidebar-label { font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 14px 6px; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 14px; cursor: pointer; font-size: 12.5px;
+    color: var(--text2); border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--text); background: var(--bg3); border-left-color: var(--accent); }
+  .nav-item .icon { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.6; }
+  .nav-item.active .icon { opacity: 1; }
+
+  .project-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+  .nav-item.active .project-dot { background: var(--accent); }
+
+  .sidebar-bottom { margin-top: auto; border-top: 1px solid var(--border); }
+
+  .add-project-btn {
+    margin: 10px 12px;
+    padding: 7px 10px;
+    border: 1px dashed var(--border2);
+    border-radius: var(--r);
+    color: var(--text3);
+    font-size: 11.5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .add-project-btn:hover { color: var(--text2); border-color: var(--border2); background: var(--bg3); }
+
+  /* ── Main ── */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .topbar {
+    height: 48px; min-height: 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 18px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .topbar-title { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+
+  .badge {
+    font-size: 10.5px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 500; letter-spacing: 0.01em;
+  }
+  .badge-blue { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-gray { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); }
+  .badge-red { background: var(--red-dim); color: var(--red); }
+
+  /* ── Page containers ── */
+  .page { display: none; flex: 1; overflow: hidden; flex-direction: column; }
+  .page.active { display: flex; }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: var(--font);
+    font-size: 12px; padding: 6px 14px;
+    border-radius: var(--r); border: 1px solid var(--border2);
+    background: var(--bg3); color: var(--text2);
+    cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover { color: var(--text); border-color: var(--border2); background: var(--bg4); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: transparent; }
+  .btn-primary:hover { background: #6b9aef; }
+  .btn-danger { background: var(--red-dim); color: var(--red); border-color: rgba(248,113,113,0.2); }
+  .btn-sm { font-size: 11px; padding: 4px 10px; }
+  .btn-green { background: var(--green-dim); color: var(--green); border-color: rgba(74,222,128,0.2); }
+
+  /* ── Inputs ── */
+  input, select, textarea {
+    font-family: var(--font); font-size: 12px;
+    background: var(--bg3); color: var(--text);
+    border: 1px solid var(--border2); border-radius: var(--r);
+    padding: 7px 10px; outline: none;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  input::placeholder, textarea::placeholder { color: var(--text3); }
+  select option { background: var(--bg3); }
+  textarea { resize: vertical; line-height: 1.6; }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; backdrop-filter: blur(2px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--r2); padding: 24px; min-width: 400px; max-width: 560px; width: 100%;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  }
+  .modal-title { font-size: 15px; font-weight: 600; margin-bottom: 18px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+  .form-row { margin-bottom: 14px; }
+  .form-label { font-size: 11px; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.04em; }
+  .form-row input, .form-row select, .form-row textarea { width: 100%; }
+
+  /* ══════════════════════════════
+     VERSION MANAGER PAGE
+  ══════════════════════════════ */
+  .vm-layout { flex: 1; display: flex; overflow: hidden; }
+
+  .vm-versions {
+    width: 200px; min-width: 200px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .vm-versions-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .vm-versions-header span { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .vm-versions-list { flex: 1; overflow-y: auto; }
+
+  .version-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.1s;
+  }
+  .version-item:hover { background: var(--bg3); }
+  .version-item.active { background: var(--bg3); border-left: 2px solid var(--accent); }
+  .version-item-top { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+  .version-tag { font-size: 12px; font-weight: 600; color: var(--text); }
+  .version-item-meta { font-size: 10.5px; color: var(--text3); }
+  .version-item-model { font-size: 10.5px; color: var(--text2); font-family: var(--mono); margin-top: 1px; }
+
+  .vm-work { flex: 1; display: flex; overflow: hidden; }
+
+  .vm-prompt-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .vm-tabs {
+    display: flex; border-bottom: 1px solid var(--border);
+    background: var(--bg2); padding: 0 16px;
+  }
+  .vm-tab {
+    padding: 9px 14px; font-size: 12px; color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .vm-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+  .vm-tab-content { flex: 1; display: flex; overflow: hidden; }
+
+  .prompt-editor-wrap { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .prompt-label { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .prompt-display {
+    font-family: var(--mono); font-size: 12px; line-height: 1.75;
+    color: var(--text2);
+    background: var(--bg3); border-radius: var(--r2);
+    padding: 14px 16px; border: 1px solid var(--border);
+    white-space: pre-wrap; word-break: break-word;
+    min-height: 200px;
+  }
+  .prompt-editor {
+    font-family: var(--mono); font-size: 12px; line-height: 1.75;
+    color: var(--text); width: 100%; min-height: 300px;
+    background: var(--bg3); border-radius: var(--r2);
+    padding: 14px 16px; border: 1px solid var(--border);
+  }
+  .change-note { background: var(--bg3); border-radius: var(--r); padding: 12px 14px; border: 1px solid var(--border); font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .prompt-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* Chat panel */
+  .chat-panel {
+    width: 300px; min-width: 300px;
+    border-left: 1px solid var(--border);
+    background: var(--bg2);
+    display: flex; flex-direction: column;
+  }
+  .chat-panel-header {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-panel-header span { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-msg { display: flex; flex-direction: column; gap: 3px; }
+  .chat-msg-role { font-size: 10px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; }
+  .chat-msg-bubble {
+    font-size: 12px; line-height: 1.65;
+    padding: 9px 11px; border-radius: var(--r);
+  }
+  .chat-msg.user .chat-msg-bubble { background: var(--accent-dim); color: var(--text); border: 1px solid var(--accent-border); }
+  .chat-msg.ai .chat-msg-bubble { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .chat-msg.system .chat-msg-bubble { background: transparent; color: var(--text3); border: 1px dashed var(--border); font-size: 11px; }
+  .chat-thinking { display: flex; gap: 4px; align-items: center; padding: 9px 11px; }
+  .chat-thinking span { width: 5px; height: 5px; background: var(--text3); border-radius: 50%; animation: blink 1.2s infinite; }
+  .chat-thinking span:nth-child(2) { animation-delay: 0.2s; }
+  .chat-thinking span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.2} 40%{opacity:1} }
+
+  .chat-input-area {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .chat-input-area textarea { width: 100%; height: 70px; font-size: 12px; }
+  .chat-input-actions { display: flex; justify-content: space-between; align-items: center; }
+
+  /* changelog tab */
+  .changelog-wrap { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .changelog-item {
+    background: var(--bg3); border-radius: var(--r); padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+  .changelog-item-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .changelog-item-version { font-size: 12px; font-weight: 600; color: var(--text); }
+  .changelog-item-date { font-size: 11px; color: var(--text3); }
+  .changelog-item-model { font-size: 11px; font-family: var(--mono); color: var(--text2); }
+  .changelog-item-note { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .changelog-item-sessions { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .changelog-session-link { font-size: 11px; color: var(--accent); cursor: pointer; }
+
+  /* ══════════════════════════════
+     TEST PAGE
+  ══════════════════════════════ */
+  .test-layout { flex: 1; display: flex; overflow: hidden; }
+
+  .test-config {
+    width: 270px; min-width: 270px;
+    background: var(--bg2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  .config-section { padding: 14px; border-bottom: 1px solid var(--border); }
+  .config-section-title { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+  .config-field { margin-bottom: 10px; }
+  .config-field label { display: block; font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .config-field select, .config-field input { width: 100%; }
+
+  .cases-list { display: flex; flex-direction: column; gap: 6px; }
+  .case-input-row { display: flex; gap: 6px; align-items: flex-start; }
+  .case-input-row textarea { flex: 1; height: 52px; font-size: 11.5px; }
+  .case-del-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; line-height: 1; padding: 4px; transition: color 0.15s; }
+  .case-del-btn:hover { color: var(--red); }
+  .add-case-btn {
+    margin-top: 6px; padding: 6px; border: 1px dashed var(--border2);
+    border-radius: var(--r); color: var(--text3); font-size: 11.5px;
+    text-align: center; cursor: pointer; transition: all 0.15s;
+  }
+  .add-case-btn:hover { color: var(--text2); border-color: var(--accent-border); }
+
+  .schema-editor { font-family: var(--mono); font-size: 11.5px; width: 100%; height: 100px; }
+  .eval-rules-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .eval-rule-row { display: flex; align-items: center; gap: 6px; font-size: 11.5px; }
+  .eval-rule-row .field-name { font-family: var(--mono); color: var(--text2); min-width: 70px; font-size: 11px; }
+  .eval-rule-row select { flex: 1; font-size: 11px; padding: 4px 6px; }
+  .eval-rule-row .del { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 14px; padding: 2px; }
+  .eval-rule-row .del:hover { color: var(--red); }
+
+  .concurrency-row { display: flex; align-items: center; gap: 8px; }
+  .concurrency-row input[type=number] { width: 70px; }
+  .concurrency-row span { font-size: 11px; color: var(--text2); }
+
+  .run-test-btn { margin: 14px; width: calc(100% - 28px); padding: 9px; font-size: 13px; font-weight: 500; }
+
+  /* Test results area */
+  .test-results { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .test-subtabs { display: flex; padding: 0 16px; background: var(--bg2); border-bottom: 1px solid var(--border); }
+  .test-subtab {
+    padding: 8px 14px; font-size: 12px; color: var(--text2);
+    cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 6px;
+    transition: all 0.15s;
+  }
+  .test-subtab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .test-subtab .cnt { font-size: 10px; background: var(--bg3); color: var(--text3); padding: 1px 6px; border-radius: 3px; }
+
+  .test-status-view { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+  .case-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--r2); overflow: hidden; transition: border-color 0.15s;
+  }
+  .case-card:hover { border-color: var(--border2); }
+  .case-card-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; cursor: pointer;
+  }
+  .case-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 24px; }
+  .case-preview { font-size: 12px; color: var(--text2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .status-chip { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500; flex-shrink: 0; }
+  .chip-pass { background: var(--green-dim); color: var(--green); }
+  .chip-fail { background: var(--red-dim); color: var(--red); }
+  .chip-running { background: var(--amber-dim); color: var(--amber); }
+  .chip-pending { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+
+  .case-card-body {
+    border-top: 1px solid var(--border);
+    padding: 12px 14px;
+    display: flex; gap: 12px;
+  }
+  .case-col { flex: 1; }
+  .col-label { font-size: 10px; color: var(--text3); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+  .col-code {
+    font-family: var(--mono); font-size: 11.5px; line-height: 1.7;
+    color: var(--text2); background: var(--bg3);
+    padding: 9px 11px; border-radius: var(--r);
+    border: 1px solid var(--border); white-space: pre-wrap; word-break: break-all;
+  }
+  .eval-checks { display: flex; flex-direction: column; gap: 5px; }
+  .eval-check-row { display: flex; align-items: center; gap: 6px; font-size: 11.5px; }
+  .check-icon-ok { color: var(--green); font-size: 12px; }
+  .check-icon-fail { color: var(--red); font-size: 12px; }
+  .check-field { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+  .check-rule { color: var(--text3); font-size: 11px; }
+  .check-err { color: var(--red); font-size: 11px; }
+
+  /* spinner */
+  .spinner {
+    width: 14px; height: 14px; border: 2px solid var(--border2);
+    border-top-color: var(--amber); border-radius: 50%;
+    animation: spin 0.7s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Report view */
+  .report-view { flex: 1; overflow-y: auto; padding: 16px 18px; }
+  .report-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .stat-card { background: var(--bg3); border-radius: var(--r); padding: 12px 14px; }
+  .stat-label { font-size: 10.5px; color: var(--text3); margin-bottom: 4px; }
+  .stat-value { font-size: 26px; font-weight: 600; }
+  .stat-green { color: var(--green); }
+  .stat-red { color: var(--red); }
+  .stat-amber { color: var(--amber); }
+  .stat-white { color: var(--text); }
+
+  .report-table-wrap { background: var(--bg2); border-radius: var(--r2); border: 1px solid var(--border); overflow: hidden; }
+  .report-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .report-table th {
+    text-align: left; font-size: 10.5px; font-weight: 500;
+    color: var(--text3); padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3); letter-spacing: 0.03em;
+  }
+  .report-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  .report-table tr:last-child td { border-bottom: none; }
+  .td-mono { font-family: var(--mono); font-size: 11px; }
+  .report-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+  /* ── API Config Page ── */
+  .api-config-page { flex: 1; overflow-y: auto; padding: 24px; }
+  .api-config-page h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .api-config-page .page-sub { font-size: 12px; color: var(--text3); margin-bottom: 24px; }
+  .configs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .config-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--r2); padding: 16px; cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .config-card:hover { border-color: var(--border2); }
+  .config-card.selected { border-color: var(--accent); }
+  .config-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .config-card-name { font-size: 13px; font-weight: 600; }
+  .config-card-body { font-size: 11.5px; color: var(--text2); line-height: 1.7; }
+  .config-card-body .mono { font-family: var(--mono); color: var(--text3); }
+  .config-card-actions { display: flex; gap: 6px; margin-top: 12px; }
+
+  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text3); }
+  .empty-state p { font-size: 13px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* collapse animation */
+  .case-card-body { transition: none; }
+
+  .pulse { animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="name">PromptKit</div>
+      <div class="tagline">提示词管理工具</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">项目</div>
+      <div id="projectNavList"></div>
+      <div class="add-project-btn" onclick="openNewProjectModal()">+ 新建项目</div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="nav-item" id="nav-versions" onclick="switchMainPage('versions')">
+        <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="3" width="12" height="3" rx="1"/><rect x="2" y="8" width="8" height="3" rx="1"/><rect x="2" y="13" width="5" height="1.5" rx="0.75"/></svg>
+        版本管理
+      </div>
+      <div class="nav-item" id="nav-test" onclick="switchMainPage('test')">
+        <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        并发测试
+      </div>
+      <div class="nav-item" id="nav-apiconfig" onclick="switchMainPage('apiconfig')">
+        <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M11.1 4.9l-1.4 1.4M4.9 11.1l-1.4 1.4" stroke-linecap="round"/></svg>
+        模型 API 配置
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="topbar-title" id="topbarTitle">选择项目</span>
+        <span id="topbarProjectBadge" class="badge badge-gray" style="display:none"></span>
+      </div>
+      <div class="topbar-right" id="topbarRight"></div>
+    </div>
+
+    <!-- Page: Version Manager -->
+    <div class="page" id="page-versions">
+      <div class="vm-layout">
+        <!-- versions list -->
+        <div class="vm-versions">
+          <div class="vm-versions-header">
+            <span>版本历史</span>
+            <button class="btn btn-sm btn-primary" onclick="openNewVersionModal()">+ 新版本</button>
+          </div>
+          <div class="vm-versions-list" id="versionsList"></div>
+        </div>
+
+        <!-- work area -->
+        <div class="vm-work" id="vmWork">
+          <div class="empty-state" id="vmEmptyState">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            <p>选择或新建一个版本</p>
+          </div>
+          <div class="vm-prompt-area" id="vmPromptArea" style="display:none">
+            <div class="vm-tabs">
+              <div class="vm-tab active" onclick="switchVmTab('prompt', this)">提示词</div>
+              <div class="vm-tab" onclick="switchVmTab('changelog', this)">变更记录</div>
+            </div>
+            <div class="vm-tab-content">
+              <!-- Prompt tab -->
+              <div id="vmTabPrompt" class="vm-tab-content" style="flex:1;overflow:hidden;display:flex;">
+                <div class="prompt-editor-wrap" id="promptEditorWrap">
+                  <div>
+                    <div class="prompt-label">提示词内容</div>
+                    <div class="prompt-display" id="promptDisplay"></div>
+                    <textarea class="prompt-editor" id="promptEditor" style="display:none"></textarea>
+                  </div>
+                  <div class="prompt-actions" id="promptActions">
+                    <button class="btn" onclick="editPrompt()">编辑提示词</button>
+                    <button class="btn btn-primary" onclick="openChatPanel()">开始调整对话 →</button>
+                  </div>
+                  <div class="prompt-actions" id="editActions" style="display:none">
+                    <button class="btn btn-primary" onclick="savePromptEdit()">保存</button>
+                    <button class="btn" onclick="cancelPromptEdit()">取消</button>
+                  </div>
+                  <div id="changeNoteWrap" style="display:none">
+                    <div class="prompt-label">本次变更说明</div>
+                    <div class="change-note" id="changeNoteDisplay"></div>
+                  </div>
+                </div>
+                <!-- Chat panel -->
+                <div class="chat-panel" id="chatPanel" style="display:none">
+                  <div class="chat-panel-header">
+                    <span>调整对话</span>
+                    <span class="badge badge-blue" id="chatLinkedBadge">关联 V?</span>
+                  </div>
+                  <div class="chat-messages" id="chatMessages"></div>
+                  <div class="chat-input-area">
+                    <textarea id="chatInput" placeholder="描述发现的问题或想调整的地方…" onkeydown="handleChatKey(event)"></textarea>
+                    <div class="chat-input-actions">
+                      <button class="btn btn-green btn-sm" onclick="commitVersion()">定版为新版本</button>
+                      <button class="btn btn-primary btn-sm" onclick="sendChatMsg()">发送</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Changelog tab -->
+              <div id="vmTabChangelog" class="changelog-wrap" style="display:none;flex:1;overflow-y:auto;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page: Test -->
+    <div class="page" id="page-test">
+      <div class="test-layout">
+        <!-- Config -->
+        <div class="test-config">
+          <div class="config-section">
+            <div class="config-section-title">测试配置</div>
+            <div class="config-field">
+              <label>提示词版本</label>
+              <select id="testVersionSelect" onchange="onTestConfigChange()"></select>
+            </div>
+            <div class="config-field">
+              <label>模型配置</label>
+              <select id="testModelSelect" onchange="onTestConfigChange()"></select>
+            </div>
+            <div class="config-field">
+              <label>并发数</label>
+              <div class="concurrency-row">
+                <input type="number" id="concurrencyInput" value="3" min="1" max="20">
+                <span>条同时执行</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">测试用例</div>
+            <div class="cases-list" id="casesList"></div>
+            <div class="add-case-btn" onclick="addTestCase()">+ 添加用例</div>
+          </div>
+
+          <div class="config-section">
+            <div class="config-section-title">期望结构 (JSON Schema)</div>
+            <textarea class="schema-editor" id="schemaEditor" placeholder='{"field": "string", "arr": "array"}'>{
+  "emotion": "string",
+  "dialogue": "string",
+  "options": "array"
+}</textarea>
+            <div class="eval-rules-list" id="evalRulesList"></div>
+            <div class="add-case-btn" style="margin-top:8px" onclick="openAddRuleModal()">+ 添加评估规则</div>
+          </div>
+
+          <button class="btn btn-primary run-test-btn" onclick="runTests()">执行并发测试 →</button>
+        </div>
+
+        <!-- Results -->
+        <div class="test-results">
+          <div class="test-subtabs">
+            <div class="test-subtab active" id="subtab-status" onclick="switchTestSubtab('status')">
+              测试状态 <span class="cnt" id="statusCount">0</span>
+            </div>
+            <div class="test-subtab" id="subtab-report" onclick="switchTestSubtab('report')">
+              报告
+            </div>
+          </div>
+
+          <div id="testStatusView" class="test-status-view"></div>
+          <div id="testReportView" class="report-view" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page: API Config -->
+    <div class="page" id="page-apiconfig">
+      <div class="api-config-page">
+        <h2>模型 API 配置</h2>
+        <p class="page-sub">支持 OpenAI 规范兼容的接口，可配置多套供切换使用</p>
+        <div class="configs-grid" id="apiConfigsGrid"></div>
+        <button class="btn btn-primary" onclick="openAddConfigModal()">+ 新建配置</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Modals ─── -->
+
+<!-- New Project -->
+<div class="modal-overlay" id="newProjectModal">
+  <div class="modal">
+    <div class="modal-title">新建项目</div>
+    <div class="form-row"><div class="form-label">项目名称</div><input id="newProjectName" placeholder="例：游戏NPC对话"></div>
+    <div class="form-row"><div class="form-label">描述（可选）</div><textarea id="newProjectDesc" placeholder="简要说明这个提示词的用途" style="height:70px"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('newProjectModal')">取消</button>
+      <button class="btn btn-primary" onclick="createProject()">创建</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Version -->
+<div class="modal-overlay" id="newVersionModal">
+  <div class="modal">
+    <div class="modal-title">新建版本</div>
+    <div class="form-row"><div class="form-label">使用的模型配置</div><select id="newVersionModel" style="width:100%"></select></div>
+    <div class="form-row"><div class="form-label">提示词内容</div><textarea id="newVersionPrompt" style="height:180px;width:100%;font-family:var(--mono);font-size:12px;" placeholder="输入提示词…"></textarea></div>
+    <div class="form-row"><div class="form-label">变更说明</div><input id="newVersionNote" placeholder="简要说明本次变更原因"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('newVersionModal')">取消</button>
+      <button class="btn btn-primary" onclick="createVersion()">创建版本</button>
+    </div>
+  </div>
+</div>
+
+<!-- Commit Version (from chat) -->
+<div class="modal-overlay" id="commitModal">
+  <div class="modal">
+    <div class="modal-title">定版为新版本</div>
+    <div class="form-row"><div class="form-label">新提示词内容（基于本次对话调整）</div><textarea id="commitPrompt" style="height:200px;width:100%;font-family:var(--mono);font-size:12px;"></textarea></div>
+    <div class="form-row"><div class="form-label">变更说明</div><input id="commitNote" placeholder="总结本次调整的改动点"></div>
+    <div class="form-row"><div class="form-label">模型配置</div><select id="commitModel" style="width:100%"></select></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('commitModal')">取消</button>
+      <button class="btn btn-primary" onclick="doCommitVersion()">确认定版</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add API Config -->
+<div class="modal-overlay" id="addConfigModal">
+  <div class="modal">
+    <div class="modal-title">新建 API 配置</div>
+    <div class="form-row"><div class="form-label">配置名称</div><input id="cfgName" placeholder="例：GPT-4o 官方"></div>
+    <div class="form-row"><div class="form-label">Base URL</div><input id="cfgBaseUrl" placeholder="https://api.openai.com/v1"></div>
+    <div class="form-row"><div class="form-label">API Key</div><input id="cfgApiKey" placeholder="sk-..." type="password"></div>
+    <div class="form-row"><div class="form-label">模型名称</div><input id="cfgModel" placeholder="gpt-4o"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('addConfigModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveApiConfig()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Eval Rule -->
+<div class="modal-overlay" id="addRuleModal">
+  <div class="modal" style="min-width:340px">
+    <div class="modal-title">添加评估规则</div>
+    <div class="form-row"><div class="form-label">字段名</div><input id="ruleField" placeholder="例：emotion"></div>
+    <div class="form-row"><div class="form-label">评估方式</div>
+      <select id="ruleType" style="width:100%">
+        <option value="exists">字段存在</option>
+        <option value="nonempty">非空</option>
+        <option value="nonempty_array">数组非空</option>
+        <option value="type_string">类型为 string</option>
+        <option value="type_array">类型为 array</option>
+        <option value="type_number">类型为 number</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('addRuleModal')">取消</button>
+      <button class="btn btn-primary" onclick="addEvalRule()">添加</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// STATE & STORAGE
+// ══════════════════════════════════════════════
+const STORE_KEYS = { projects:'pk_projects', configs:'pk_apiconfigs', currentProject:'pk_curProject' };
+
+let state = {
+  projects: [],
+  apiConfigs: [],
+  currentProjectId: null,
+  currentVersionId: null,
+  currentPage: 'versions',
+  chatHistory: [],
+  testCases: [],
+  testResults: [],
+  evalRules: [],
+  testRunning: false,
+};
+
+function save() {
+  localStorage.setItem(STORE_KEYS.projects, JSON.stringify(state.projects));
+  localStorage.setItem(STORE_KEYS.configs, JSON.stringify(state.apiConfigs));
+  localStorage.setItem(STORE_KEYS.currentProject, state.currentProjectId || '');
+}
+
+function load() {
+  state.projects = JSON.parse(localStorage.getItem(STORE_KEYS.projects) || '[]');
+  state.apiConfigs = JSON.parse(localStorage.getItem(STORE_KEYS.configs) || '[]');
+  state.currentProjectId = localStorage.getItem(STORE_KEYS.currentProject) || null;
+  // seed demo data
+  if (state.projects.length === 0) seedDemoData();
+}
+
+function seedDemoData() {
+  const cfgId = uid();
+  state.apiConfigs.push({ id: cfgId, name: 'GPT-4o 官方', baseUrl: 'https://api.openai.com/v1', apiKey: '', model: 'gpt-4o' });
+  const proj = { id: uid(), name: '游戏 NPC 对话', desc: 'NPC对话生成提示词', versions: [], sessions: [] };
+  const v1 = makeVersion(cfgId, `你是一名古代奇幻世界的NPC角色。\n\n根据以下要求生成对话：\n- 保持角色人格一致性\n- 不使用现代词汇\n- 情绪需与对话内容匹配\n\n按以下JSON格式输出：\n{\n  "emotion": "",\n  "dialogue": "",\n  "options": []\n}`, '初始版本', 1);
+  proj.versions.push(v1);
+  state.projects.push(proj);
+  state.currentProjectId = proj.id;
+  state.currentVersionId = v1.id;
+}
+
+function uid() { return Math.random().toString(36).slice(2, 10); }
+
+function makeVersion(configId, prompt, note, num) {
+  return { id: uid(), num, prompt, note, configId, createdAt: new Date().toLocaleDateString('zh-CN'), sessions: [] };
+}
+
+function currentProject() { return state.projects.find(p => p.id === state.currentProjectId); }
+function currentVersion() {
+  const p = currentProject(); if (!p) return null;
+  return p.versions.find(v => v.id === state.currentVersionId);
+}
+function getConfig(id) { return state.apiConfigs.find(c => c.id === id); }
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function switchMainPage(page) {
+  state.currentPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item[id^=nav-]').forEach(n => n.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+
+  // topbar
+  const titleMap = { versions: '版本管理', test: '并发测试', apiconfig: 'API 配置' };
+  document.getElementById('topbarTitle').textContent = titleMap[page] || page;
+  renderTopbarBadges();
+  if (page === 'test') populateTestSelects();
+  if (page === 'apiconfig') renderApiConfigs();
+}
+
+function selectProject(id) {
+  state.currentProjectId = id;
+  state.currentVersionId = null;
+  save();
+  renderProjectNav();
+  renderTopbarBadges();
+  if (state.currentPage === 'versions') renderVersions();
+}
+
+function renderProjectNav() {
+  const list = document.getElementById('projectNavList');
+  list.innerHTML = '';
+  state.projects.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'nav-item' + (p.id === state.currentProjectId ? ' active' : '');
+    div.innerHTML = `<div class="project-dot"></div>${escHtml(p.name)}`;
+    div.onclick = () => { selectProject(p.id); switchMainPage('versions'); };
+    list.appendChild(div);
+  });
+}
+
+function renderTopbarBadges() {
+  const proj = currentProject();
+  const badge = document.getElementById('topbarProjectBadge');
+  const right = document.getElementById('topbarRight');
+  right.innerHTML = '';
+  if (proj) {
+    badge.textContent = proj.name; badge.style.display = '';
+    document.getElementById('topbarTitle').textContent = { versions:'版本管理', test:'并发测试', apiconfig:'API 配置' }[state.currentPage];
+  } else {
+    badge.style.display = 'none';
+  }
+  if (state.currentPage === 'versions' && currentVersion()) {
+    const v = currentVersion();
+    const cfg = getConfig(v.configId);
+    right.innerHTML = `<span class="badge badge-blue">V${v.num}</span>${cfg ? `<span class="badge badge-gray">${escHtml(cfg.model)}</span>` : ''}`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// VERSION MANAGER
+// ══════════════════════════════════════════════
+function renderVersions() {
+  const proj = currentProject();
+  const list = document.getElementById('versionsList');
+  list.innerHTML = '';
+  if (!proj) return;
+  [...proj.versions].reverse().forEach(v => {
+    const cfg = getConfig(v.configId);
+    const isActive = v.id === state.currentVersionId;
+    const isLatest = v.num === Math.max(...proj.versions.map(x => x.num));
+    const item = document.createElement('div');
+    item.className = 'version-item' + (isActive ? ' active' : '');
+    item.innerHTML = `
+      <div class="version-item-top">
+        <span class="version-tag">V${v.num}</span>
+        ${isLatest ? '<span class="badge badge-green" style="font-size:9px;padding:1px 5px;">最新</span>' : ''}
+      </div>
+      <div class="version-item-meta">${v.createdAt}</div>
+      <div class="version-item-model">${cfg ? escHtml(cfg.model) : '未知模型'}</div>
+    `;
+    item.onclick = () => selectVersion(v.id);
+    list.appendChild(item);
+  });
+  renderVersionDetail();
+}
+
+function selectVersion(id) {
+  state.currentVersionId = id;
+  state.chatHistory = [];
+  renderVersions();
+  renderTopbarBadges();
+}
+
+function renderVersionDetail() {
+  const v = currentVersion();
+  const empty = document.getElementById('vmEmptyState');
+  const area = document.getElementById('vmPromptArea');
+  const chat = document.getElementById('chatPanel');
+  if (!v) { empty.style.display = ''; area.style.display = 'none'; return; }
+  empty.style.display = 'none'; area.style.display = '';
+  document.getElementById('promptDisplay').textContent = v.prompt;
+  document.getElementById('promptEditor').value = v.prompt;
+  document.getElementById('changeNoteWrap').style.display = v.note ? '' : 'none';
+  document.getElementById('changeNoteDisplay').textContent = v.note || '';
+  document.getElementById('chatLinkedBadge').textContent = `关联 V${v.num}`;
+  chat.style.display = 'none';
+  cancelPromptEdit();
+  renderChangelog();
+}
+
+function switchVmTab(tab, el) {
+  document.querySelectorAll('.vm-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('vmTabPrompt').style.display = tab === 'prompt' ? 'flex' : 'none';
+  document.getElementById('vmTabChangelog').style.display = tab === 'changelog' ? 'flex' : 'none';
+  if (tab === 'changelog') renderChangelog();
+}
+
+function renderChangelog() {
+  const proj = currentProject(); if (!proj) return;
+  const wrap = document.getElementById('vmTabChangelog');
+  wrap.innerHTML = '';
+  [...proj.versions].reverse().forEach(v => {
+    const cfg = getConfig(v.configId);
+    const div = document.createElement('div');
+    div.className = 'changelog-item';
+    div.innerHTML = `
+      <div class="changelog-item-header">
+        <span class="changelog-item-version">V${v.num}</span>
+        <span class="changelog-item-date">${v.createdAt}</span>
+        <span class="changelog-item-model">${cfg ? escHtml(cfg.model) : ''}</span>
+      </div>
+      <div class="changelog-item-note">${escHtml(v.note || '（无变更说明）')}</div>
+      ${v.sessions && v.sessions.length ? `<div class="changelog-item-sessions"><span class="changelog-session-link">查看 ${v.sessions.length} 条调整记录</span></div>` : ''}
+    `;
+    wrap.appendChild(div);
+  });
+  if (!proj.versions.length) wrap.innerHTML = '<div style="color:var(--text3);font-size:12px;padding:16px;">暂无版本记录</div>';
+}
+
+function editPrompt() {
+  document.getElementById('promptDisplay').style.display = 'none';
+  document.getElementById('promptEditor').style.display = '';
+  document.getElementById('promptActions').style.display = 'none';
+  document.getElementById('editActions').style.display = '';
+}
+function cancelPromptEdit() {
+  document.getElementById('promptDisplay').style.display = '';
+  document.getElementById('promptEditor').style.display = 'none';
+  document.getElementById('promptActions').style.display = '';
+  document.getElementById('editActions').style.display = 'none';
+}
+function savePromptEdit() {
+  const v = currentVersion(); if (!v) return;
+  v.prompt = document.getElementById('promptEditor').value;
+  document.getElementById('promptDisplay').textContent = v.prompt;
+  save();
+  cancelPromptEdit();
+}
+
+// ── New project / version modals ──
+function openNewProjectModal() {
+  document.getElementById('newProjectName').value = '';
+  document.getElementById('newProjectDesc').value = '';
+  openModal('newProjectModal');
+}
+function createProject() {
+  const name = document.getElementById('newProjectName').value.trim();
+  if (!name) return alert('请输入项目名称');
+  const proj = { id: uid(), name, desc: document.getElementById('newProjectDesc').value, versions: [], sessions: [] };
+  state.projects.push(proj);
+  state.currentProjectId = proj.id;
+  state.currentVersionId = null;
+  save(); closeModal('newProjectModal');
+  renderProjectNav(); renderVersions(); switchMainPage('versions');
+}
+
+function openNewVersionModal() {
+  if (!currentProject()) return alert('请先选择项目');
+  const sel = document.getElementById('newVersionModel');
+  sel.innerHTML = state.apiConfigs.map(c => `<option value="${c.id}">${escHtml(c.name)}</option>`).join('');
+  if (!state.apiConfigs.length) { alert('请先在「模型 API 配置」中添加配置'); return; }
+  document.getElementById('newVersionPrompt').value = currentVersion()?.prompt || '';
+  document.getElementById('newVersionNote').value = '';
+  openModal('newVersionModal');
+}
+function createVersion() {
+  const proj = currentProject(); if (!proj) return;
+  const prompt = document.getElementById('newVersionPrompt').value.trim();
+  if (!prompt) return alert('请输入提示词内容');
+  const cfgId = document.getElementById('newVersionModel').value;
+  const note = document.getElementById('newVersionNote').value;
+  const num = proj.versions.length ? Math.max(...proj.versions.map(v => v.num)) + 1 : 1;
+  const v = makeVersion(cfgId, prompt, note, num);
+  proj.versions.push(v);
+  state.currentVersionId = v.id;
+  save(); closeModal('newVersionModal');
+  renderVersions(); renderTopbarBadges();
+}
+
+// ── Chat panel ──
+function openChatPanel() {
+  const panel = document.getElementById('chatPanel');
+  panel.style.display = '';
+  state.chatHistory = [];
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML = '';
+  const v = currentVersion(); if (!v) return;
+  addChatMsg('system', `已读取 V${v.num} 提示词，理解当前设计意图。可以开始描述你遇到的问题。`);
+  // Prime AI with the prompt
+  state.chatHistory = [
+    { role: 'user', content: `我需要你帮我调整以下提示词，你先理解它，然后等我告诉你具体问题：\n\n${v.prompt}` }
+  ];
+  callAI(null, true);
+}
+
+function addChatMsg(role, text) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${role}`;
+  const labelMap = { user:'你', ai:'AI', system:'系统' };
+  div.innerHTML = `<div class="chat-msg-role">${labelMap[role]||role}</div><div class="chat-msg-bubble">${escHtml(text)}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addThinkingIndicator() {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ai'; div.id = 'thinkingIndicator';
+  div.innerHTML = `<div class="chat-msg-role">AI</div><div class="chat-thinking"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function removeThinkingIndicator() {
+  const el = document.getElementById('thinkingIndicator');
+  if (el) el.remove();
+}
+
+function handleChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMsg(); } }
+
+async function sendChatMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim(); if (!text) return;
+  input.value = '';
+  addChatMsg('user', text);
+  state.chatHistory.push({ role: 'user', content: text });
+  await callAI(text, false);
+}
+
+async function callAI(userMsg, isInit) {
+  const cfg = getActiveConfig();
+  if (!cfg) {
+    addChatMsg('system', '未找到可用的 API 配置，请先在「模型 API 配置」中添加。');
+    return;
+  }
+  addThinkingIndicator();
+  try {
+    const messages = isInit ? state.chatHistory : state.chatHistory;
+    const res = await fetch(`${cfg.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.apiKey}` },
+      body: JSON.stringify({
+        model: cfg.model,
+        messages: [
+          { role: 'system', content: '你是一名提示词工程专家，帮助用户分析和优化提示词。用中文回答，简洁清晰。' },
+          ...messages
+        ],
+        max_tokens: 800,
+        temperature: 0.7
+      })
+    });
+    const data = await res.json();
+    removeThinkingIndicator();
+    const reply = data.choices?.[0]?.message?.content || '（无响应）';
+    state.chatHistory.push({ role: 'assistant', content: reply });
+    addChatMsg('ai', reply);
+    // Save session to version
+    const v = currentVersion();
+    if (v) {
+      if (!v.sessions) v.sessions = [];
+      v.sessions.push({ role: isInit ? 'ai_init' : 'exchange', user: userMsg, ai: reply, ts: Date.now() });
+      save();
+    }
+  } catch(e) {
+    removeThinkingIndicator();
+    addChatMsg('system', `请求失败：${e.message}。请检查 API 配置是否正确。`);
+  }
+}
+
+function getActiveConfig() {
+  if (state.apiConfigs.length === 0) return null;
+  const v = currentVersion();
+  if (v) { const c = getConfig(v.configId); if (c) return c; }
+  return state.apiConfigs[0];
+}
+
+function commitVersion() {
+  const v = currentVersion(); if (!v) return;
+  document.getElementById('commitPrompt').value = v.prompt;
+  document.getElementById('commitNote').value = '';
+  const sel = document.getElementById('commitModel');
+  sel.innerHTML = state.apiConfigs.map(c => `<option value="${c.id}"${c.id===v.configId?' selected':''}>${escHtml(c.name)}</option>`).join('');
+  openModal('commitModal');
+}
+function doCommitVersion() {
+  const proj = currentProject(); if (!proj) return;
+  const prompt = document.getElementById('commitPrompt').value.trim();
+  if (!prompt) return alert('请输入提示词内容');
+  const note = document.getElementById('commitNote').value;
+  const cfgId = document.getElementById('commitModel').value;
+  const num = Math.max(...proj.versions.map(v => v.num)) + 1;
+  const newV = makeVersion(cfgId, prompt, note, num);
+  // copy session history
+  const curV = currentVersion();
+  if (curV && state.chatHistory.length) {
+    newV.sessions = state.chatHistory.map((m,i) => ({ ...m, ts: Date.now() + i }));
+  }
+  proj.versions.push(newV);
+  state.currentVersionId = newV.id;
+  state.chatHistory = [];
+  save(); closeModal('commitModal');
+  renderVersions(); renderTopbarBadges();
+  document.getElementById('chatPanel').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════
+// TEST PAGE
+// ══════════════════════════════════════════════
+function populateTestSelects() {
+  const vSel = document.getElementById('testVersionSelect');
+  const mSel = document.getElementById('testModelSelect');
+  vSel.innerHTML = '';
+  state.projects.forEach(p => {
+    [...p.versions].reverse().forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = `${p.id}|${v.id}`;
+      opt.textContent = `${p.name} · V${v.num}`;
+      vSel.appendChild(opt);
+    });
+  });
+  mSel.innerHTML = state.apiConfigs.map(c => `<option value="${c.id}">${escHtml(c.name)} · ${escHtml(c.model)}</option>`).join('');
+  if (state.testCases.length === 0) {
+    state.testCases = ['', ''];
+    renderTestCases();
+  }
+}
+
+function onTestConfigChange() {}
+
+function renderTestCases() {
+  const list = document.getElementById('casesList');
+  list.innerHTML = '';
+  state.testCases.forEach((tc, i) => {
+    const row = document.createElement('div');
+    row.className = 'case-input-row';
+    row.innerHTML = `<textarea placeholder="输入测试用例 ${i+1}…">${escHtml(tc)}</textarea><button class="case-del-btn" onclick="delTestCase(${i})">×</button>`;
+    row.querySelector('textarea').oninput = e => { state.testCases[i] = e.target.value; };
+    list.appendChild(row);
+  });
+}
+function addTestCase() { state.testCases.push(''); renderTestCases(); }
+function delTestCase(i) { state.testCases.splice(i, 1); renderTestCases(); }
+
+// Eval rules
+function openAddRuleModal() { document.getElementById('ruleField').value=''; openModal('addRuleModal'); }
+function addEvalRule() {
+  const field = document.getElementById('ruleField').value.trim();
+  if (!field) return alert('请输入字段名');
+  const type = document.getElementById('ruleType').value;
+  state.evalRules.push({ field, type });
+  closeModal('addRuleModal');
+  renderEvalRules();
+}
+function renderEvalRules() {
+  const list = document.getElementById('evalRulesList');
+  list.innerHTML = '';
+  const typeLabels = { exists:'字段存在', nonempty:'非空', nonempty_array:'数组非空', type_string:'类型 string', type_array:'类型 array', type_number:'类型 number' };
+  state.evalRules.forEach((r,i) => {
+    const div = document.createElement('div');
+    div.className = 'eval-rule-row';
+    div.innerHTML = `<span class="field-name">${escHtml(r.field)}</span><span style="color:var(--text3);font-size:11px;">${typeLabels[r.type]||r.type}</span><button class="del" onclick="delEvalRule(${i})">×</button>`;
+    list.appendChild(div);
+  });
+}
+function delEvalRule(i) { state.evalRules.splice(i,1); renderEvalRules(); }
+
+// ── Run tests ──
+async function runTests() {
+  if (state.testRunning) return;
+  const cases = state.testCases.filter(c => c.trim());
+  if (!cases.length) return alert('请至少添加一条测试用例');
+  const cfgId = document.getElementById('testModelSelect').value;
+  const cfg = getConfig(cfgId);
+  if (!cfg) return alert('请先配置 API');
+
+  const vSel = document.getElementById('testVersionSelect').value;
+  if (!vSel) return alert('请选择版本');
+  const [projId, verId] = vSel.split('|');
+  const proj = state.projects.find(p => p.id === projId);
+  const ver = proj?.versions.find(v => v.id === verId);
+  if (!ver) return alert('版本不存在');
+
+  const concurrency = parseInt(document.getElementById('concurrencyInput').value) || 3;
+
+  state.testRunning = true;
+  state.testResults = cases.map((c,i) => ({ id:i, input:c, status:'pending', output:null, evalResult:null }));
+  renderTestStatus();
+  switchTestSubtab('status');
+
+  // Run in batches
+  for (let i = 0; i < cases.length; i += concurrency) {
+    const batch = state.testResults.slice(i, i + concurrency);
+    batch.forEach(r => { r.status = 'running'; });
+    renderTestStatus();
+    await Promise.all(batch.map(r => runSingleTest(r, ver, cfg)));
+    renderTestStatus();
+  }
+  state.testRunning = false;
+  renderTestStatus();
+  renderReport();
+  document.getElementById('subtab-report').style.fontWeight = '600';
+}
+
+async function runSingleTest(result, ver, cfg) {
+  try {
+    const res = await fetch(`${cfg.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.apiKey}` },
+      body: JSON.stringify({
+        model: cfg.model,
+        messages: [
+          { role: 'system', content: ver.prompt },
+          { role: 'user', content: result.input }
+        ],
+        max_tokens: 600,
+        temperature: 0.7
+      })
+    });
+    const data = await res.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    result.output = text;
+    result.evalResult = evaluateOutput(text);
+    result.status = result.evalResult.every(r=>r.pass) ? 'pass' : 'fail';
+  } catch(e) {
+    result.output = `请求失败: ${e.message}`;
+    result.status = 'fail';
+    result.evalResult = [];
+  }
+}
+
+function evaluateOutput(text) {
+  let parsed = null;
+  try {
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
+  } catch(e) {}
+
+  const checks = [];
+  const typeLabels = { exists:'字段存在', nonempty:'非空', nonempty_array:'数组非空', type_string:'类型 string', type_array:'类型 array', type_number:'类型 number' };
+
+  if (!parsed) {
+    // Try schema-based checks with no data
+    const schemaRules = getSchemaRules();
+    schemaRules.forEach(r => checks.push({ field:r.field, rule: typeLabels[r.type]||r.type, pass:false, error:'无法解析 JSON' }));
+    if (!checks.length) checks.push({ field:'JSON格式', rule:'可解析', pass:false, error:'输出不是有效JSON' });
+    return checks;
+  }
+
+  // Schema field type checks
+  const schemaRules = getSchemaRules();
+  schemaRules.forEach(r => {
+    const val = parsed[r.field];
+    let pass = false, error = '';
+    if (r.type === 'exists') { pass = r.field in parsed; error = pass?'':'字段不存在'; }
+    else if (r.type === 'nonempty') { pass = val !== undefined && val !== null && val !== ''; error = pass?'':'值为空'; }
+    else if (r.type === 'nonempty_array') { pass = Array.isArray(val) && val.length > 0; error = pass?'':'数组为空或不是数组'; }
+    else if (r.type === 'type_string') { pass = typeof val === 'string'; error = pass?'':'类型不是 string'; }
+    else if (r.type === 'type_array') { pass = Array.isArray(val); error = pass?'':'类型不是 array'; }
+    else if (r.type === 'type_number') { pass = typeof val === 'number'; error = pass?'':'类型不是 number'; }
+    checks.push({ field:r.field, rule: typeLabels[r.type]||r.type, pass, error });
+  });
+
+  // Also check all schema keys
+  if (!schemaRules.length) {
+    try {
+      const schema = JSON.parse(document.getElementById('schemaEditor').value);
+      Object.entries(schema).forEach(([k,v]) => {
+        const val = parsed[k];
+        const pass = k in parsed;
+        checks.push({ field:k, rule:'字段存在', pass, error: pass?'':'字段缺失' });
+      });
+    } catch(e) {}
+  }
+  if (!checks.length) checks.push({ field:'JSON格式', rule:'可解析', pass:true, error:'' });
+  return checks;
+}
+
+function getSchemaRules() {
+  return state.evalRules;
+}
+
+function renderTestStatus() {
+  const view = document.getElementById('testStatusView');
+  const count = document.getElementById('statusCount');
+  count.textContent = state.testResults.length;
+  view.innerHTML = '';
+  state.testResults.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'case-card';
+    const statusMap = { pending:'chip-pending', running:'chip-running', pass:'chip-pass', fail:'chip-fail' };
+    const statusLabel = { pending:'等待中', running:'执行中', pass:'通过', fail:'失败' };
+    const hasResult = r.status !== 'pending' && r.status !== 'running';
+    const allPass = r.evalResult?.every(x=>x.pass);
+    card.innerHTML = `
+      <div class="case-card-header" onclick="toggleCaseCard(this)">
+        <span class="case-num">#${r.id+1}</span>
+        <span class="case-preview">${escHtml(r.input)}</span>
+        ${r.status==='running' ? '<div class="spinner"></div>' : ''}
+        <span class="status-chip ${statusMap[r.status]}">${statusLabel[r.status]}</span>
+        ${hasResult ? `<span style="font-size:10px;color:${allPass?'var(--green)':'var(--red)'};">${allPass?'✓ 结构符合':'✗ 结构异常'}</span>` : ''}
+      </div>
+      ${hasResult ? `
+      <div class="case-card-body" style="display:none">
+        <div class="case-col">
+          <div class="col-label">输出结果</div>
+          <div class="col-code">${escHtml(r.output||'')}</div>
+        </div>
+        <div class="case-col" style="max-width:180px;min-width:160px;">
+          <div class="col-label">结构评估</div>
+          <div class="eval-checks">
+            ${(r.evalResult||[]).map(c=>`
+              <div class="eval-check-row">
+                <span class="${c.pass?'check-icon-ok':'check-icon-fail'}">${c.pass?'✓':'✗'}</span>
+                <span class="check-field">${escHtml(c.field)}</span>
+                <span class="${c.pass?'check-rule':'check-err'}">${escHtml(c.pass?c.rule:c.error)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>` : ''}
+    `;
+    view.appendChild(card);
+  });
+}
+
+function toggleCaseCard(header) {
+  const body = header.nextElementSibling;
+  if (!body) return;
+  body.style.display = body.style.display === 'none' ? 'flex' : 'none';
+}
+
+function switchTestSubtab(tab) {
+  document.getElementById('testStatusView').style.display = tab==='status' ? '' : 'none';
+  document.getElementById('testReportView').style.display = tab==='report' ? '' : 'none';
+  document.querySelectorAll('.test-subtab').forEach(t => t.classList.remove('active'));
+  document.getElementById('subtab-'+tab).classList.add('active');
+}
+
+function renderReport() {
+  const view = document.getElementById('testReportView');
+  const total = state.testResults.length;
+  const passed = state.testResults.filter(r=>r.status==='pass').length;
+  const failed = state.testResults.filter(r=>r.status==='fail').length;
+  const rate = total ? Math.round(passed/total*100) : 0;
+
+  const vSel = document.getElementById('testVersionSelect');
+  const vText = vSel.options[vSel.selectedIndex]?.text || '';
+  const mSel = document.getElementById('testModelSelect');
+  const mText = mSel.options[mSel.selectedIndex]?.text || '';
+
+  view.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+      <span class="badge badge-gray">${escHtml(vText)}</span>
+      <span class="badge badge-blue">${escHtml(mText)}</span>
+      <span style="font-size:11px;color:var(--text3);margin-left:auto;">${new Date().toLocaleString('zh-CN')} · ${total} 条用例</span>
+    </div>
+    <div class="report-summary-grid">
+      <div class="stat-card"><div class="stat-label">总用例</div><div class="stat-value stat-white">${total}</div></div>
+      <div class="stat-card"><div class="stat-label">结构通过</div><div class="stat-value stat-green">${passed}</div></div>
+      <div class="stat-card"><div class="stat-label">结构失败</div><div class="stat-value stat-red">${failed}</div></div>
+      <div class="stat-card"><div class="stat-label">通过率</div><div class="stat-value stat-amber">${rate}%</div></div>
+    </div>
+    <div class="report-table-wrap">
+      <table class="report-table">
+        <thead><tr>
+          <th style="width:32px">#</th>
+          <th style="width:180px">测试输入</th>
+          <th>输出摘要</th>
+          <th style="width:72px">状态</th>
+          <th style="width:190px">结构评估</th>
+        </tr></thead>
+        <tbody>
+          ${state.testResults.map(r=>`
+          <tr>
+            <td class="td-mono">${r.id+1}</td>
+            <td style="font-size:11px;color:var(--text2)">${escHtml(r.input)}</td>
+            <td class="td-mono">${escHtml((r.output||'').slice(0,120))}${(r.output||'').length>120?'…':''}</td>
+            <td><span class="status-chip ${r.status==='pass'?'chip-pass':'chip-fail'}">${r.status==='pass'?'通过':'失败'}</span></td>
+            <td>${(r.evalResult||[]).map(c=>`
+              <div class="eval-check-row" style="margin-bottom:2px;">
+                <span class="${c.pass?'check-icon-ok':'check-icon-fail'}">${c.pass?'✓':'✗'}</span>
+                <span class="check-field" style="font-size:10.5px">${escHtml(c.field)}</span>
+                <span class="${c.pass?'check-rule':'check-err'}">${escHtml(c.pass?c.rule:c.error)}</span>
+              </div>`).join('')}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="report-actions">
+      <button class="btn btn-primary" onclick="exportPDF()">导出 PDF</button>
+      <button class="btn" onclick="exportJSON()">导出 JSON</button>
+      <button class="btn" onclick="exportCSV()">导出 CSV</button>
+    </div>
+  `;
+}
+
+// ── Exports ──
+function exportJSON() {
+  const data = { generatedAt: new Date().toISOString(), results: state.testResults };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  downloadBlob(blob, 'promptkit-report.json');
+}
+function exportCSV() {
+  const rows = [['#','输入','状态','评估摘要']];
+  state.testResults.forEach(r => {
+    const summary = (r.evalResult||[]).map(c=>`${c.field}:${c.pass?'✓':'✗'+c.error}`).join('; ');
+    rows.push([r.id+1, r.input, r.status, summary]);
+  });
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadBlob(new Blob(['\uFEFF'+csv], {type:'text/csv'}), 'promptkit-report.csv');
+}
+function exportPDF() {
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const total = state.testResults.length;
+    const passed = state.testResults.filter(r=>r.status==='pass').length;
+    const rate = total ? Math.round(passed/total*100) : 0;
+
+    // Header
+    doc.setFontSize(18); doc.setFont('helvetica','bold');
+    doc.text('PromptKit Test Report', 20, 20);
+    doc.setFontSize(10); doc.setFont('helvetica','normal');
+    doc.setTextColor(120);
+    doc.text(new Date().toLocaleString('zh-CN'), 20, 28);
+    doc.setTextColor(0);
+
+    // Summary
+    doc.setFontSize(12); doc.setFont('helvetica','bold');
+    doc.text('Summary', 20, 40);
+    doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    doc.text(`Total: ${total}   Pass: ${passed}   Fail: ${total-passed}   Rate: ${rate}%`, 20, 48);
+
+    // Table
+    doc.setFontSize(12); doc.setFont('helvetica','bold');
+    doc.text('Results', 20, 60);
+
+    let y = 68;
+    doc.setFontSize(9);
+    state.testResults.forEach((r,i) => {
+      if (y > 270) { doc.addPage(); y = 20; }
+      doc.setFont('helvetica','bold');
+      doc.setTextColor(r.status==='pass'?[40,160,80]:[200,60,60]);
+      doc.text(`#${i+1} [${r.status.toUpperCase()}]`, 20, y);
+      doc.setTextColor(0); doc.setFont('helvetica','normal');
+      const inputLines = doc.splitTextToSize(`Input: ${r.input}`, 170);
+      doc.text(inputLines, 20, y+5);
+      y += 5 + inputLines.length * 4;
+      const evalSummary = (r.evalResult||[]).map(c=>`${c.field}: ${c.pass?'✓':('✗ '+c.error)}`).join('  |  ');
+      if (evalSummary) {
+        const eLines = doc.splitTextToSize(`Eval: ${evalSummary}`, 170);
+        doc.text(eLines, 20, y);
+        y += eLines.length * 4 + 4;
+      }
+      doc.setDrawColor(220); doc.line(20, y, 190, y); y += 4;
+    });
+
+    doc.save('promptkit-report.pdf');
+  } catch(e) {
+    alert('PDF 导出失败：' + e.message);
+  }
+}
+
+function downloadBlob(blob, name) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = name; a.click();
+}
+
+// ══════════════════════════════════════════════
+// API CONFIG PAGE
+// ══════════════════════════════════════════════
+function renderApiConfigs() {
+  const grid = document.getElementById('apiConfigsGrid');
+  grid.innerHTML = '';
+  state.apiConfigs.forEach((c,i) => {
+    const card = document.createElement('div');
+    card.className = 'config-card';
+    card.innerHTML = `
+      <div class="config-card-header">
+        <span class="config-card-name">${escHtml(c.name)}</span>
+        <span class="badge badge-gray">${escHtml(c.model)}</span>
+      </div>
+      <div class="config-card-body">
+        <div class="mono">${escHtml(c.baseUrl)}</div>
+        <div style="margin-top:4px;">API Key：${c.apiKey ? '••••••••' + c.apiKey.slice(-4) : '<span style="color:var(--red)">未配置</span>'}</div>
+      </div>
+      <div class="config-card-actions">
+        <button class="btn btn-sm" onclick="editApiConfig(${i})">编辑</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteApiConfig(${i})">删除</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  if (!state.apiConfigs.length) grid.innerHTML = '<div style="color:var(--text3);font-size:13px;grid-column:1/-1;">暂无配置，点击下方按钮新建</div>';
+}
+
+function openAddConfigModal() {
+  ['cfgName','cfgBaseUrl','cfgApiKey','cfgModel'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('cfgBaseUrl').value = 'https://api.openai.com/v1';
+  document.getElementById('addConfigModal').dataset.editIndex = '';
+  document.querySelector('#addConfigModal .modal-title').textContent = '新建 API 配置';
+  openModal('addConfigModal');
+}
+function editApiConfig(i) {
+  const c = state.apiConfigs[i];
+  document.getElementById('cfgName').value = c.name;
+  document.getElementById('cfgBaseUrl').value = c.baseUrl;
+  document.getElementById('cfgApiKey').value = c.apiKey;
+  document.getElementById('cfgModel').value = c.model;
+  document.getElementById('addConfigModal').dataset.editIndex = i;
+  document.querySelector('#addConfigModal .modal-title').textContent = '编辑 API 配置';
+  openModal('addConfigModal');
+}
+function saveApiConfig() {
+  const name = document.getElementById('cfgName').value.trim();
+  const baseUrl = document.getElementById('cfgBaseUrl').value.trim();
+  const apiKey = document.getElementById('cfgApiKey').value.trim();
+  const model = document.getElementById('cfgModel').value.trim();
+  if (!name || !baseUrl || !model) return alert('请填写配置名称、Base URL 和模型名称');
+  const editIdx = document.getElementById('addConfigModal').dataset.editIndex;
+  if (editIdx !== '') {
+    state.apiConfigs[parseInt(editIdx)] = { ...state.apiConfigs[parseInt(editIdx)], name, baseUrl, apiKey, model };
+  } else {
+    state.apiConfigs.push({ id: uid(), name, baseUrl, apiKey, model });
+  }
+  save(); closeModal('addConfigModal'); renderApiConfigs();
+}
+function deleteApiConfig(i) {
+  if (!confirm('确认删除此配置？')) return;
+  state.apiConfigs.splice(i,1); save(); renderApiConfigs();
+}
+
+// ══════════════════════════════════════════════
+// MODAL HELPERS
+// ══════════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+
+// ══════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+function init() {
+  load();
+  renderProjectNav();
+
+  // restore current project selection
+  if (state.currentProjectId) {
+    const proj = currentProject();
+    if (proj && proj.versions.length) {
+      state.currentVersionId = proj.versions[proj.versions.length-1].id;
+    }
+  }
+
+  switchMainPage('versions');
+  renderVersions();
+
+  // Default test cases
+  state.testCases = ['', ''];
+
+  // Default eval rules
+  state.evalRules = [];
+}
+
+init();
+</script>
+</body>
+</html>
