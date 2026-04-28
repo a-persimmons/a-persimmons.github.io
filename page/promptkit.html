@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PromptKit</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap');
 
@@ -1397,65 +1397,73 @@ function exportCSV() {
 
 function exportPDF() {
   try {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    // 创建一个临时的 HTML 元素用于导出
+    const tempDiv = document.createElement('div');
     const total = state.testResults.length;
     const passed = state.testResults.filter(r=>r.status==='pass').length;
     const rate = total ? Math.round(passed/total*100) : 0;
-
-    // Header
-    doc.setFontSize(18); doc.setFont('helvetica','bold');
-    doc.text('PromptKit Test Report', 20, 20);
-    doc.setFontSize(10); doc.setFont('helvetica','normal');
-    doc.setTextColor('#666666'); // 使用十六进制颜色代替 setTextColor(120)
-    doc.text(new Date().toLocaleString('zh-CN'), 20, 28);
-    doc.setTextColor('#000000'); // 重置为黑色
-
-    // Summary
-    doc.setFontSize(12); doc.setFont('helvetica','bold');
-    doc.text('Summary', 20, 40);
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    doc.text(`Total: ${total}   Pass: ${passed}   Fail: ${total-passed}   Rate: ${rate}%`, 20, 48);
-
-    // Table
-    doc.setFontSize(12); doc.setFont('helvetica','bold');
-    doc.text('Results', 20, 60);
-
-    let y = 68;
-    doc.setFontSize(9);
-    state.testResults.forEach((r,i) => {
-      if (y > 270) { doc.addPage(); y = 20; }
-      doc.setFont('helvetica','bold');
-      // 使用十六进制颜色代码
-      if (r.status === 'pass') {
-        doc.setTextColor('#28a050'); // 绿色
-      } else {
-        doc.setTextColor('#c83c3c'); // 红色
-      }
-      doc.text(`#${i+1} [${r.status.toUpperCase()}]`, 20, y);
-      doc.setTextColor('#000000'); // 重置为黑色
-      doc.setFont('helvetica','normal');
-      const inputLines = doc.splitTextToSize(`Input: ${r.input}`, 170);
-      doc.text(inputLines, 20, y+5);
-      y += 5 + inputLines.length * 4;
-      const evalSummary = (r.evalResult||[]).map(c=>`${c.field}: ${c.pass?'✓':('✗ '+c.error)}`).join('  |  ');
-      if (evalSummary) {
-        const eLines = doc.splitTextToSize(`Eval: ${evalSummary}`, 170);
-        doc.text(eLines, 20, y);
-        y += eLines.length * 4 + 4;
-      }
-      // 使用十六进制灰色画线
-      doc.setDrawColor('#dcdcdc'); 
-      doc.line(20, y, 190, y); 
-      y += 4;
-    });
-
-    doc.save('promptkit-report.pdf');
+    
+    tempDiv.innerHTML = `
+      <div style="font-family: 'SimSun', 'Microsoft YaHei', sans-serif; padding: 20px;">
+        <h2>PromptKit Test Report</h2>
+        <p style="color: #666;">${new Date().toLocaleString('zh-CN')}</p>
+        
+        <h3>Summary</h3>
+        <p>Total: ${total}  Pass: ${passed}  Fail: ${total-passed}  Rate: ${rate}%</p>
+        
+        <h3>Results</h3>
+        ${state.testResults.map((r,i) => `
+          <div style="margin: 15px 0; border: 1px solid #ddd; padding: 10px;">
+            <p style="color: ${r.status==='pass' ? '#28a050' : '#c83c3c'}; font-weight: bold;">
+              #${i+1} [${r.status.toUpperCase()}]
+            </p>
+            <p><strong>Input:</strong> ${r.input}</p>
+            ${r.output ? `<p><strong>Output:</strong> ${r.output.substring(0, 200)}${r.output.length > 200 ? '...' : ''}</p>` : ''}
+            <p><strong>Eval:</strong></p>
+            <ul>
+              ${(r.evalResult||[]).map(c => `
+                <li>${c.field}: ${c.pass ? 'OK' : 'FAIL: ' + c.error}</li>
+              `).join('')}
+            </ul>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+    // 使用 html2pdf 导出
+    html2pdf().from(tempDiv).save('promptkit-report.pdf');
   } catch(e) {
-    alert('PDF 导出失败：' + e.message);
+    // 如果 html2pdf 也不可用，回退到 jsPDF 的基本导出
+    try {
+      basicPDFExport();
+    } catch(e2) {
+      alert('PDF 导出失败：' + e.message);
+    }
   }
 }
 
+function basicPDFExport() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const total = state.testResults.length;
+  const passed = state.testResults.filter(r=>r.status==='pass').length;
+  const rate = total ? Math.round(passed/total*100) : 0;
+  
+  doc.setFontSize(18);
+  doc.text('PromptKit Test Report', 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Total: ${total} Pass: ${passed} Fail: ${total-passed} Rate: ${rate}%`, 20, 30);
+  
+  let y = 45;
+  state.testResults.forEach((r,i) => {
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.setFontSize(10);
+    doc.text(`#${i+1} [${r.status}] Input: ${r.input.substring(0, 50)}...`, 20, y);
+    y += 10;
+  });
+  
+  doc.save('promptkit-report.pdf');
+}
 function downloadBlob(blob, name) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = name; a.click();
