@@ -1394,6 +1394,7 @@ function exportCSV() {
   const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
   downloadBlob(new Blob(['\uFEFF'+csv], {type:'text/csv'}), 'promptkit-report.csv');
 }
+
 function exportPDF() {
   try {
     const { jsPDF } = window.jspdf;
@@ -1406,9 +1407,9 @@ function exportPDF() {
     doc.setFontSize(18); doc.setFont('helvetica','bold');
     doc.text('PromptKit Test Report', 20, 20);
     doc.setFontSize(10); doc.setFont('helvetica','normal');
-    doc.setTextColor(120);
+    doc.setTextColor('#666666'); // 使用十六进制颜色代替 setTextColor(120)
     doc.text(new Date().toLocaleString('zh-CN'), 20, 28);
-    doc.setTextColor(0);
+    doc.setTextColor('#000000'); // 重置为黑色
 
     // Summary
     doc.setFontSize(12); doc.setFont('helvetica','bold');
@@ -1425,9 +1426,15 @@ function exportPDF() {
     state.testResults.forEach((r,i) => {
       if (y > 270) { doc.addPage(); y = 20; }
       doc.setFont('helvetica','bold');
-      doc.setTextColor(r.status==='pass'?[40,160,80]:[200,60,60]);
+      // 使用十六进制颜色代码
+      if (r.status === 'pass') {
+        doc.setTextColor('#28a050'); // 绿色
+      } else {
+        doc.setTextColor('#c83c3c'); // 红色
+      }
       doc.text(`#${i+1} [${r.status.toUpperCase()}]`, 20, y);
-      doc.setTextColor(0); doc.setFont('helvetica','normal');
+      doc.setTextColor('#000000'); // 重置为黑色
+      doc.setFont('helvetica','normal');
       const inputLines = doc.splitTextToSize(`Input: ${r.input}`, 170);
       doc.text(inputLines, 20, y+5);
       y += 5 + inputLines.length * 4;
@@ -1437,7 +1444,10 @@ function exportPDF() {
         doc.text(eLines, 20, y);
         y += eLines.length * 4 + 4;
       }
-      doc.setDrawColor(220); doc.line(20, y, 190, y); y += 4;
+      // 使用十六进制灰色画线
+      doc.setDrawColor('#dcdcdc'); 
+      doc.line(20, y, 190, y); 
+      y += 4;
     });
 
     doc.save('promptkit-report.pdf');
