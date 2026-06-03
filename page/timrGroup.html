@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Groups · 基于能力的时间管理</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #11111a;
+            --bg-tertiary: #1a1a26;
+            --bg-card: #15151f;
+            --bg-elevated: #1c1c29;
+            --bg-hover: #22222f;
+            --accent-primary: #34d399;
+            --accent-secondary: #10b981;
+            --accent-tertiary: #059669;
+            --accent-glow: rgba(52, 211, 153, 0.15);
+            --accent-warm: #fbbf24;
+            --accent-warm-glow: rgba(251, 191, 36, 0.15);
+            --accent-purple: #a78bfa;
+            --accent-purple-glow: rgba(167, 139, 250, 0.15);
+            --accent-rose: #fb7185;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-tertiary: #6b7280;
+            --text-muted: #4b5563;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-default: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 40px var(--accent-glow);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --font-sans: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(80px);
+        }
+
+        .ambient-orb {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, var(--accent-purple-glow) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(100px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, -20px) scale(1.1); }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-title { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+        .logo-subtitle { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        .top-actions { display: flex; gap: 12px; }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+            font-size: 18px;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero-section {
+            margin-bottom: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+        }
+
+        .hero-content { flex: 1; }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--accent-glow);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--accent-primary);
+            font-weight: 500;
+            margin-bottom: 20px;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero-title {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 640px;
+        }
+
+        /* 当前状态展示 - 紧凑版 */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            min-width: 280px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .status-bar:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-elevated);
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-primary);
+            animation: pulse 2s infinite;
+        }
+
+        .status-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .status-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-change {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        /* 统计面板 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-normal);
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0;
+            transition: var(--transition-normal);
+        }
+
+        .stat-card:hover::before { opacity: 0.6; }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .stat-icon.green { background: var(--accent-glow); color: var(--accent-primary); }
+        .stat-icon.warm { background: var(--accent-warm-glow); color: var(--accent-warm); }
+        .stat-icon.purple { background: var(--accent-purple-glow); color: var(--accent-purple); }
+
+        .stat-trend {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--accent-primary);
+            padding: 3px 8px;
+            background: var(--accent-glow);
+            border-radius: 100px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+            font-family: var(--font-mono);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        /* 时间组区域 - 主视图 */
+        .groups-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title .count {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            padding: 4px 10px;
+            background: var(--bg-tertiary);
+            border-radius: 100px;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+
+        .view-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-tertiary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: var(--font-sans);
+        }
+
+        .view-btn.active {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        /* 添加任务按钮 - 主要 CTA */
+        .btn-add-task {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--bg-primary);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            letter-spacing: -0.01em;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn-add-task:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow), 0 0 0 1px rgba(52, 211, 153, 0.3);
+        }
+
+        .btn-add-task:active { transform: translateY(0); }
+
+        .btn-add-task .plus {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* 时间组网格 */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .time-group-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: var(--transition-normal);
+            position: relative;
+        }
+
+        .time-group-card:hover {
+            border-color: var(--border-default);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .group-accent {
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-warm));
+        }
+
+        .group-content { padding: 24px; }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .group-title-area { flex: 1; }
+
+        .group-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .group-emoji { font-size: 22px; }
+        .group-name { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+
+        .group-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+            letter-spacing: 0.02em;
+        }
+
+        .group-progress-ring { width: 48px; height: 48px; position: relative; }
+        .progress-ring-bg { fill: none; stroke: var(--bg-tertiary); stroke-width: 4; }
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--accent-primary);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 4px var(--accent-glow));
+        }
+
+        .progress-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+        }
+
+        .task-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            transition: var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .task-item:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+        .task-item.completed { opacity: 0.6; }
+        .task-item.completed .task-name { text-decoration: line-through; color: var(--text-tertiary); }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-hover);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition-fast);
+            background: transparent;
+        }
+
+        .task-item.completed .task-checkbox {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .task-checkbox::after {
+            content: '✓';
+            color: var(--bg-primary);
+            font-size: 12px;
+            font-weight: 700;
+            opacity: 0;
+            transition: var(--transition-fast);
+        }
+
+        .task-item.completed .task-checkbox::after { opacity: 1; }
+
+        .task-info { flex: 1; min-width: 0; }
+        .task-name { font-size: 14px; font-weight: 500; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .task-desc { font-size: 11px; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .task-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: var(--transition-fast);
+        }
+
+        .task-item:hover .task-actions { opacity: 1; }
+
+        .task-action-btn {
+            width: 28px;
+            height: 28px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-default);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            font-size: 12px;
+            transition: var(--transition-fast);
+        }
+
+        .task-action-btn:hover { color: var(--accent-rose); border-color: var(--accent-rose); }
+
+        .group-footer {
+            padding: 16px 24px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .group-stats { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+        .group-stats strong { color: var(--accent-primary); font-weight: 600; }
+
+        .add-task-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px dashed var(--border-hover);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font-sans);
+        }
+
+        .add-task-btn:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 80px 40px;
+            text-align: center;
+            background: var(--bg-card);
+            border: 1px dashed var(--border-default);
+            border-radius: var(--radius-xl);
+        }
+
+        .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .empty-desc { font-size: 14px; color: var(--text-tertiary); max-width: 400px; margin: 0 auto; line-height: 1.6; }
+
+        /* ====== 弹框样式 ====== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 640px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(20px) scale(0.98);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-glow);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-subtitle {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 18px;
+            transition: var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 28px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+
+        .modal-section {
+            margin-bottom: 28px;
+        }
+
+        .modal-section:last-child { margin-bottom: 0; }
+
+        .modal-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: var(--font-mono);
+        }
+
+        .modal-section-title .num {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-label .required { color: var(--accent-rose); }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: var(--font-sans);
+            transition: var(--transition-fast);
+            outline: none;
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        /* 状态选择网格 - 弹框内 */
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .state-card {
+            padding: 14px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            position: relative;
+        }
+
+        .state-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .state-card.active {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+        }
+
+        .state-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .state-desc { font-size: 11px; color: var(--text-tertiary); }
+
+        .add-state-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-state-row .form-input { flex: 1; }
+
+        .btn-secondary {
+            padding: 8px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        /* 能力选择 - 弹框内 */
+        .ability-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ability-chip {
+            padding: 8px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .ability-chip:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .ability-chip.selected {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* 弹框底部 */
+        .modal-footer {
+            padding: 20px 28px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-primary);
+        }
+
+        .modal-footer-hint {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-family: var(--font-mono);
+        }
+
+        .modal-footer-hint kbd {
+            padding: 2px 6px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-default);
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+        }
+
+        .modal-footer-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-cancel {
+            padding: 12px 20px;
+            background: transparent;
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-submit {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--bg-primary);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 24px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            opacity: 0;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-color: var(--accent-primary); }
+        .toast.success::before { content: '✓'; color: var(--accent-primary); font-weight: 700; }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .groups-grid { grid-template-columns: 1fr; }
+            .hero-section { flex-direction: column; align-items: flex-start; }
+            .status-bar { width: 100%; }
+        }
+
+        @media (max-width: 640px) {
+            .app-container { padding: 24px 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .state-grid { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .section-actions { width: 100%; flex-wrap: wrap; }
+            .modal { max-width: 100%; margin: 16px; }
+            .modal-footer { flex-direction: column; }
+            .modal-footer-actions { width: 100%; }
+            .btn-cancel, .btn-submit { flex: 1; justify-content: center; }
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--bg-hover); }
+
+        /* 动画 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        .animate-in:nth-child(1) { animation-delay: 0ms; }
+        .animate-in:nth-child(2) { animation-delay: 60ms; }
+        .animate-in:nth-child(3) { animation-delay: 120ms; }
+        .animate-in:nth-child(4) { animation-delay: 180ms; }
+    </style>
+</head>
+<body>
+    <div class="ambient-orb"></div>
+    
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <header class="top-bar animate-in">
+            <div class="logo">
+                <div class="logo-icon">◉</div>
+                <div class="logo-text">
+                    <div class="logo-title">Time Groups</div>
+                    <div class="logo-subtitle">Capability-Based Planning</div>
+                </div>
+            </div>
+            <div class="top-actions">
+                <button class="btn-icon" onclick="exportData()" title="导出数据">↓</button>
+                <button class="btn-icon" onclick="importData()" title="导入数据">↑</button>
+                <button class="btn-icon" onclick="resetAll()" title="重置">⟲</button>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero-section animate-in">
+            <div class="hero-content">
+                <div class="hero-label">INFJ OPTIMIZED</div>
+                <h1 class="hero-title">别再列清单了<br>按能力管理时间</h1>
+                <p class="hero-description">
+                    将任务按所需能力分组，在你状态最佳时调用对应能力。
+                    不再因未完成而焦虑，进度永远保存，能力持续精进。
+                </p>
+            </div>
+            <!-- 当前状态条 -->
+            <div class="status-bar" id="statusBar" onclick="openModal()">
+                <div class="status-indicator"></div>
+                <div>
+                    <div class="status-label">CURRENT STATE</div>
+                    <div class="status-value" id="currentStatusText">全部</div>
+                </div>
+                <div class="status-change">切换 ›</div>
+            </div>
+        </section>
+
+        <!-- 统计面板 -->
+        <div class="stats-grid animate-in">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon green">◎</div>
+                    <span class="stat-trend">TOTAL</span>
+                </div>
+                <div class="stat-value" id="totalTasks">0</div>
+                <div class="stat-label">总任务数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon warm">✓</div>
+                    <span class="stat-trend">DONE</span>
+                </div>
+                <div class="stat-value" id="completedTasks">0</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon purple">◈</div>
+                    <span class="stat-trend">GROUPS</span>
+                </div>
+                <div class="stat-value" id="activeGroups">0</div>
+                <div class="stat-label">时间组</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon green">⚡</div>
+                    <span class="stat-trend">SKILLS</span>
+                </div>
+                <div class="stat-value" id="abilitiesCount">0</div>
+                <div class="stat-label">能力维度</div>
+            </div>
+        </div>
+
+        <!-- 时间组主区域 -->
+        <section class="groups-section">
+            <div class="section-header animate-in">
+                <div class="section-title">
+                    你的时间组
+                    <span class="count" id="groupCount">0 组</span>
+                </div>
+                <div class="section-actions">
+                    <div class="view-controls">
+                        <button class="view-btn active" onclick="filterView('all', this)">全部</button>
+                        <button class="view-btn" onclick="filterView('progress', this)">进行中</button>
+                        <button class="view-btn" onclick="filterView('done', this)">已完成</button>
+                    </div>
+                    <button class="btn-add-task" onclick="openModal()">
+                        <span class="plus">+</span> 添加任务
+                    </button>
+                </div>
+            </div>
+
+            <div class="groups-grid" id="timeGroupsContainer">
+                <!-- 动态生成 -->
+            </div>
+        </section>
+    </div>
+
+    <!-- 添加任务弹框 -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title-area">
+                    <div class="modal-icon">✦</div>
+                    <div>
+                        <div class="modal-title">新建任务</div>
+                        <div class="modal-subtitle">添加到对应能力时间组</div>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- 任务信息 -->
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <span class="num">1</span> 任务信息
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">任务名称 <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="taskName" placeholder="例如：撰写视频脚本">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">所需能力 <span class="required">*</span></label>
+                        <div class="ability-chips" id="abilityChips">
+                            <!-- 动态生成 -->
+                        </div>
+                        <input type="hidden" id="selectedAbility" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">任务描述 <span style="color: var(--text-tertiary); font-weight: 400;">(可选)</span></label>
+                        <textarea class="form-textarea" id="taskDesc" placeholder="简要描述任务内容"></textarea>
+                    </div>
+                </div>
+
+                <!-- 当前状态 -->
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <span class="num">2</span> 当前状态
+                    </div>
+                    <div class="state-grid" id="stateGrid">
+                        <!-- 动态生成 -->
+                    </div>
+                    <div class="add-state-row">
+                        <input type="text" class="form-input" id="newState" placeholder="例如：创意迸发、精力充沛">
+                        <button class="btn-secondary" onclick="addState()">+ 添加</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-footer-hint">
+                    <kbd></kbd> + <kbd>Enter</kbd> 快速提交
+                </div>
+                <div class="modal-footer-actions">
+                    <button class="btn-cancel" onclick="closeModal()">取消</button>
+                    <button class="btn-submit" id="submitBtn" onclick="submitTask()">
+                        <span>✦</span> 添加到时间组
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ========== IndexedDB ==========
+        const DB_NAME = 'TimeGroupDB_v2';
+        const DB_VERSION = 1;
+        let db;
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => { db = request.result; resolve(db); };
+                request.onupgradeneeded = (event) => {
+                    const database = event.target.result;
+                    if (!database.objectStoreNames.contains('tasks')) {
+                        const store = database.createObjectStore('tasks', { keyPath: 'id', autoIncrement: true });
+                        store.createIndex('ability', 'ability', { unique: false });
+                        store.createIndex('completed', 'completed', { unique: false });
+                    }
+                    if (!database.objectStoreNames.contains('abilities')) {
+                        database.createObjectStore('abilities', { keyPath: 'id', autoIncrement: true });
+                    }
+                    if (!database.objectStoreNames.contains('states')) {
+                        database.createObjectStore('states', { keyPath: 'id', autoIncrement: true });
+                    }
+                };
+            });
+        }
+
+        const DB = {
+            add: (store, data) => new Promise((resolve, reject) => {
+                const tx = db.transaction([store], 'readwrite');
+                const req = tx.objectStore(store).add(data);
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            }),
+            getAll: (store) => new Promise((resolve, reject) => {
+                const tx = db.transaction([store], 'readonly');
+                const req = tx.objectStore(store).getAll();
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            }),
+            put: (store, data) => new Promise((resolve, reject) => {
+                const tx = db.transaction([store], 'readwrite');
+                const req = tx.objectStore(store).put(data);
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            }),
+            delete: (store, id) => new Promise((resolve, reject) => {
+                const tx = db.transaction([store], 'readwrite');
+                const req = tx.objectStore(store).delete(id);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            }),
+            clear: (store) => new Promise((resolve, reject) => {
+                const tx = db.transaction([store], 'readwrite');
+                const req = tx.objectStore(store).clear();
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            })
+        };
+
+        // ========== 状态管理 ==========
+        let currentFilter = 'all';
+        let currentStateId = 'all';
+        let selectedAbilityId = null;
+
+        async function initDefaults() {
+            const abilities = await DB.getAll('abilities');
+            if (abilities.length === 0) {
+                const defaults = [
+                    { name: '语言整理', emoji: '📝', description: '写作、脚本、标题' },
+                    { name: '视觉设计', emoji: '🎨', description: '封面、配色、排版' },
+                    { name: '逻辑思维', emoji: '🧠', description: '剪辑、结构、流程' },
+                    { name: '创意策划', emoji: '💡', description: '选题、创意、策划' },
+                    { name: '运营推广', emoji: '📊', description: '数据分析、推广' }
+                ];
+                for (const a of defaults) await DB.add('abilities', a);
+            }
+
+            const states = await DB.getAll('states');
+            if (states.length === 0) {
+                const defaults = [
+                    { name: '创意迸发', emoji: '✨', description: '适合创意组' },
+                    { name: '精力集中', emoji: '🎯', description: '适合逻辑组' },
+                    { name: '状态平稳', emoji: '☕', description: '适合语言组' },
+                    { name: '需要休息', emoji: '🌙', description: '简单任务' }
+                ];
+                for (const s of defaults) await DB.add('states', s);
+            }
+        }
+
+        // ========== 弹框控制 ==========
+        function openModal() {
+            document.getElementById('taskModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadModalAbilities();
+            loadModalStates();
+            setTimeout(() => document.getElementById('taskName').focus(), 200);
+        }
+
+        function closeModal() {
+            document.getElementById('taskModal').classList.remove('active');
+            document.body.style.overflow = '';
+            // 重置表单
+            document.getElementById('taskName').value = '';
+            document.getElementById('taskDesc').value = '';
+            document.getElementById('selectedAbility').value = '';
+            selectedAbilityId = null;
+            loadModalAbilities();
+        }
+
+        // ========== 弹框内渲染 ==========
+        async function loadModalAbilities() {
+            const abilities = await DB.getAll('abilities');
+            const container = document.getElementById('abilityChips');
+            container.innerHTML = abilities.map(a => `
+                <div class="ability-chip ${selectedAbilityId == a.id ? 'selected' : ''}" 
+                     onclick="selectAbility(${a.id}, this)">
+                    ${a.emoji} ${a.name}
+                </div>
+            `).join('');
+        }
+
+        function selectAbility(id, el) {
+            selectedAbilityId = id;
+            document.getElementById('selectedAbility').value = id;
+            document.querySelectorAll('.ability-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        async function loadModalStates() {
+            const states = await DB.getAll('states');
+            const grid = document.getElementById('stateGrid');
+            
+            let html = `
+                <div class="state-card ${currentStateId === 'all' ? 'active' : ''}" 
+                     onclick="selectModalState('all', this)">
+                    <div class="state-name">🌊 全部</div>
+                    <div class="state-desc">显示所有时间组</div>
+                </div>
+            `;
+            
+            states.forEach(s => {
+                html += `
+                    <div class="state-card ${currentStateId == s.id ? 'active' : ''}" 
+                         onclick="selectModalState(${s.id}, this)">
+                        <div class="state-name">${s.emoji} ${s.name}</div>
+                        <div class="state-desc">${s.description}</div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function selectModalState(stateId, el) {
+            currentStateId = stateId;
+            document.querySelectorAll('#stateGrid .state-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            // 更新 hero 状态条
+            const statusText = stateId === 'all' ? '全部' : el.querySelector('.state-name').textContent;
+            document.getElementById('currentStatusText').textContent = statusText;
+            loadTimeGroups();
+        }
+
+        // ========== 主渲染 ==========
+        async function loadTimeGroups() {
+            const tasks = await DB.getAll('tasks');
+            const abilities = await DB.getAll('abilities');
+            const container = document.getElementById('timeGroupsContainer');
+            
+            const groups = {};
+            tasks.forEach(task => {
+                if (!groups[task.ability]) groups[task.ability] = [];
+                groups[task.ability].push(task);
+            });
+
+            document.getElementById('groupCount').textContent = `${Object.keys(groups).length} 组`;
+
+            if (Object.keys(groups).length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">◉</div>
+                        <div class="empty-title">还没有时间组</div>
+                        <div class="empty-desc">点击右上方「添加任务」按钮，添加你的第一个任务，系统会自动按能力分组。</div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            for (const [abilityId, groupTasks] of Object.entries(groups)) {
+                const ability = abilities.find(a => a.id == abilityId);
+                if (!ability) continue;
+
+                const completed = groupTasks.filter(t => t.completed).length;
+                const total = groupTasks.length;
+                const percent = Math.round((completed / total) * 100);
+                const circumference = 2 * Math.PI * 20;
+                const offset = circumference - (percent / 100) * circumference;
+
+                // 过滤逻辑
+                let visibleTasks = groupTasks;
+                if (currentFilter === 'progress') visibleTasks = groupTasks.filter(t => !t.completed);
+                if (currentFilter === 'done') visibleTasks = groupTasks.filter(t => t.completed);
+
+                html += `
+                    <div class="time-group-card">
+                        <div class="group-accent"></div>
+                        <div class="group-content">
+                            <div class="group-header">
+                                <div class="group-title-area">
+                                    <div class="group-title">
+                                        <span class="group-emoji">${ability.emoji}</span>
+                                        <span class="group-name">${ability.name}</span>
+                                    </div>
+                                    <div class="group-meta">${ability.description || '能力维度'}</div>
+                                </div>
+                                <div class="group-progress-ring">
+                                    <svg width="48" height="48" viewBox="0 0 48 48">
+                                        <circle class="progress-ring-bg" cx="24" cy="24" r="20"/>
+                                        <circle class="progress-ring-fill" cx="24" cy="24" r="20"
+                                            stroke-dasharray="${circumference}"
+                                            stroke-dashoffset="${offset}"/>
+                                    </svg>
+                                    <div class="progress-text">${percent}%</div>
+                                </div>
+                            </div>
+                            <div class="task-list">
+                                ${visibleTasks.length > 0 ? visibleTasks.map(task => `
+                                    <div class="task-item ${task.completed ? 'completed' : ''}" onclick="toggleTask(${task.id})">
+                                        <div class="task-checkbox"></div>
+                                        <div class="task-info">
+                                            <div class="task-name">${task.name}</div>
+                                            ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
+                                        </div>
+                                        <div class="task-actions">
+                                            <button class="task-action-btn" onclick="event.stopPropagation(); deleteTask(${task.id})" title="删除">✕</button>
+                                        </div>
+                                    </div>
+                                `).join('') : '<div style="padding: 20px; text-align: center; color: var(--text-tertiary); font-size: 13px;">该视图下暂无任务</div>'}
+                            </div>
+                        </div>
+                        <div class="group-footer">
+                            <div class="group-stats">
+                                已完成 <strong>${completed}</strong> / ${total} 项任务
+                            </div>
+                            <button class="add-task-btn" onclick="quickAddToGroup(${abilityId})">
+                                + 添加任务
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        async function updateStats() {
+            const tasks = await DB.getAll('tasks');
+            const completed = tasks.filter(t => t.completed).length;
+            const uniqueAbilities = new Set(tasks.map(t => t.ability)).size;
+            const activeGroups = Object.keys(
+                tasks.reduce((acc, task) => { acc[task.ability] = true; return acc; }, {})
+            ).length;
+
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('activeGroups').textContent = activeGroups;
+            document.getElementById('abilitiesCount').textContent = uniqueAbilities;
+        }
+
+        // ========== 交互 ==========
+        async function submitTask() {
+            const name = document.getElementById('taskName').value.trim();
+            const abilityId = parseInt(document.getElementById('selectedAbility').value);
+            const desc = document.getElementById('taskDesc').value.trim();
+
+            if (!name) {
+                showToast('请输入任务名称', 'error');
+                document.getElementById('taskName').focus();
+                return;
+            }
+            if (!abilityId) {
+                showToast('请选择所需能力', 'error');
+                return;
+            }
+
+            await DB.add('tasks', {
+                name,
+                ability: abilityId,
+                description: desc,
+                completed: false,
+                progress: 0,
+                createdAt: new Date().toISOString()
+            });
+
+            closeModal();
+            await Promise.all([loadTimeGroups(), updateStats()]);
+            showToast('任务已添加到时间组');
+        }
+
+        async function toggleTask(id) {
+            const tasks = await DB.getAll('tasks');
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                task.progress = task.completed ? 100 : 0;
+                await DB.put('tasks', task);
+                await Promise.all([loadTimeGroups(), updateStats()]);
+                showToast(task.completed ? '任务已完成 ✓' : '任务已恢复');
+            }
+        }
+
+        async function deleteTask(id) {
+            if (confirm('确定删除这个任务吗？')) {
+                await DB.delete('tasks', id);
+                await Promise.all([loadTimeGroups(), updateStats()]);
+                showToast('任务已删除');
+            }
+        }
+
+        function quickAddToGroup(abilityId) {
+            selectedAbilityId = abilityId;
+            openModal();
+        }
+
+        function filterView(filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadTimeGroups();
+        }
+
+        async function addState() {
+            const name = document.getElementById('newState').value.trim();
+            if (!name) return;
+            
+            await DB.add('states', { name, emoji: '◉', description: '自定义状态' });
+            document.getElementById('newState').value = '';
+            await loadModalStates();
+            showToast('状态已添加');
+        }
+
+        // ========== 数据导入/导出 ==========
+        async function exportData() {
+            const data = {
+                tasks: await DB.getAll('tasks'),
+                abilities: await DB.getAll('abilities'),
+                states: await DB.getAll('states'),
+                exportedAt: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `time-groups-backup-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('数据已导出');
+        }
+
+        async function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                if (data.tasks) { await DB.clear('tasks'); for (const t of data.tasks) await DB.add('tasks', t); }
+                if (data.abilities) { await DB.clear('abilities'); for (const a of data.abilities) await DB.add('abilities', a); }
+                if (data.states) { await DB.clear('states'); for (const s of data.states) await DB.add('states', s); }
+                
+                await init();
+                showToast('数据已导入');
+            };
+            input.click();
+        }
+
+        async function resetAll() {
+            if (confirm('确定要重置所有数据吗？此操作不可撤销。')) {
+                await Promise.all([DB.clear('tasks'), DB.clear('abilities'), DB.clear('states')]);
+                await init();
+                showToast('已重置');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast success show';
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // ========== 快捷键 ==========
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openModal();
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && document.getElementById('taskModal').classList.contains('active')) {
+                e.preventDefault();
+                submitTask();
+            }
+            if (e.key === 'Escape' && document.getElementById('taskModal').classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // 点击弹框外部关闭
+        document.getElementById('taskModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // ========== 初始化 ==========
+        async function init() {
+            await initDB();
+            await initDefaults();
+            await Promise.all([loadTimeGroups(), updateStats()]);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
