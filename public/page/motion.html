@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社会情感能力训练</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --primary: #7C6A9C;
+    --primary-light: #9B8AB8;
+    --primary-dark: #5A4A75;
+    --accent: #D4837A;
+    --accent-light: #E8A9A2;
+    --bg: #FAF8F5;
+    --card: #FFFFFF;
+    --text: #2D2A3E;
+    --text-secondary: #6B6580;
+    --border: #E8E4DE;
+    --success: #7BA88E;
+    --warning: #D4A87A;
+    --shadow: 0 2px 16px rgba(45, 42, 62, 0.06);
+    --shadow-lg: 0 8px 32px rgba(45, 42, 62, 0.1);
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* 配置页面 */
+  .config-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FAF8F5 0%, #EDE8E0 100%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .config-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 48px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+  }
+  
+  .config-logo {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: white;
+    font-size: 32px;
+  }
+  
+  .config-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  
+  .config-subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .form-input, .form-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 15px;
+    background: var(--bg);
+    color: var(--text);
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(124, 106, 156, 0.1);
+  }
+  
+  .form-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 16px;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(124, 106, 156, 0.3);
+  }
+  
+  .btn-secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--border);
+  }
+  
+  .btn-ghost {
+    background: transparent;
+    color: var(--primary);
+    padding: 8px 12px;
+  }
+  
+  /* 主布局 */
+  .app {
+    display: grid;
+    grid-template-columns: 320px 1fr 380px;
+    grid-template-rows: 64px 1fr;
+    height: 100vh;
+    gap: 0;
+  }
+  
+  .topbar {
+    grid-column: 1 / -1;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 10;
+  }
+  
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  
+  .topbar-logo {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+  }
+  
+  .topbar-progress {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    max-width: 400px;
+    margin: 0 32px;
+  }
+  
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  
+  .progress-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .topbar-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* 侧边栏 - 路线 */
+  .sidebar {
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 24px 16px;
+  }
+  
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    padding: 0 12px;
+  }
+  
+  .route-section {
+    margin-bottom: 24px;
+  }
+  
+  .route-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+    position: relative;
+  }
+  
+  .route-item:hover {
+    background: var(--bg);
+  }
+  
+  .route-item.active {
+    background: linear-gradient(135deg, rgba(124, 106, 156, 0.08) 0%, rgba(212, 131, 122, 0.08) 100%);
+  }
+  
+  .route-item.completed .route-dot {
+    background: var(--success);
+    border-color: var(--success);
+  }
+  
+  .route-item.completed .route-dot::after {
+    content: '✓';
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  
+  .route-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: white;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  
+  .route-item.active .route-dot {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(124, 106, 156, 0.15);
+  }
+  
+  .route-content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .route-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  
+  .route-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  
+  .route-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 12px;
+  }
+  
+  /* 主内容区 */
+  .main {
+    overflow-y: auto;
+    padding: 32px 40px;
+    background: var(--bg);
+  }
+  
+  .main-header {
+    margin-bottom: 32px;
+  }
+  
+  .main-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(124, 106, 156, 0.1);
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  .main-title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  
+  .main-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+  
+  .section-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  
+  .section-heading {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .section-heading::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 2px;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .info-item {
+    padding: 16px;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  
+  .info-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  
+  .info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  .info-value.small {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  
+  .description {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  
+  .key-points {
+    list-style: none;
+  }
+  
+  .key-points li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .key-points li:last-child {
+    border-bottom: none;
+  }
+  
+  .key-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  }
+  
+  .action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .action-item {
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(124, 106, 156, 0.04) 0%, rgba(212, 131, 122, 0.04) 100%);
+    border-radius: 12px;
+    border-left: 3px solid var(--primary);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .action-item strong {
+    color: var(--primary-dark);
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .nav-buttons .btn {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  /* AI 面板 */
+  .ai-panel {
+    background: var(--card);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .ai-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .ai-header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .ai-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+  }
+  
+  .ai-name {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  
+  .ai-status {
+    font-size: 12px;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .ai-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+  }
+  
+  .ai-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .message {
+    display: flex;
+    gap: 10px;
+    max-width: 90%;
+    animation: messageIn 0.3s ease;
+  }
+  
+  @keyframes messageIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+  
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  
+  .message.ai .message-avatar {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+  }
+  
+  .message.user .message-avatar {
+    background: var(--bg);
+    color: var(--text-secondary);
+  }
+  
+  .message-content {
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .message.ai .message-content {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top-left-radius: 4px;
+  }
+  
+  .message.user .message-content {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-top-right-radius: 4px;
+  }
+  
+  .message-time {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  
+  .message.user .message-time {
+    text-align: right;
+  }
+  
+  .ai-input-area {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--card);
+  }
+  
+  .ai-input-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  
+  .ai-textarea {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+    background: var(--bg);
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  
+  .ai-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+  }
+  
+  .ai-send {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  
+  .ai-send:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 106, 156, 0.3);
+  }
+  
+  .ai-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .ai-practice-selector {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  
+  .ai-practice-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  
+  .practice-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .practice-chip {
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+  }
+  
+  .practice-chip:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  
+  .practice-chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  /* 空状态 */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+  }
+  
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+  
+  /* 滚动条 */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+  
+  /* 笔记区 */
+  .notes-area {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  
+  .notes-area:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+  }
+  
+  .save-indicator {
+    font-size: 12px;
+    color: var(--success);
+    margin-top: 6px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .save-indicator.show {
+    opacity: 1;
+  }
+  
+  /* 响应式 */
+  @media (max-width: 1200px) {
+    .app { grid-template-columns: 280px 1fr 340px; }
+  }
+  
+  @media (max-width: 960px) {
+    .app {
+      grid-template-columns: 1fr;
+      grid-template-rows: 64px auto 1fr auto;
+    }
+    .sidebar { max-height: 200px; border-right: none; border-bottom: 1px solid var(--border); }
+    .ai-panel { max-height: 400px; border-left: none; border-top: 1px solid var(--border); }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+  
+  /* 加载动画 */
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 8px 0;
+  }
+  
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+  }
+  
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+  
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--text);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+    z-index: 2000;
+  }
+  
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- 配置页面 -->
+<div class="config-overlay" id="configOverlay">
+  <div class="config-card">
+    <div class="config-logo">🌱</div>
+    <h1 class="config-title">社会情感能力训练</h1>
+    <p class="config-subtitle">配置 AI 助手，开始你的成长之旅</p>
+    
+    <div class="form-group">
+      <label class="form-label">API 端点</label>
+      <input type="text" class="form-input" id="apiEndpoint" placeholder="https://api.openai.com/v1/chat/completions" value="https://api.openai.com/v1/chat/completions">
+      <div class="form-hint">支持 OpenAI 兼容接口（OpenAI、DeepSeek、Moonshot 等）</div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">API Key</label>
+      <input type="password" class="form-input" id="apiKey" placeholder="sk-...">
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">模型</label>
+      <input type="text" class="form-input" id="model" placeholder="gpt-4o-mini" value="gpt-4o-mini">
+      <div class="form-hint">如 gpt-4o-mini、deepseek-chat、moonshot-v1-8k 等</div>
+    </div>
+    
+    <button class="btn btn-primary" onclick="saveConfig()">开始训练 →</button>
+  </div>
+</div>
+
+<!-- 主应用 -->
+<div class="app" id="app" style="display:none;">
+  <!-- 顶部栏 -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">🌱</div>
+      <span>社会情感能力训练</span>
+    </div>
+    <div class="topbar-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div class="progress-text" id="progressText">0 / 14</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost" onclick="showConfig()">️ 设置</button>
+      <button class="btn btn-ghost" onclick="resetProgress()">↺ 重置</button>
+    </div>
+    </div>
+  
+  <!-- 侧边栏 -->
+  <div class="sidebar" id="sidebar"></div>
+  
+  <!-- 主内容 -->
+  <div class="main" id="main"></div>
+  
+  <!-- AI 面板 -->
+  <div class="ai-panel">
+    <div class="ai-header">
+      <div class="ai-header-title">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <div class="ai-name">训练助手</div>
+          <div class="ai-status">在线</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost" onclick="clearChat()" style="font-size:12px;">清空</button>
+    </div>
+    <div class="ai-practice-selector" id="practiceSelector"></div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="empty-state">
+        <div class="empty-icon">💬</div>
+        <div>选择一个练习，开始对话</div>
+      </div>
+    </div>
+    <div class="ai-input-area">
+      <div class="ai-input-wrapper">
+        <textarea class="ai-textarea" id="aiInput" placeholder="输入你的回应..." rows="1" onkeydown="handleInputKey(event)"></textarea>
+        <button class="ai-send" id="aiSend" onclick="sendMessage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ 数据 ============
+const books = [
+  {
+    id: 'book1',
+    title: '社会情感学习经典入门',
+    subtitle: 'Social and Emotional Learning in Practice',
+    tag: '总框架',
+    author: 'Kai Markus Talvio, Ulla Klemola',
+    translator: '吴小波译',
+    publisher: '中国人民大学出版社, 2025',
+    isbn: '9787300337258',
+    description: '这本书适合放在第一本。它把 SEL 的五类能力：自我意识、自我管理、社会意识、人际关系技能、负责任决策，和托马斯·戈登的效能训练结合起来。重点不是把它当理论书通读，而是提取其中的训练动作。',
+    keyPoints: ['积极倾听', '"我信息"', '无输家冲突解决', '区分"问题属于谁"'],
+    solves: '我要训练的社会情感能力到底包括哪几类。',
+    actions: ['提取 SEL 五类能力的具体训练动作', '结合戈登效能训练实践', '建立个人能力框架']
+  },
+  {
+    id: 'book2',
+    title: '社会性动物（第12版）',
+    subtitle: 'The Social Animal',
+    tag: '社会心理学底层',
+    author: 'Elliot Aronson, Joshua Aronson',
+    translator: '邢占军、黄立清译',
+    publisher: '华东师范大学出版社, 2020',
+    isbn: '9787567599703',
+    description: '这本不是训练手册，而是帮助理解人在社会中为什么会这样行动。',
+    keyPoints: ['从众', '认知失调', '自我辩护', '偏见', '说服', '喜欢与爱', '攻击性'],
+    solves: '别人不是简单地"讲道理就会变"，人的行为会受到情境、身份、群体和自我形象影响。',
+    actions: ['理解行为背后的情境因素', '识别认知失调现象', '理解群体压力机制']
+  },
+  {
+    id: 'book3',
+    title: '非暴力沟通（修订版）',
+    subtitle: 'Nonviolent Communication: A Language of Life',
+    tag: '表达与倾听训练',
+    author: 'Marshall B. Rosenberg',
+    translator: '刘轶译',
+    publisher: '华夏出版社, 2021',
+    isbn: '9787522200514',
+    description: '这本书的核心不是"说话温柔"，而是把攻击、指责、委屈、抱怨翻译成更清楚的表达。',
+    keyPoints: ['观察，不评价', '表达感受，不指责', '识别需要，不停留在情绪层', '提出请求，不使用命令或暗示性惩罚'],
+    solves: '我如何表达自己，同时减少对方防御。',
+    actions: ['观察不评价练习', '使用"我信息"表达', '识别底层需求', '提出明确请求']
+  },
+  {
+    id: 'book4',
+    title: '高难度谈话',
+    subtitle: 'Difficult Conversations: How to Discuss What Matters Most',
+    tag: '困难对话训练',
+    author: 'Douglas Stone, Bruce Patton, Sheila Heen',
+    translator: '王甜甜译',
+    publisher: '中国城市出版社, 2011',
+    isbn: '9787507423587',
+    description: '这本比《谈判力》更适合真实人际冲突。它同样来自 Harvard Negotiation Project，但重点不是谈判原则，而是困难对话的结构。',
+    keyPoints: ['事实对话：我们各自看到的事实和解释是什么', '感受对话：这件事触发了哪些情绪', '身份对话：这件事如何威胁到我对自己的理解'],
+    solves: '误解、委屈、冲突、关系紧张时，怎么把话谈下去。',
+    actions: ['拆解三层对话结构', '区分事实与解释', '识别身份威胁']
+  },
+  {
+    id: 'book5',
+    title: '关键对话',
+    subtitle: 'Crucial Conversations: Tools for Talking When Stakes Are High',
+    tag: '高压场景沟通工具',
+    author: 'Joseph Grenny, Kerry Patterson, Ron McMillan, Al Switzler',
+    translator: '毕崇毅、薛香玲译',
+    publisher: '机械工业出版社, 2022',
+    isbn: '9787111714385',
+    description: '这本书适合处理"利害关系高、意见不同、情绪很强"的场景。',
+    keyPoints: ['先问自己真正想要什么', '识别对话失控信号', '重建安全感', '建立共同目的', '从事实开始表达', '探索对方的路径'],
+    solves: '重要关系里，如何谈难谈的事，并尽量不把关系谈崩。',
+    actions: ['明确对话目的', '识别安全信号', '重建对话安全感']
+  },
+  {
+    id: 'book6',
+    title: '高难度谈话 II：感恩反馈',
+    subtitle: 'Thanks for the Feedback: The Science and Art of Receiving Feedback Well',
+    tag: '接收反馈与降低防御',
+    author: 'Douglas Stone, Sheila Heen',
+    translator: '王甜甜译',
+    publisher: '光明日报出版社, 2017',
+    isbn: '9787519427498',
+    description: '很多关系问题不是"我不会说"，而是"我听不进去"。这本书专门训练如何接收反馈。',
+    keyPoints: ['区分赞赏、指导、评价三类反馈', '识别自己为什么防御', '区分反馈内容和反馈者', '从不准确的反馈中提取仍然有用的部分'],
+    solves: '被批评就炸、听建议不舒服、职场反馈、人际误会。',
+    actions: ['分类接收反馈', '识别防御触发点', '提取有价值信息']
+  },
+  {
+    id: 'book7',
+    title: '强势：纪念版 / 设限，才有好关系',
+    subtitle: 'When I Say No, I Feel Guilty / Set Boundaries, Find Peace',
+    tag: '拒绝与边界感',
+    author: 'Manuel J. Smith / Nedra Glover Tawwab',
+    translator: '欧阳瑾、陈兰译 / 陈佳译译',
+    publisher: '江苏凤凰文艺出版社, 2018 / 三采文化, 2022',
+    description: '选择A《强势》适合容易讨好、怕冲突、怕别人不高兴的人。选择B《设限》适合想把关系变得更清楚、更稳定的人。',
+    keyPoints: ['直接拒绝', '不过度解释', '面对批评时不立刻崩溃或反击', '识别操控性语言', '边界感'],
+    solves: '和谐不是没有边界，而是边界清楚后关系更稳定。',
+    actions: ['练习直接拒绝', '减少过度解释', '建立清晰边界']
+  },
+  {
+    id: 'book8',
+    title: '影响力（全新升级版）/ 掌控谈话',
+    subtitle: 'Influence: The Psychology of Persuasion / Never Split the Difference',
+    tag: '理解说服与被说服',
+    author: 'Robert B. Cialdini / Chris Voss, Tahl Raz',
+    translator: '闫佳译 / 赵坤译',
+    publisher: '北京联合出版公司, 2021 / 2018',
+    description: '选择A《影响力》重点读：互惠、承诺一致、社会认同、权威、稀缺、喜好、联盟。选择B《掌控谈话》重点方法：镜像、标注情绪、校准式问题、发现黑天鹅信息。',
+    keyPoints: ['互惠原则', '承诺一致', '社会认同', '权威影响', '稀缺效应', '喜好与联盟', '镜像与标注', '校准式问题'],
+    solves: '理解人如何被影响，以及如何避免自己被套路。',
+    actions: ['识别影响原则', '练习镜像技巧', '使用校准式问题']
+  }
+];
+
+const practices = [
+  {
+    id: 'practice1',
+    week: '第1周',
+    title: '观察不评价',
+    description: '把"你总是不尊重我"改成："昨天我说话时你连续看了三次手机。"',
+    prompt: '你是一位非暴力沟通教练。请给我一个日常场景（家庭、职场或朋友关系），让我练习"观察不评价"。我会尝试把评价性语言改成观察性语言，你给出反馈。每次只给一个场景，等我回应后再给下一个。'
+  },
+  {
+    id: 'practice2',
+    week: '第2周',
+    title: '用"我信息"',
+    description: '把"你太烦了"改成："我现在需要安静20分钟，刚才连续被打断后，我很难继续集中。"',
+    prompt: '你是一位沟通教练。请给我一个让我感到烦躁或不满的场景，让我练习用"我信息"表达（描述行为+我的感受+我的需求）。我回应后，你评价是否完整包含了三要素，并给出改进建议。'
+  },
+  {
+    id: 'practice3',
+    week: '第3周',
+    title: '识别需求',
+    description: '每次强烈情绪出现时，写一句：我现在真正想被满足的需求是：______。',
+    prompt: '你是一位情感教练。请描述一个会引发强烈情绪的场景（愤怒、委屈、焦虑、嫉妒等），让我识别背后的真实需求。我回答后，你分析我的识别是否准确，并引导我更深地理解需求层次。'
+  },
+  {
+    id: 'practice4',
+    week: '第4周',
+    title: '低风险拒绝',
+    description: '练习说："这个我现在不能答应。"不要立刻补一大段解释。',
+    prompt: '你是一位边界感训练教练。请给我一个低风险的请求场景（同事、朋友、家人），让我练习直接拒绝而不加过多解释。我回应后，你评价我的拒绝是否清晰、是否过度解释，并给出改进建议。逐渐增加场景难度。'
+  },
+  {
+    id: 'practice5',
+    week: '第5周',
+    title: '困难对话预演',
+    description: '在开口前写三栏：我看到的事实、我产生的感受、我真正想要的关系结果。',
+    prompt: '你是一位高难度对话教练。请给我一个关系紧张的场景，让我按照三栏法预演：1)我看到的事实 2)我产生的感受 3)我真正想要的关系结果。我填写后，你分析三层对话是否清晰，并帮我优化表达方式。'
+  },
+  {
+    id: 'practice6',
+    week: '第6周',
+    title: '接收反馈',
+    description: '别人批评你时，先不反驳，只问："你能举一个具体例子吗？"然后再判断这个反馈是否成立。',
+    prompt: '你是一位反馈接收训练教练。请扮演一个给我负面反馈的人（可以是上级、伴侣、朋友），给我具体的批评。我练习先不反驳，而是问"你能举一个具体例子吗？"。你根据我的回应继续对话，最后评价我的接收方式。'
+  }
+];
+
+// ============ 状态 ============
+let state = {
+  config: null,
+  currentStep: 0,
+  completed: [],
+  notes: {},
+  chatHistory: [],
+  currentPractice: null
+};
+
+const totalSteps = books.length + practices.length;
+const allSteps = [...books.map(b => ({...b, type: 'book'})), ...practices.map(p => ({...p, type: 'practice'}))];
+
+// ============ 初始化 ============
+function init() {
+  const saved = localStorage.getItem('sel_state');
+  if (saved) {
+    try {
+      state = JSON.parse(saved);
+    } catch(e) {}
+  }
+  
+  if (state.config && state.config.apiKey) {
+    document.getElementById('configOverlay').style.display = 'none';
+    document.getElementById('app').style.display = 'grid';
+    renderAll();
+  }
+}
+
+function saveState() {
+  localStorage.setItem('sel_state', JSON.stringify(state));
+}
+
+function saveConfig() {
+  const endpoint = document.getElementById('apiEndpoint').value.trim();
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const model = document.getElementById('model').value.trim();
+  
+  if (!endpoint || !apiKey || !model) {
+    showToast('请填写所有必填项');
+    return;
+  }
+  
+  state.config = { endpoint, apiKey, model };
+  saveState();
+  
+  document.getElementById('configOverlay').style.display = 'none';
+  document.getElementById('app').style.display = 'grid';
+  renderAll();
+  showToast('配置已保存');
+}
+
+function showConfig() {
+  if (state.config) {
+    document.getElementById('apiEndpoint').value = state.config.endpoint;
+    document.getElementById('apiKey').value = state.config.apiKey;
+    document.getElementById('model').value = state.config.model;
+  }
+  document.getElementById('configOverlay').style.display = 'flex';
+}
+
+function resetProgress() {
+  if (confirm('确定要重置所有进度吗？此操作不可恢复。')) {
+    state.completed = [];
+    state.currentStep = 0;
+    state.notes = {};
+    state.chatHistory = [];
+    saveState();
+    renderAll();
+    showToast('进度已重置');
+  }
+}
+
+// ============ 渲染 ============
+function renderAll() {
+  renderSidebar();
+  renderMain();
+  renderPracticeSelector();
+  renderProgress();
+  if (state.chatHistory.length > 0) renderChat();
+}
+
+function renderProgress() {
+  const pct = (state.completed.length / totalSteps) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${state.completed.length} / ${totalSteps}`;
+}
+
+function renderSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  let html = '<div class="sidebar-title">阅读路线</div><div class="route-section">';
+  
+  books.forEach((book, i) => {
+    const stepIdx = i;
+    const isActive = state.currentStep === stepIdx;
+    const isCompleted = state.completed.includes('book' + (i+1));
+    html += `
+      <div class="route-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" onclick="goToStep(${stepIdx})">
+        <div class="route-dot">${isCompleted ? '' : (i+1)}</div>
+        <div class="route-content">
+          <div class="route-name">${book.title}</div>
+          <div class="route-meta">${book.tag}</div>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += '</div><div class="route-divider"></div>';
+  html += '<div class="sidebar-title">练习计划</div><div class="route-section">';
+  
+  practices.forEach((p, i) => {
+    const stepIdx = books.length + i;
+    const isActive = state.currentStep === stepIdx;
+    const isCompleted = state.completed.includes('practice' + (i+1));
+    html += `
+      <div class="route-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" onclick="goToStep(${stepIdx})">
+        <div class="route-dot">${isCompleted ? '' : (i+1)}</div>
+        <div class="route-content">
+          <div class="route-name">${p.week}：${p.title}</div>
+          <div class="route-meta">AI 练习</div>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  sidebar.innerHTML = html;
+}
+
+function renderMain() {
+  const main = document.getElementById('main');
+  const step = allSteps[state.currentStep];
+  if (!step) return;
+  
+  if (step.type === 'book') {
+    main.innerHTML = `
+      <div class="main-header">
+        <div class="main-tag">${step.tag}</div>
+        <h1 class="main-title">${step.title}</h1>
+        <div class="main-subtitle">${step.subtitle}</div>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">书籍信息</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">作者</div>
+            <div class="info-value small">${step.author}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">译者 / 出版社</div>
+            <div class="info-value small">${step.translator}<br>${step.publisher}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">ISBN</div>
+            <div class="info-value small">${step.isbn}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">定位</div>
+            <div class="info-value small">${step.tag}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">核心内容</div>
+        <p class="description">${step.description}</p>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">重点阅读</div>
+        <ul class="key-points">
+          ${step.keyPoints.map(p => `<li>${p}</li>`).join('')}
+        </ul>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">它解决的问题</div>
+        <p class="description" style="font-style:italic; color: var(--primary-dark);">"${step.solves}"</p>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">训练动作</div>
+        <div class="action-list">
+          ${step.actions.map(a => `<div class="action-item">${a}</div>`).join('')}
+        </div>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">我的笔记</div>
+        <textarea class="notes-area" id="noteArea" placeholder="记录你的思考和感悟..." oninput="saveNote('${step.id}')">${state.notes[step.id] || ''}</textarea>
+        <div class="save-indicator" id="saveIndicator">✓ 已自动保存</div>
+      </div>
+      
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()" ${state.currentStep === 0 ? 'disabled' : ''}>← 上一步</button>
+        <button class="btn btn-primary" onclick="completeAndNext()">
+          ${state.completed.includes(step.id) ? '已完成 ✓' : '标记完成并继续'} →
+        </button>
+      </div>
+    `;
+  } else {
+    main.innerHTML = `
+      <div class="main-header">
+        <div class="main-tag">${step.week} · AI 练习</div>
+        <h1 class="main-title">${step.title}</h1>
+        <div class="main-subtitle">与 AI 助手进行对话练习</div>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">练习说明</div>
+        <p class="description">${step.description}</p>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">练习方法</div>
+        <div class="action-list">
+          <div class="action-item"><strong>1.</strong> 点击右侧"开始练习"按钮，AI 会给出场景</div>
+          <div class="action-item"><strong>2.</strong> 在对话框中给出你的回应</div>
+          <div class="action-item"><strong>3.</strong> AI 会评价并给出改进建议</div>
+          <div class="action-item"><strong>4.</strong> 反复练习直到掌握</div>
+        </div>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-heading">练习记录</div>
+        <textarea class="notes-area" id="noteArea" placeholder="记录本次练习的收获..." oninput="saveNote('${step.id}')">${state.notes[step.id] || ''}</textarea>
+        <div class="save-indicator" id="saveIndicator">✓ 已自动保存</div>
+      </div>
+      
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">← 上一步</button>
+        <button class="btn btn-primary" onclick="completeAndNext()">
+          ${state.completed.includes(step.id) ? '已完成 ✓' : '标记完成并继续'} →
+        </button>
+      </div>
+    `;
+  }
+}
+
+function renderPracticeSelector() {
+  const selector = document.getElementById('practiceSelector');
+  let html = '<div class="ai-practice-label">选择练习</div><div class="practice-chips">';
+  
+  practices.forEach((p, i) => {
+    const isActive = state.currentPractice === p.id;
+    html += `<div class="practice-chip ${isActive ? 'active' : ''}" onclick="selectPractice('${p.id}')">${p.week} ${p.title}</div>`;
+  });
+  
+  html += '</div>';
+  selector.innerHTML = html;
+}
+
+function renderChat() {
+  const container = document.getElementById('aiMessages');
+  if (state.chatHistory.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div>选择一个练习，开始对话</div></div>';
+    return;
+  }
+  
+  container.innerHTML = state.chatHistory.map(m => `
+    <div class="message ${m.role}">
+      <div class="message-avatar">${m.role === 'ai' ? '' : '👤'}</div>
+      <div>
+        <div class="message-content">${escapeHtml(m.content)}</div>
+        <div class="message-time">${m.time}</div>
+      </div>
+    </div>
+  `).join('');
+  
+  container.scrollTop = container.scrollHeight;
+}
+
+// ============ 交互 ============
+function goToStep(idx) {
+  state.currentStep = idx;
+  saveState();
+  renderAll();
+}
+
+function prevStep() {
+  if (state.currentStep > 0) {
+    state.currentStep--;
+    saveState();
+    renderAll();
+  }
+}
+
+function completeAndNext() {
+  const step = allSteps[state.currentStep];
+  if (!state.completed.includes(step.id)) {
+    state.completed.push(step.id);
+    saveState();
+  }
+  
+  if (state.currentStep < totalSteps - 1) {
+    state.currentStep++;
+    saveState();
+    renderAll();
+    showToast('进度已保存');
+  } else {
+    renderAll();
+    showToast('🎉 恭喜完成全部训练！');
+  }
+}
+
+function saveNote(id) {
+  const area = document.getElementById('noteArea');
+  if (area) {
+    state.notes[id] = area.value;
+    saveState();
+    const indicator = document.getElementById('saveIndicator');
+    if (indicator) {
+      indicator.classList.add('show');
+      setTimeout(() => indicator.classList.remove('show'), 1500);
+    }
+  }
+}
+
+function selectPractice(id) {
+  state.currentPractice = id;
+  state.chatHistory = [];
+  saveState();
+  renderPracticeSelector();
+  renderChat();
+  
+  const practice = practices.find(p => p.id === id);
+  if (practice) {
+    addMessage('ai', '你好！我是你的社会情感能力训练助手。让我们开始"' + practice.title + '"的练习。\n\n' + practice.description + '\n\n准备好后，告诉我"开始"，我会给你一个场景。');
+  }
+}
+
+function clearChat() {
+  if (state.chatHistory.length === 0) return;
+  if (confirm('确定清空对话记录吗？')) {
+    state.chatHistory = [];
+    saveState();
+    renderChat();
+  }
+}
+
+function handleInputKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+async function sendMessage() {
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if (!text) return;
+  
+  if (!state.config) {
+    showToast('请先配置 AI');
+    showConfig();
+    return;
+  }
+  
+  if (!state.currentPractice) {
+    showToast('请先选择一个练习');
+    return;
+  }
+  
+  addMessage('user', text);
+  input.value = '';
+  input.style.height = 'auto';
+  
+  const sendBtn = document.getElementById('aiSend');
+  sendBtn.disabled = true;
+  
+  // 显示打字指示器
+  const container = document.getElementById('aiMessages');
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'message ai';
+  typingDiv.id = 'typingIndicator';
+  typingDiv.innerHTML = `
+    <div class="message-avatar">🤖</div>
+    <div class="message-content">
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+  `;
+  container.appendChild(typingDiv);
+  container.scrollTop = container.scrollHeight;
+  
+  try {
+    const practice = practices.find(p => p.id === state.currentPractice);
+    const messages = [
+      { role: 'system', content: practice.prompt + '\n\n请用中文回复，保持友好、专业的教练语气。每次回复控制在200字以内。' },
+      ...state.chatHistory.filter(m => m.role !== 'system').map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.content }))
+    ];
+    
+    const response = await fetch(state.config.endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + state.config.apiKey
+      },
+      body: JSON.stringify({
+        model: state.config.model,
+        messages: messages,
+        temperature: 0.7
+      })
+    });
+    
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error('API 错误：' + response.status + ' ' + err);
+    }
+    
+    const data = await response.json();
+    const reply = data.choices?.[0]?.message?.content || '抱歉，我没有收到有效回复。';
+    
+    document.getElementById('typingIndicator')?.remove();
+    addMessage('ai', reply);
+  } catch (err) {
+    document.getElementById('typingIndicator')?.remove();
+    addMessage('ai', '⚠️ 出错了：' + err.message + '\n\n请检查 API 配置是否正确。');
+  } finally {
+    sendBtn.disabled = false;
+  }
+}
+
+function addMessage(role, content) {
+  const now = new Date();
+  const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  state.chatHistory.push({ role, content, time });
+  saveState();
+  renderChat();
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML.replace(/\n/g, '<br>');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// 自动调整 textarea 高度
+document.addEventListener('input', function(e) {
+  if (e.target.classList.contains('ai-textarea')) {
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+  }
+});
+
+init();
+</script>
+</body>
+</html>
+
