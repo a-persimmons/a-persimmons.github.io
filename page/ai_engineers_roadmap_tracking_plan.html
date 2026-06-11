@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Engineer's Roadmap｜12 周交互式学习计划</title>
+  <style>
+    :root{
+      --bg:#100d1c;
+      --bg-soft:#171226;
+      --panel:rgba(255,255,255,.078);
+      --panel-strong:rgba(255,255,255,.12);
+      --line:rgba(255,255,255,.14);
+      --text:#f7f2ff;
+      --muted:#bdb0d4;
+      --soft:#e6dcff;
+      --violet:#8b5cf6;
+      --lavender:#c4b5fd;
+      --cyan:#67e8f9;
+      --lime:#d9f99d;
+      --peach:#fecaca;
+      --amber:#fed7aa;
+      --green:#86efac;
+      --pink:#f0abfc;
+      --shadow:0 22px 70px rgba(0,0,0,.38);
+      --radius:28px;
+      --radius-sm:18px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --mono:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(139,92,246,.36), transparent 30vw),
+        radial-gradient(circle at 82% 10%, rgba(103,232,249,.20), transparent 28vw),
+        radial-gradient(circle at 82% 78%, rgba(217,249,157,.13), transparent 26vw),
+        linear-gradient(145deg,#0c0817 0%, #151021 44%, #20122c 100%);
+      font-family:var(--font);
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; opacity:.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:56px 56px;
+      mask-image:radial-gradient(circle at 50% 10%, black 0 52%, transparent 82%);
+    }
+    body:after{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; opacity:.06; mix-blend-mode:screen;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    .wrap{width:min(1180px, calc(100% - 36px)); margin:0 auto; position:relative; z-index:1;}
+    .hero{padding:38px 0 24px;}
+    .nav-top{display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:28px;}
+    .brand{display:flex; align-items:center; gap:14px; min-width:220px;}
+    .owl{
+      width:54px; height:54px; border-radius:19px;
+      display:grid; place-items:center;
+      background:linear-gradient(135deg, rgba(139,92,246,.9), rgba(103,232,249,.55));
+      border:1px solid rgba(255,255,255,.24);
+      box-shadow:0 18px 50px rgba(139,92,246,.28), inset 0 0 28px rgba(255,255,255,.16);
+      position:relative; isolation:isolate;
+    }
+    .owl svg{width:36px;height:36px;filter:drop-shadow(0 3px 7px rgba(0,0,0,.25))}
+    .brand small{display:block; color:var(--muted); font-size:12px; letter-spacing:.14em; text-transform:uppercase; margin-top:3px;}
+    .brand strong{font-size:16px; letter-spacing:.02em;}
+    .pillbar{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+    .pill{
+      border:1px solid var(--line); color:var(--soft); background:rgba(255,255,255,.07);
+      border-radius:999px; padding:10px 14px; font-size:13px; backdrop-filter:blur(16px);
+      display:inline-flex; align-items:center; gap:8px; box-shadow:0 8px 24px rgba(0,0,0,.14);
+    }
+    .hero-card{
+      position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.18); border-radius:36px;
+      padding:36px; background:linear-gradient(135deg, rgba(255,255,255,.13), rgba(255,255,255,.052));
+      box-shadow:var(--shadow); backdrop-filter:blur(22px);
+    }
+    .hero-card:before{
+      content:""; position:absolute; inset:-2px; pointer-events:none; opacity:.92;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(196,181,253,.36), transparent 26%),
+        radial-gradient(circle at 78% 5%, rgba(217,249,157,.22), transparent 22%),
+        linear-gradient(120deg, transparent 12%, rgba(255,255,255,.10) 50%, transparent 88%);
+      mask:linear-gradient(#000, transparent 82%);
+    }
+    .hero-grid{display:grid; grid-template-columns:minmax(0,1.35fr) 360px; gap:30px; position:relative;}
+    .eyebrow{display:flex; align-items:center; gap:10px; color:var(--lavender); font-weight:750; letter-spacing:.18em; text-transform:uppercase; font-size:12px; margin-bottom:16px;}
+    .eyebrow:before{content:""; width:10px; height:10px; border-radius:999px; background:var(--lime); box-shadow:0 0 20px var(--lime)}
+    h1{font-size:clamp(40px, 6vw, 78px); line-height:.93; margin:0 0 18px; letter-spacing:-.065em;}
+    .subtitle{font-size:18px; line-height:1.78; color:#ded4ef; max-width:760px; margin:0 0 26px;}
+    .hero-actions{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+    .btn{
+      border:0; cursor:pointer; border-radius:16px; padding:13px 17px; color:#120d20;
+      background:linear-gradient(135deg, var(--lime), #fef3c7 48%, var(--cyan));
+      font-weight:850; letter-spacing:-.01em; box-shadow:0 18px 38px rgba(103,232,249,.18), 0 12px 28px rgba(217,249,157,.16);
+      transition:.2s ease transform,.2s ease filter,.2s ease background;
+    }
+    .btn:hover{transform:translateY(-2px); filter:saturate(1.12)}
+    .btn.secondary{color:var(--text); border:1px solid var(--line); background:rgba(255,255,255,.08); box-shadow:none;}
+    .btn.danger{color:#ffebe9; background:rgba(248,113,113,.14); border:1px solid rgba(248,113,113,.24); box-shadow:none;}
+    .progress-panel{
+      background:rgba(10,8,18,.38); border:1px solid rgba(255,255,255,.14); border-radius:30px; padding:24px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 24px 60px rgba(0,0,0,.24);
+      backdrop-filter:blur(18px);
+    }
+    .ring-wrap{display:grid; place-items:center; padding:4px 0 16px;}
+    .ring{width:182px; aspect-ratio:1; border-radius:50%; display:grid; place-items:center; position:relative; background:conic-gradient(var(--lime) 0deg, var(--cyan) var(--deg,0deg), rgba(255,255,255,.10) var(--deg,0deg) 360deg); box-shadow:0 0 56px rgba(139,92,246,.22);}
+    .ring:after{content:""; position:absolute; inset:12px; border-radius:50%; background:linear-gradient(145deg, rgba(18,13,32,.98), rgba(30,22,48,.98)); border:1px solid rgba(255,255,255,.12);}
+    .ring span{position:relative; z-index:1; font-size:42px; font-weight:900; letter-spacing:-.06em;}
+    .ring small{display:block; font-size:12px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; text-align:center; margin-top:4px; font-weight:700;}
+    .stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;}
+    .stat{padding:14px; border-radius:18px; border:1px solid var(--line); background:rgba(255,255,255,.055)}
+    .stat b{display:block; font-size:23px; letter-spacing:-.035em; margin-bottom:2px;}
+    .stat em{font-style:normal; color:var(--muted); font-size:12px;}
+    .controls{position:sticky; top:0; z-index:5; padding:14px 0 10px; backdrop-filter:blur(22px);}
+    .control-card{display:grid; grid-template-columns:1fr auto; align-items:center; gap:14px; border:1px solid var(--line); border-radius:24px; padding:12px; background:rgba(18,13,32,.78); box-shadow:0 15px 44px rgba(0,0,0,.22);}
+    .search{position:relative;}
+    .search input{width:100%; border:0; outline:0; border-radius:16px; padding:14px 16px 14px 43px; color:var(--text); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.09);}
+    .search svg{position:absolute; left:15px; top:50%; transform:translateY(-50%); width:17px; color:var(--muted)}
+    .filters{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+    .chip{border:1px solid var(--line); background:rgba(255,255,255,.055); color:var(--muted); padding:11px 13px; border-radius:999px; cursor:pointer; transition:.2s ease all; font-size:13px;}
+    .chip:hover,.chip.active{color:#120d20; background:linear-gradient(135deg,var(--lavender),var(--lime)); border-color:transparent; font-weight:850;}
+    .timeline{display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin:26px 0 18px;}
+    .time-node{border:1px solid var(--line); background:rgba(255,255,255,.06); border-radius:22px; padding:16px 14px; min-height:116px; cursor:pointer; transition:.22s ease transform,.22s ease background,.22s ease border; position:relative; overflow:hidden;}
+    .time-node:before{content:""; position:absolute; inset:0; opacity:.16; background:linear-gradient(135deg,var(--node),transparent 60%)}
+    .time-node:hover{transform:translateY(-4px); border-color:rgba(255,255,255,.30); background:rgba(255,255,255,.09)}
+    .time-node b{display:block; font-size:13px; color:var(--node); text-transform:uppercase; letter-spacing:.08em; margin-bottom:11px; position:relative;}
+    .time-node span{display:block; font-size:15px; font-weight:850; line-height:1.25; position:relative;}
+    .tinybar{height:7px; background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden; margin-top:12px; position:relative;}
+    .tinybar i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--node),var(--cyan)); border-radius:inherit; transition:.25s ease width;}
+    .section-title{display:flex; align-items:end; justify-content:space-between; gap:18px; margin:28px 0 18px;}
+    .section-title h2{font-size:clamp(28px,4vw,44px); letter-spacing:-.05em; margin:0;}
+    .section-title p{color:var(--muted); max-width:620px; line-height:1.6; margin:0;}
+    .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; padding-bottom:28px;}
+    .module{border:1px solid var(--line); border-radius:30px; overflow:hidden; background:linear-gradient(160deg, rgba(255,255,255,.108), rgba(255,255,255,.045)); box-shadow:0 22px 58px rgba(0,0,0,.22); backdrop-filter:blur(18px); position:relative;}
+    .module:before{content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 10% 0%, color-mix(in srgb,var(--accent) 24%, transparent), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.06), transparent 20%); opacity:.98;}
+    .module-inner{position:relative; padding:22px;}
+    .module-head{display:grid; grid-template-columns:1fr auto; gap:14px; align-items:start; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,.10);}
+    .week{display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#14111f; background:linear-gradient(135deg,var(--accent),rgba(255,255,255,.74)); font-weight:900; border-radius:999px; padding:8px 11px; margin-bottom:12px;}
+    .module h3{font-size:27px; line-height:1.04; letter-spacing:-.04em; margin:0 0 9px;}
+    .module .goal{color:#ddd4ef; line-height:1.55; margin:0; font-size:14px;}
+    .score{min-width:76px; border-radius:22px; padding:12px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.13); text-align:center;}
+    .score b{display:block; font-size:24px; line-height:1; letter-spacing:-.04em;}
+    .score small{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.09em;}
+    .deliverable{margin:16px 0; display:grid; grid-template-columns:auto 1fr; gap:12px; padding:14px; border-radius:20px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);}
+    .deliverable .icon{width:34px; height:34px; border-radius:13px; display:grid; place-items:center; color:#100d1c; background:var(--accent); font-weight:900;}
+    .deliverable b{display:block; margin-bottom:4px;}
+    .deliverable span{color:var(--muted); line-height:1.45; font-size:13px;}
+    .task-list{display:grid; gap:10px; margin:16px 0 18px;}
+    .task{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:start; padding:13px; border-radius:18px; background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); transition:.2s ease background,.2s ease border;}
+    .task:hover{background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.15)}
+    .task input{appearance:none; width:22px; height:22px; border-radius:8px; border:1px solid rgba(255,255,255,.28); background:rgba(255,255,255,.06); margin-top:1px; cursor:pointer; position:relative;}
+    .task input:checked{background:linear-gradient(135deg,var(--accent),var(--cyan)); border-color:transparent;}
+    .task input:checked:after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center; color:#120d20; font-weight:1000; font-size:15px;}
+    .task label{cursor:pointer; line-height:1.45; color:#eee8fb;}
+    .task input:checked + label{text-decoration:line-through; color:rgba(238,232,251,.52)}
+    .task time{font-family:var(--mono); color:var(--muted); font-size:12px; white-space:nowrap; padding-top:3px;}
+    .resources{display:grid; gap:10px; margin-top:18px;}
+    .resources h4,.notes h4{margin:0 0 8px; font-size:13px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase;}
+    .res{display:grid; grid-template-columns:1fr auto; gap:10px; padding:12px 12px; border-radius:17px; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.08); transition:.2s ease transform,.2s ease background;}
+    .res:hover{transform:translateX(3px); background:rgba(255,255,255,.09)}
+    .res strong{display:block; font-size:14px; line-height:1.3; margin-bottom:4px;}
+    .res span{font-size:12px; color:var(--muted); line-height:1.35;}
+    .tag{align-self:start; white-space:nowrap; font-size:11px; letter-spacing:.07em; text-transform:uppercase; padding:6px 8px; border-radius:999px; color:#120d20; font-weight:900; background:var(--accent);}
+    .notes{margin-top:18px;}
+    textarea{width:100%; min-height:92px; resize:vertical; outline:0; color:var(--text); background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.10); border-radius:18px; padding:13px 14px; line-height:1.5;}
+    textarea:focus{border-color:color-mix(in srgb,var(--accent) 65%, white)}
+    .hidden{display:none!important}
+    .learning-system{display:grid; grid-template-columns:1.1fr .9fr; gap:18px; padding:4px 0 60px;}
+    .panel{border:1px solid var(--line); border-radius:30px; background:rgba(255,255,255,.07); box-shadow:0 24px 62px rgba(0,0,0,.24); padding:24px; backdrop-filter:blur(18px);}
+    .panel h3{font-size:26px; letter-spacing:-.04em; margin:0 0 16px;}
+    .ritual{display:grid; gap:11px; counter-reset:ritual;}
+    .ritual li{list-style:none; display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:13px; border-radius:18px; background:rgba(0,0,0,.16); border:1px solid rgba(255,255,255,.08); color:#e8ddfa; line-height:1.5;}
+    .ritual li:before{counter-increment:ritual; content:counter(ritual); display:grid; place-items:center; width:28px; height:28px; border-radius:11px; color:#120d20; background:linear-gradient(135deg,var(--lavender),var(--lime)); font-weight:900;}
+    .tool-stack{display:flex; flex-wrap:wrap; gap:10px;}
+    .tool{border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.18); border-radius:16px; padding:10px 12px; color:#e8ddfa;}
+    .toast{position:fixed; right:22px; bottom:22px; z-index:20; border:1px solid var(--line); border-radius:18px; background:rgba(18,13,32,.92); color:var(--text); padding:14px 16px; box-shadow:var(--shadow); opacity:0; transform:translateY(10px); pointer-events:none; transition:.22s ease;}
+    .toast.show{opacity:1; transform:translateY(0)}
+    .importer{display:none}
+    @media (max-width: 960px){
+      .hero-grid,.learning-system{grid-template-columns:1fr}
+      .timeline{grid-template-columns:repeat(3,1fr)}
+      .grid{grid-template-columns:1fr}
+      .control-card{grid-template-columns:1fr}
+      .filters{justify-content:flex-start}
+    }
+    @media (max-width: 620px){
+      .wrap{width:min(100% - 24px, 1180px)}
+      .hero-card{padding:24px; border-radius:28px}
+      .nav-top{align-items:flex-start; flex-direction:column}
+      .timeline{grid-template-columns:1fr 1fr}
+      .module-inner{padding:18px}
+      .task{grid-template-columns:auto 1fr}
+      .task time{grid-column:2; padding-top:0}
+      .stats{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="nav-top">
+        <a class="brand" href="#top" aria-label="Roadmap Home">
+          <span class="owl" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 17c-4 2-8 7-8 17 0 13 10 22 22 22s22-9 22-22c0-10-4-15-8-17 0 0-2 7-7 8-4-4-10-4-14 0-5-1-7-8-7-8Z" fill="rgba(255,255,255,.87)"/>
+              <path d="M22 35c4 0 7-3 7-7-8-4-14 1-14 1 0 3 3 6 7 6Zm20 0c-4 0-7-3-7-7 8-4 14 1 14 1 0 3-3 6-7 6Z" fill="#161025"/>
+              <path d="M32 36l5 4-5 3-5-3 5-4Z" fill="#8b5cf6"/>
+              <path d="M20 49c7 3 17 3 24 0" stroke="#161025" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span><strong>AI Engineer’s Roadmap</strong><small>RAG · Eval · Production</small></span>
+        </a>
+        <div class="pillbar" aria-label="计划概览">
+          <span class="pill">⏱ 12 周</span>
+          <span class="pill">🧪 可评估</span>
+          <span class="pill">🚀 可部署</span>
+        </div>
+      </div>
+
+      <div class="hero-card" id="top">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">A Roadmap for Clarity</div>
+            <h1>12 周成为能交付的 AI Engineer</h1>
+            <p class="subtitle">从 LLM/RAG 基础到评估、检索架构、生产工程与部署。每个阶段都配有可勾选任务、交付物、精选学习资源与本地进度跟踪，适合以一个真实 RAG 项目贯穿学习。</p>
+            <div class="hero-actions">
+              <button class="btn" id="startBtn">继续未完成任务</button>
+              <button class="btn secondary" id="exportBtn">导出进度 JSON</button>
+              <button class="btn secondary" id="importBtn">导入进度</button>
+              <button class="btn danger" id="resetBtn">重置</button>
+              <input id="importFile" class="importer" type="file" accept="application/json" />
+            </div>
+          </div>
+          <aside class="progress-panel" aria-label="学习进度">
+            <div class="ring-wrap">
+              <div class="ring" id="progressRing"><div><span id="overallPct">0%</span><small>Overall</small></div></div>
+            </div>
+            <div class="stats">
+              <div class="stat"><b id="doneCount">0</b><em>已完成任务</em></div>
+              <div class="stat"><b id="totalCount">0</b><em>总任务数</em></div>
+              <div class="stat"><b id="weekFocus">1-2</b><em>当前焦点周</em></div>
+              <div class="stat"><b id="resourceCount">0</b><em>精选资源</em></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls" aria-label="筛选与搜索">
+      <div class="control-card">
+        <label class="search" for="searchInput">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input id="searchInput" type="search" placeholder="搜索：chunking、RAGAS、FastAPI、部署、安全……" />
+        </label>
+        <div class="filters" id="filters"></div>
+      </div>
+    </section>
+
+    <nav class="timeline" id="timeline" aria-label="阶段时间线"></nav>
+
+    <div class="section-title">
+      <div>
+        <h2>学习计划</h2>
+        <p>建议每周 6–10 小时：70% 动手、20% 阅读、10% 复盘。每两周必须产出一个能被他人运行或审阅的交付物。</p>
+      </div>
+    </div>
+
+    <section class="grid" id="modules" aria-label="周计划卡片"></section>
+
+    <section class="learning-system" aria-label="学习方法与技术栈">
+      <article class="panel">
+        <h3>每周学习闭环</h3>
+        <ol class="ritual">
+          <li><span><b>先定义实验问题。</b>例如“固定 chunk 是否比语义 chunk 更好？”避免无目标阅读。</span></li>
+          <li><span><b>建立最小可运行基线。</b>先跑通，再优化；每次只改一个变量。</span></li>
+          <li><span><b>记录三类指标。</b>质量、成本、延迟；任何结论都必须能被复现。</span></li>
+          <li><span><b>沉淀决策日志。</b>写下为什么选择该检索、缓存、评估或部署方案。</span></li>
+          <li><span><b>每两周做一次 Demo。</b>把交付物给真实用户或同事试用，收集失败样例。</span></li>
+        </ol>
+      </article>
+      <aside class="panel">
+        <h3>推荐技术栈</h3>
+        <div class="tool-stack">
+          <span class="tool">Python</span><span class="tool">OpenAI / Anthropic API</span><span class="tool">LlamaIndex</span><span class="tool">LangChain</span><span class="tool">Qdrant / Weaviate / Pinecone</span><span class="tool">BM25 + Vector</span><span class="tool">RAGAS</span><span class="tool">DeepEval</span><span class="tool">FastAPI</span><span class="tool">Redis / Semantic Cache</span><span class="tool">LangSmith / Phoenix</span><span class="tool">Docker</span><span class="tool">Cloud + Security</span>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const roadmap = [
+      {
+        id:"w1", weeks:"1-2", category:"基础", accent:"#c4b5fd", title:"Foundations", 
+        goal:"理解 LLM 如何工作、RAG 的组件边界，并搭出第一个端到端管线。",
+        deliverable:"一个最小 RAG Demo：上传/导入文档 → 切分 → 向量化 → 检索 → 生成回答，并附 5 个真实问题。",
+        tasks:[
+          ["理解 pretraining、post-training、instruction tuning、RLHF/偏好优化与幻觉来源", "3h"],
+          ["画出 RAG 架构图：loader、chunker、embedding、vector DB、retriever、generator、evaluator", "2h"],
+          ["选择一个真实业务/个人知识库场景，写清问题、用户、成功标准与风险", "2h"],
+          ["完成生产栈选型：向量数据库、编排框架、LLM API、配置/密钥管理", "2h"],
+          ["构建第一个端到端 RAG pipeline，并保存失败样例", "5h"]
+        ],
+        resources:[
+          ["AI Engineering — Chip Huyen", "面向 Foundation Model 应用的系统化 AI Engineering 书籍。", "Book", "https://www.oreilly.com/library/view/ai-engineering/9781098166298/"],
+          ["NVIDIA RAG 101", "从组件和流程理解 RAG pipeline 的工程视角入门。", "Blog", "https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/"],
+          ["LlamaIndex: Introduction to RAG", "用 LlamaIndex 的术语建立 RAG 基础心智模型。", "Docs", "https://developers.llamaindex.ai/python/framework/understanding/rag/"],
+          ["LangChain Retrieval Docs", "Documents、splitters、embeddings、vector stores、retrievers 的工程入口。", "Docs", "https://docs.langchain.com/oss/python/langchain/retrieval"],
+          ["OpenAI API Overview", "理解 Responses、tool use、streaming、errors、rate limits 等 API 基础。", "Docs", "https://developers.openai.com/api/reference/overview/"],
+        ]
+      },
+      {
+        id:"w2", weeks:"3-4", category:"基础", accent:"#d9f99d", title:"Chunking, Embeddings & First Evaluation", 
+        goal:"把 chunking、embedding 与第一次评估做成实验，而不是凭直觉调参。",
+        deliverable:"一份 chunking/embedding 对比报告：至少 3 种切分策略、2 组检索指标、10 个失败案例复盘。",
+        tasks:[
+          ["解释为什么 chunking 是 RAG 中最重要的早期设计决策", "1h"],
+          ["学习 embedding：向量空间、相似度、维度、归一化、多语言与模型选择", "3h"],
+          ["实现 fixed-size、semantic、recursive、AST/code-aware chunking 的最小实验", "5h"],
+          ["建立第一次评估：LLM-as-a-Judge + 人工 review 双轨", "4h"],
+          ["系统比较策略，选出当前 winner，并记录取舍原因", "2h"]
+        ],
+        resources:[
+          ["OpenAI Embeddings Guide", "embedding 的官方模型、用例与输入限制。", "Docs", "https://developers.openai.com/api/docs/guides/embeddings"],
+          ["Pinecone: Chunking Strategies", "围绕 chunk 大小、上下文窗口和检索质量的实践指南。", "Blog", "https://www.pinecone.io/learn/chunking-strategies/"],
+          ["LangChain Knowledge Base Tutorial", "从文档读取、切分、embedding 到 vector store 的完整教程。", "Tutorial", "https://docs.langchain.com/oss/python/langchain/knowledge-base"],
+          ["Anthropic Learn", "提示词、上下文工程与模型行为的官方学习资源。", "Guide", "https://www.anthropic.com/learn"],
+          ["Designing Machine Learning Systems", "用于补齐实验设计、数据系统和生产 ML 系统思维。", "Book", "https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/"],
+        ]
+      },
+      {
+        id:"w3", weeks:"5-6", category:"检索", accent:"#fed7aa", title:"Advanced Retrieval Architectures", 
+        goal:"从“能搜到”升级为“在准确率、成本、延迟之间可控地检索”。",
+        deliverable:"混合检索 + reranking 的可复现实验：baseline、dense、sparse、hybrid、rerank 五组结果。",
+        tasks:[
+          ["理解向量数据库内部：HNSW、ANN、召回率、索引参数与插入/更新成本", "4h"],
+          ["比较 dense retrieval 与 sparse/BM25 retrieval 的覆盖差异", "3h"],
+          ["实现 hybrid retrieval，并用 Reciprocal Rank Fusion 合并排序", "4h"],
+          ["加入 reranking：比较 bi-encoder 与 cross-encoder 的质量/延迟", "4h"],
+          ["实现 two-stage retrieval 或 LLM query routing，提高复杂问题精度", "4h"],
+          ["建立 CAL 决策表：Cost / Accuracy / Latency 三角权衡", "2h"]
+        ],
+        resources:[
+          ["Weaviate Vector Indexing", "HNSW 与 ANN 检索机制的官方概念说明。", "Docs", "https://docs.weaviate.io/weaviate/concepts/vector-index"],
+          ["Weaviate Vector Search Explained", "解释语义搜索与传统关键词搜索差异。", "Blog", "https://weaviate.io/blog/vector-search-explained"],
+          ["Elasticsearch RRF", "Reciprocal Rank Fusion 的工程实现参考。", "Docs", "https://www.elastic.co/guide/en/elasticsearch/reference/current/rrf.html"],
+          ["Cohere Rerank", "用 reranking 改善检索结果排序的官方示例。", "Docs", "https://docs.cohere.com/docs/rerank"],
+          ["Azure RAG Design & Evaluation Guide", "从解决方案设计到评估的工程化 RAG 指南。", "Guide", "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-solution-design-and-evaluation-guide"],
+        ]
+      },
+      {
+        id:"w4", weeks:"7-8", category:"评估", accent:"#c4b5fd", title:"Mastering Evaluation", 
+        goal:"把评估从“看起来不错”提升为可回归、可诊断、可上线决策的工程系统。",
+        deliverable:"一套评估 harness：golden dataset、RAGAS/DeepEval 指标、人工抽检表、失败分类 taxonomy。",
+        tasks:[
+          ["理解为什么 RAG 评估不同于传统 ML：retrieval 与 generation 错误会叠加", "2h"],
+          ["用 RAGAS 生成 synthetic test set，并跑 context precision / faithfulness 等指标", "4h"],
+          ["用 DeepEval 建立 LLM-as-a-Judge 评估流程", "4h"],
+          ["从真实用户问题 bootstrap Golden Dataset，并定义 ground truth 标注规范", "5h"],
+          ["设计每次迭代的评估策略：离线回归、在线监控、人工审计", "3h"],
+          ["把失败案例按检索失败、上下文缺失、模型误读、引用错误等分类", "2h"]
+        ],
+        resources:[
+          ["RAGAS Metrics", "RAG 与 Agentic workflow 指标集合。", "Docs", "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/"],
+          ["RAGAS: Align LLM-as-Judge", "把 LLM Judge 与人工专家判断对齐。", "Guide", "https://docs.ragas.io/en/stable/howtos/applications/align-llm-as-judge/"],
+          ["DeepEval RAG Quickstart", "RAG QA、客服机器人等应用的评估快速开始。", "Docs", "https://deepeval.com/docs/getting-started-rag"],
+          ["OpenAI Cookbook: Evaluate RAG with LlamaIndex", "RAG 构建与评估的 notebook 参考。", "Cookbook", "https://developers.openai.com/cookbook/examples/evaluation/evaluate_rag_with_llamaindex"],
+          ["Hugging Face RAG Evaluation Cookbook", "合成评估数据集与 LLM-as-a-Judge 的实践 notebook。", "Cookbook", "https://huggingface.co/learn/cookbook/en/rag_evaluation"],
+        ]
+      },
+      {
+        id:"w5", weeks:"9-10", category:"生产", accent:"#d9f99d", title:"Production Engineering", 
+        goal:"让系统不只“能用”，还要快、稳定、可观测、可控成本。",
+        deliverable:"生产级 RAG API：FastAPI streaming、缓存、重试、trace、成本/延迟 dashboard、压测报告。",
+        tasks:[
+          ["设计生产 RAG 架构：请求路径、异步任务、限流、降级、日志与错误边界", "3h"],
+          ["建立 latency / cost / quality / cache hit rate / error rate 指标", "3h"],
+          ["实现 semantic cache 或 prompt cache，识别重复/近似问题", "4h"],
+          ["用 FastAPI 提供 streaming response，并处理取消、超时和异常", "4h"],
+          ["接入 observability/tracing：记录 query、retrieval、prompt、response、token、cost", "4h"],
+          ["实现智能重试、adaptive prompting 与 cache invalidation 策略", "3h"]
+        ],
+        resources:[
+          ["FastAPI Custom / Streaming Responses", "生产 API 和流式返回的官方文档入口。", "Docs", "https://fastapi.tiangolo.com/advanced/custom-response/"],
+          ["LangSmith Observability", "从 trace 到生产监控的 LLM 应用可观测性文档。", "Docs", "https://docs.langchain.com/langsmith/observability"],
+          ["Arize Phoenix Docs", "开源 LLM tracing、eval 与 observability 工具。", "Docs", "https://docs.arize.com/phoenix"],
+          ["RedisVL LLM Cache", "语义缓存与向量缓存的 Redis 工程实现。", "Docs", "https://docs.redisvl.com/"],
+          ["AWS Generative AI Lens", "生成式 AI 应用的 Well-Architected 最佳实践。", "Guide", "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/generative-ai-lens.html"],
+        ]
+      },
+      {
+        id:"w6", weeks:"11-12", category:"高级", accent:"#fecaca", title:"Advanced Patterns & Deployment", 
+        goal:"从单一 RAG 系统进化到可部署、可扩展、可治理的智能应用。",
+        deliverable:"最终项目：部署到云端/内网环境，具备安全边界、评估门禁、监控面板、README 与 Demo 视频。",
+        tasks:[
+          ["扩展到 Cache-Augmented Generation、tool-augmented RAG 或 agentic workflow", "4h"],
+          ["实现 advanced query understanding：query expansion、decomposition、multi-step RAG", "5h"],
+          ["实现动态检索：query routing、retriever 选择、RAG as a pluggable tool", "4h"],
+          ["容器化部署：Dockerfile、环境变量、health check、CI/CD 基础", "4h"],
+          ["完成安全加固：权限、输入/输出过滤、PII、prompt injection、secret 管理", "4h"],
+          ["整理最终文档：架构图、评估报告、运行手册、已知限制与下一步路线", "4h"]
+        ],
+        resources:[
+          ["LangGraph Docs", "构建有状态、多步骤、可恢复 agent / workflow 的文档。", "Docs", "https://docs.langchain.com/oss/python/langgraph/overview"],
+          ["LlamaIndex Agents", "把 RAG pipeline 作为工具，构建 agentic 知识助手。", "Docs", "https://developers.llamaindex.ai/python/framework/"],
+          ["Microsoft Azure RAG Guide", "企业级 RAG 架构、设计、评估与部署参考。", "Guide", "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-solution-design-and-evaluation-guide"],
+          ["Docker Get Started", "容器化部署与可移植运行环境基础。", "Docs", "https://docs.docker.com/get-started/"],
+          ["OWASP Top 10 for LLM Applications", "LLM 应用安全风险与防护清单。", "Security", "https://owasp.org/www-project-top-10-for-large-language-model-applications/"],
+        ]
+      }
+    ];
+
+    const filters = ["全部","基础","检索","评估","生产","高级"];
+    const storeKey = "ai-engineer-roadmap-v1";
+    const state = JSON.parse(localStorage.getItem(storeKey) || "{}");
+    const $ = (s, root=document) => root.querySelector(s);
+    const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+    const save = () => localStorage.setItem(storeKey, JSON.stringify(state));
+    const taskKey = (m,t) => `${m.id}:task:${t}`;
+    const noteKey = (m) => `${m.id}:note`;
+    const esc = (v="") => String(v).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
+
+    const filtersEl = $("#filters");
+    const modulesEl = $("#modules");
+    const timelineEl = $("#timeline");
+    let activeFilter = "全部";
+
+    function taskTotal(){ return roadmap.reduce((n,m)=>n+m.tasks.length,0); }
+    function taskDone(){ return roadmap.reduce((n,m)=>n+m.tasks.filter((_,i)=>state[taskKey(m,i)]).length,0); }
+    function modulePct(m){ return Math.round(100 * m.tasks.filter((_,i)=>state[taskKey(m,i)]).length / m.tasks.length); }
+    function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),1800); }
+
+    function renderFilters(){
+      filtersEl.innerHTML = filters.map(f => `<button class="chip ${f===activeFilter?'active':''}" data-filter="${f}">${f}</button>`).join("");
+      $$(".chip", filtersEl).forEach(btn => btn.onclick = () => { activeFilter = btn.dataset.filter; render(); });
+    }
+
+    function renderTimeline(){
+      timelineEl.innerHTML = roadmap.map(m=>`
+        <a class="time-node" href="#${m.id}" style="--node:${m.accent}" data-cat="${m.category}">
+          <b>Weeks ${m.weeks}</b>
+          <span>${m.title}</span>
+          <div class="tinybar"><i style="width:${modulePct(m)}%"></i></div>
+        </a>`).join("");
+    }
+
+    function renderModules(){
+      const q = $("#searchInput").value.trim().toLowerCase();
+      modulesEl.innerHTML = roadmap.map(m=>{
+        const hay = [m.weeks,m.category,m.title,m.goal,m.deliverable,...m.tasks.flat(),...m.resources.flat()].join(" ").toLowerCase();
+        const visible = (activeFilter === "全部" || m.category === activeFilter) && (!q || hay.includes(q));
+        return `<article class="module ${visible?'':'hidden'}" id="${m.id}" style="--accent:${m.accent}">
+          <div class="module-inner">
+            <div class="module-head">
+              <div>
+                <span class="week">Weeks ${m.weeks} · ${m.category}</span>
+                <h3>${m.title}</h3>
+                <p class="goal">${m.goal}</p>
+              </div>
+              <div class="score"><b>${modulePct(m)}%</b><small>Done</small></div>
+            </div>
+            <div class="deliverable"><div class="icon">✓</div><div><b>阶段交付物</b><span>${m.deliverable}</span></div></div>
+            <div class="task-list">
+              ${m.tasks.map((t,i)=>`
+                <div class="task">
+                  <input id="${taskKey(m,i)}" type="checkbox" ${state[taskKey(m,i)]?'checked':''} data-task="${taskKey(m,i)}" />
+                  <label for="${taskKey(m,i)}">${t[0]}</label>
+                  <time>${t[1]}</time>
+                </div>`).join("")}
+            </div>
+            <div class="resources">
+              <h4>Best Resources</h4>
+              ${m.resources.map(r=>`
+                <a class="res" href="${r[3]}" target="_blank" rel="noreferrer noopener">
+                  <span><strong>${r[0]}</strong><span>${r[1]}</span></span><em class="tag">${r[2]}</em>
+                </a>`).join("")}
+            </div>
+            <div class="notes">
+              <h4>Notes / Decisions</h4>
+              <textarea data-note="${noteKey(m)}" placeholder="记录你的实验结论、失败案例、下一步决策……">${esc(state[noteKey(m)] || "")}</textarea>
+            </div>
+          </div>
+        </article>`;
+      }).join("");
+
+      $$('input[type="checkbox"][data-task]').forEach(cb => cb.addEventListener('change', e => {
+        state[e.target.dataset.task] = e.target.checked;
+        save(); render();
+      }));
+      $$('textarea[data-note]').forEach(ta => ta.addEventListener('input', e => {
+        state[e.target.dataset.note] = e.target.value;
+        save();
+      }));
+    }
+
+    function updateStats(){
+      const total = taskTotal();
+      const done = taskDone();
+      const pct = total ? Math.round(done / total * 100) : 0;
+      $("#totalCount").textContent = total;
+      $("#doneCount").textContent = done;
+      $("#overallPct").textContent = pct + "%";
+      $("#progressRing").style.setProperty("--deg", `${pct*3.6}deg`);
+      $("#resourceCount").textContent = roadmap.reduce((n,m)=>n+m.resources.length,0);
+      const focus = roadmap.find(m => modulePct(m) < 100) || roadmap[roadmap.length - 1];
+      $("#weekFocus").textContent = focus.weeks;
+    }
+
+    function render(){ renderFilters(); renderTimeline(); renderModules(); updateStats(); }
+    $("#searchInput").addEventListener("input", render);
+    $("#startBtn").onclick = () => {
+      const first = roadmap.find(m => modulePct(m) < 100) || roadmap[0];
+      document.getElementById(first.id).scrollIntoView({behavior:"smooth", block:"start"});
+    };
+    $("#exportBtn").onclick = () => {
+      const payload = { exportedAt:new Date().toISOString(), version:1, roadmap:"AI Engineer's Roadmap", state };
+      const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "ai-engineer-roadmap-progress.json"; a.click();
+      URL.revokeObjectURL(url); toast("进度已导出");
+    };
+    $("#importBtn").onclick = () => $("#importFile").click();
+    $("#importFile").onchange = async (e) => {
+      const file = e.target.files[0]; if(!file) return;
+      try{
+        const imported = JSON.parse(await file.text());
+        Object.keys(state).forEach(k=>delete state[k]);
+        Object.assign(state, imported.state || imported);
+        save(); render(); toast("进度已导入");
+      }catch(err){ toast("导入失败：JSON 无效"); }
+      e.target.value = "";
+    };
+    $("#resetBtn").onclick = () => {
+      if(confirm("确认清空所有勾选和笔记？")){
+        Object.keys(state).forEach(k=>delete state[k]); save(); render(); toast("已重置");
+      }
+    };
+    render();
+  </script>
+</body>
+</html>
