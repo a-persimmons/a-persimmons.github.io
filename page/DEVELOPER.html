@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEVELOPER // 显影液</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', '-apple-system', BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            color: #FFFFFF;
+            background-color: #050507; 
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .mono { font-family: "SF Mono", SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace; font-weight: 500; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 全局动态多色渐变底板 */
+        #gradient-canvas-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #101014, #14141C, #0D0D11);
+            transition: background 2s ease-in-out;
+            filter: blur(60px); /* 丝滑晕染 */
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col relative select-none">
+
+    <div id="gradient-canvas-bg"></div>
+
+    <header class="h-16 border-b border-white/10 flex items-center justify-between px-8 shrink-0 bg-black/40 backdrop-blur-3xl z-10">
+        <div class="flex items-center space-x-4">
+            <span class="text-xs tracking-[0.25em] font-black uppercase text-white/90">DEVELOPER // 显影液</span>
+            <span class="text-xs text-white/30">/</span>
+            <span class="text-xs mono text-white/60 uppercase font-bold tracking-wide" id="file-name-top">AWAITING SOURCE FILE... // 准备显影</span>
+        </div>
+        <div>
+            <label for="upload-input" class="text-xs uppercase tracking-widest bg-white text-neutral-950 px-5 py-2.5 cursor-pointer hover:bg-neutral-200 transition-colors font-black shadow-xl">
+                INJECT IMAGE // 注入图像
+            </label>
+            <input type="file" id="upload-input" accept="image/jpeg, image/tiff" class="hidden">
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden z-10">
+        
+        <section id="left-pane" class="w-1/2 h-full flex items-center justify-center p-12 border-r border-white/10 relative bg-black/15 backdrop-blur-2xl">
+            <div id="drop-zone" class="absolute inset-0 flex flex-col items-center justify-center border-2 border-dashed border-transparent hover:border-white/20 transition-all cursor-pointer">
+                <div class="text-center p-8 pointer-events-none" id="upload-prompt">
+                    <p class="text-base font-bold tracking-wide text-white/80">将照片拖拽至此，或点击右上角注入</p>
+                    <p class="text-xs text-white/40 mt-3 mono tracking-widest">SUPPORTED FORMATS: .JPG / .JPEG / .TIFF</p>
+                </div>
+            </div>
+            <img id="image-preview" src class="max-w-full max-h-full object-contain shadow-[0_60px_120px_-20px_rgba(0,0,0,0.9)] hidden transition-opacity duration-700 opacity-0" alt="Preview">
+        </section>
+
+        <section id="right-pane" class="w-1/2 h-full overflow-y-auto no-scrollbar p-14 flex flex-col justify-between bg-black/45 backdrop-blur-3xl">
+            
+            <div class="space-y-14">
+                <div>
+                    <h2 class="text-xs tracking-[0.25em] uppercase text-white/50 font-black mb-6">// CORE EXPOSURE // 核心曝光</h2>
+                    <div class="grid grid-cols-4 gap-6">
+                        <div class="border-l-2 border-white/30 pl-5 py-1">
+                            <span class="block text-xs uppercase text-white/50 tracking-wider font-bold">Aperture / 光圈</span>
+                            <span class="text-4xl font-bold mono mt-2 block text-white tracking-tight" id="exif-aperture">--</span>
+                        </div>
+                        <div class="border-l-2 border-white/30 pl-5 py-1">
+                            <span class="block text-xs uppercase text-white/50 tracking-wider font-bold">Shutter / 快门</span>
+                            <span class="text-4xl font-bold mono mt-2 block text-white tracking-tight" id="exif-shutter">--</span>
+                        </div>
+                        <div class="border-l-2 border-white/30 pl-5 py-1">
+                            <span class="block text-xs uppercase text-white/50 tracking-wider font-bold">ISO / 感光度</span>
+                            <span class="text-4xl font-bold mono mt-2 block text-white tracking-tight" id="exif-iso">--</span>
+                        </div>
+                        <div class="border-l-2 border-white/30 pl-5 py-1">
+                            <span class="block text-xs uppercase text-white/50 tracking-wider font-bold">Focal / 焦距</span>
+                            <span class="text-4xl font-bold mono mt-2 block text-white tracking-tight" id="exif-focal">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
+                    <div>
+                        <h3 class="text-xs tracking-[0.25em] uppercase text-white/50 font-black mb-4">CAMERA BODY // 相机机身</h3>
+                        <p class="text-lg font-black tracking-wide text-white uppercase mono" id="exif-make-model">----------------</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xs tracking-[0.25em] uppercase text-white/50 font-black mb-4">CAPTURING LENS // 拍摄镜头</h3>
+                        <p class="text-lg font-black tracking-wide text-white uppercase mono" id="exif-lens">----------------</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-10 border-t border-white/10 pt-10">
+                    <div>
+                        <h3 class="text-xs tracking-[0.25em] uppercase text-white/50 font-black mb-4">CHROMATIC PALETTE // 色彩矩阵</h3>
+                        <div id="color-palette-container" class="flex gap-3 w-full mt-4">
+                            <div class="flex-1 h-10 rounded bg-white/5 animate-pulse"></div>
+                            <div class="flex-1 h-10 rounded bg-white/5 animate-pulse"></div>
+                            <div class="flex-1 h-10 rounded bg-white/5 animate-pulse"></div>
+                            <div class="flex-1 h-10 rounded bg-white/5 animate-pulse"></div>
+                            <div class="flex-1 h-10 rounded bg-white/5 animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xs tracking-[0.25em] uppercase text-white/50 font-black mb-4">LUMINANCE HISTOGRAM // 亮度直方图</h3>
+                        <div class="relative w-full h-16 mt-2">
+                            <canvas id="histogram-canvas" class="w-full h-full bg-white/5 rounded border border-white/10"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 pt-10">
+                    <h3 class="text-xs tracking-[0.25em] uppercase text-white/50 font-black mb-6">// MANIFEST OF ALL DETECTED METADATA // 侦测到的完整元数据清单</h3>
+                    <div id="all-exif-container" class="text-sm divide-y divide-white/10 mono">
+                        <div class="py-5 text-white/40 italic font-normal">Awaiting file synchronization... // 等待文件同步载入</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-10 mt-14 flex justify-between items-center text-xs tracking-widest text-white/40 uppercase mono font-bold shrink-0">
+                <span>SYSTEM STATUS: ENHANCED_VISION_ANALYSIS // STABLE</span>
+                <span>© METADATA ARCHIVE LAB</span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const exifDictionary = {
+            "FileName": "文件名", "FileSize": "文件大小", "FileType": "文件类型", "ImageWidth": "图像宽度", "ImageHeight": "图像高度",
+            "Make": "设备制造商", "Model": "相机型号", "LensMake": "镜头制造商", "LensModel": "镜头型号", "LensSerialNumber": "镜头序列号", "SerialNumber": "相机序列号", "Software": "固件/处理软件",
+            "ExposureTime": "快门时间(曝光时间)", "FNumber": "光圈值(F码)", "ExposureProgram": "曝光程序模式", "ISOSpeedRatings": "ISO感光度", "FocalLength": "物理焦距", "FocalLengthIn35mmFilm": "35mm等效焦距",
+            "BrightnessValue": "亮度值", "ExposureBiasValue": "曝光补偿(EV)", "MaxApertureValue": "最大光圈", "SubjectDistance": "对焦物距", "MeteringMode": "测光模式", "LightSource": "光源/白平衡模式",
+            "Flash": "闪光灯状态", "SensingMethod": "图像传感器类型", "CustomRendered": "自定义图像处理", "ExposureMode": "曝光模式", "WhiteBalance": "白平衡类型", "DigitalZoomRatio": "数字变焦倍率",
+            "SceneCaptureType": "场景拍摄类型", "GainControl": "增益控制", "Contrast": "对比度", "Saturation": "饱和度", "Sharpness": "清晰度",
+            "DateTime": "文件修改时间", "DateTimeOriginal": "原始拍摄时间", "DateTimeDigitized": "数字化生成时间", "ExifVersion": "EXIF版本", "FlashpixVersion": "Flashpix版本", "ColorSpace": "颜色色彩空间",
+            "Orientation": "图像方向(旋转)", "XResolution": "水平分辨率", "YResolution": "垂直分辨率", "ResolutionUnit": "分辨率单位", "YCbCrPositioning": "色度抽样位置", "ComponentsConfiguration": "组件配置",
+            "CompressedBitsPerPixel": "压缩位率/像素", "ShutterSpeedValue": "APEX快门速度", "ApertureValue": "APEX光圈值", "UserComment": "用户备注/签名", "BodySerialNumber": "机身序列号",
+            "GPSVersionID": "GPS版本号", "GPSLatitudeRef": "纬度参考(北纬/南纬)", "GPSLatitude": "精确纬度", "GPSLongitudeRef": "经度参考(东经/西经)", "GPSLongitude": "精确经度", "GPSAltitudeRef": "海拔高度参考",
+            "GPSAltitude": "精确海拔高度", "GPSTimeStamp": "GPS时间戳", "GPSSatellites": "GPS可用卫星数", "GPSStatus": "GPS接收状态", "GPSMeasureMode": "GPS测量模式", "GPSDOP": "GPS综合精度",
+            "GPSSpeedRef": "GPS速度单位", "GPSSpeed": "GPS运动速度", "GPSTrackRef": "GPS前进方向参考", "GPSTrack": "GPS前进方向", "GPSImgDirectionRef": "拍摄镜头方向参考", "GPSImgDirection": "拍摄镜头方向",
+            "GPSMapDatum": "GPS地图大地坐标系", "GPSDateStamp": "GPS日期戳"
+        };
+
+        const uploadInput = document.getElementById('upload-input');
+        const imagePreview = document.getElementById('image-preview');
+        const uploadPrompt = document.getElementById('upload-prompt');
+        const dropZone = document.getElementById('drop-zone');
+        const allExifContainer = document.getElementById('all-exif-container');
+        const gradientBg = document.getElementById('gradient-canvas-bg');
+        const paletteContainer = document.getElementById('color-palette-container');
+
+        uploadInput.addEventListener('change', handleFileSelect);
+        
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('bg-white/10'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('bg-white/10'); });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-white/10');
+            if (e.dataTransfer.files.length > 0) {
+                uploadInput.files = e.dataTransfer.files;
+                handleFileSelect({ target: uploadInput });
+            }
+        });
+        dropZone.addEventListener('click', () => { if(imagePreview.classList.contains('hidden')) uploadInput.click(); });
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('file-name-top').innerText = `${file.name.toUpperCase()}`;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+                imagePreview.classList.remove('hidden');
+                setTimeout(() => imagePreview.classList.add('opacity-100'), 50);
+                uploadPrompt.classList.add('hidden');
+
+                // 1. 解析 EXIF
+                EXIF.getData(file, function() {
+                    const rawTags = EXIF.getAllTags(this);
+                    
+                    document.getElementById('exif-aperture').innerText = rawTags.FNumber ? `f/${rawTags.FNumber}` : 'N/A';
+                    if (rawTags.ExposureTime) {
+                        let shutter = rawTags.ExposureTime;
+                        document.getElementById('exif-shutter').innerText = shutter < 1 ? `1/${Math.round(1/shutter)}s` : `${shutter}s`;
+                    } else {
+                        document.getElementById('exif-shutter').innerText = 'N/A';
+                    }
+                    document.getElementById('exif-iso').innerText = rawTags.ISOSpeedRatings || 'N/A';
+                    document.getElementById('exif-focal').innerText = rawTags.FocalLength ? `${rawTags.FocalLength}mm` : 'N/A';
+
+                    const make = rawTags.Make || '';
+                    const model = rawTags.Model || 'UNKNOWN CAMERA';
+                    document.getElementById('exif-make-model').innerText = `${make} ${model}`.trim().toUpperCase();
+                    document.getElementById('exif-lens').innerText = (rawTags.LensModel || rawTags.UndefinedTag_0xA434 || 'STANDARD LENS').toUpperCase();
+
+                    allExifContainer.innerHTML = '';
+                    const baseInfo = { "FileName": file.name, "FileSize": `${(file.size / 1024 / 1024).toFixed(2)} MB`, "FileType": file.type || 'IMAGE/JPEG' };
+                    const integratedTags = Object.assign({}, baseInfo, rawTags);
+
+                    for (let key in integratedTags) {
+                        if (integratedTags.hasOwnProperty(key)) {
+                            let value = integratedTags[key];
+                            if (key === "thumbnail" || key === "MakerNote") continue;
+                            if (typeof value === 'object') {
+                                if (Array.isArray(value)) { value = value.map(v => v.numerator / v.denominator || v).join(', '); } 
+                                else { value = JSON.stringify(value); }
+                            }
+
+                            const chineseLabel = exifDictionary[key];
+                            const displayLabel = chineseLabel ? `${key} <span class="text-white/40 font-normal">/ ${chineseLabel}</span>` : `${key}`;
+
+                            const row = document.createElement('div');
+                            row.className = "py-4 flex justify-between border-b border-white/10 items-start gap-8 hover:bg-white/5 px-2 transition-colors";
+                            row.innerHTML = `
+                                <span class="text-white/80 font-bold shrink-0 tracking-wide uppercase">${displayLabel}</span>
+                                <span class="text-right break-all text-white font-medium select-all">${value}</span>
+                            `;
+                            allExifContainer.appendChild(row);
+                        }
+                    }
+                });
+
+                // 2. 高级图像数据全量扫描
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    const maxDim = 200;
+                    let w = img.width, h = img.height;
+                    if (w > maxDim || h > maxDim) {
+                        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; } 
+                        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+                    }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+
+                    const imgData = ctx.getImageData(0, 0, w, h).data;
+
+                    // A. 直方图数据统计
+                    const histData = new Array(256).fill(0);
+                    for (let i = 0; i < imgData.length; i += 4) {
+                        const r = imgData[i];
+                        const g = imgData[i+1];
+                        const b = imgData[i+2];
+                        const luminance = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+                        histData[luminance]++;
+                    }
+
+                    const histCanvas = document.getElementById('histogram-canvas');
+                    const hCtx = histCanvas.getContext('2d');
+                    const dpr = window.devicePixelRatio || 1;
+                    histCanvas.width = histCanvas.clientWidth * dpr;
+                    histCanvas.height = histCanvas.clientHeight * dpr;
+                    hCtx.scale(dpr, dpr);
+
+                    const canvasW = histCanvas.clientWidth;
+                    const canvasH = histCanvas.clientHeight;
+                    hCtx.clearRect(0, 0, canvasW, canvasH);
+
+                    const maxFrequency = Math.max(...histData);
+                    const barWidth = canvasW / 256;
+
+                    hCtx.fillStyle = 'rgba(255, 255, 255, 0.15)'; 
+                    hCtx.beginPath();
+                    hCtx.moveTo(0, canvasH);
+                    for (let i = 0; i < 256; i++) {
+                        const barHeight = (histData[i] / maxFrequency) * (canvasH * 0.85);
+                        hCtx.lineTo(i * barWidth, canvasH - barHeight);
+                    }
+                    hCtx.lineTo(canvasW, canvasH);
+                    hCtx.closePath();
+                    hCtx.fill();
+
+                    hCtx.strokeStyle = 'rgba(255, 255, 255, 0.65)'; 
+                    hCtx.lineWidth = 1.5;
+                    hCtx.beginPath();
+                    for (let i = 0; i < 256; i++) {
+                        const barHeight = (histData[i] / maxFrequency) * (canvasH * 0.85);
+                        if (i === 0) hCtx.moveTo(0, canvasH - barHeight);
+                        else hCtx.lineTo(i * barWidth, canvasH - barHeight);
+                    }
+                    hCtx.stroke();
+
+                    // B. 色彩矩阵生成与 #HEX 格式转换
+                    paletteContainer.innerHTML = '';
+                    const samplePoints = [
+                        { x: Math.floor(w * 0.2), y: Math.floor(h * 0.2) }, 
+                        { x: Math.floor(w * 0.7), y: Math.floor(h * 0.25) },
+                        { x: Math.floor(w * 0.5), y: Math.floor(h * 0.5) }, 
+                        { x: Math.floor(w * 0.25), y: Math.floor(h * 0.75) },
+                        { x: Math.floor(w * 0.8), y: Math.floor(h * 0.8) }  
+                    ];
+
+                    const toHex = (r, g, b) => '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+
+                    samplePoints.forEach(p => {
+                        const idx = (p.y * w + p.x) * 4;
+                        const r = imgData[idx];
+                        const g = imgData[idx+1];
+                        const b = imgData[idx+2];
+                        const hexCode = toHex(r, g, b);
+
+                        const swatch = document.createElement('div');
+                        swatch.className = "flex flex-col items-center gap-2 flex-1 select-text";
+                        swatch.innerHTML = `
+                            <div class="w-full h-9 rounded border border-white/20 shadow-inner transition-transform duration-300 hover:scale-105" style="background-color: ${hexCode}"></div>
+                            <span class="text-[11px] mono text-white/80 font-bold tracking-tight">${hexCode}</span>
+                        `;
+                        paletteContainer.appendChild(swatch);
+                    });
+
+                    // C. 动态环境底色调色盘 (已完美修复寻址 Bug 与放宽色域规则)
+                    const getPixelHsl = (p) => {
+                        const idx = (p.y * w + p.x) * 4;
+                        return rgbToHsl(imgData[idx], imgData[idx+1], imgData[idx+2]);
+                    };
+
+                    const hsl1 = getPixelHsl(samplePoints[0]);
+                    const hsl2 = getPixelHsl(samplePoints[2]); // 核心中央点
+                    const hsl3 = getPixelHsl(samplePoints[4]);
+
+                    const processHslStr = (hsl) => {
+                        const h = Math.round(hsl[0]);
+                        // 放宽限制：饱和度允许保留最高 45%，亮度提至最高 12%，拒绝死灰，还原照片调性
+                        const s = Math.min(Math.round(hsl[1] * 100), 45); 
+                        const l = Math.min(Math.round(hsl[2] * 100), 12); 
+                        return `hsl(${h}, ${s}%, ${l}%)`;
+                    };
+
+                    gradientBg.style.background = `linear-gradient(135deg, ${processHslStr(hsl1)}, ${processHslStr(hsl2)}, ${processHslStr(hsl3)})`;
+                    canvas.remove();
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function rgbToHsl(r, g, b){
+            r /= 255, g /= 255, b /= 255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if(max == min){ h = s = 0; }else{
+                let d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch(max){
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return [h * 360, s, l];
+        }
+    </script>
+</body>
+</html>
