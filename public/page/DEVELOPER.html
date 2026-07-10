@@ -25,11 +25,11 @@
             z-index: -1;
             background: linear-gradient(135deg, #101014, #14141C, #0D0D11);
             transition: background 2s ease-in-out;
-            filter: blur(60px);
+            filter: blur(60px); 
         }
     </style>
 </head>
-<body class="min-h-screen w-screen flex flex-col relative select-none overflow-x-hidden md:overflow-hidden">
+<body class="h-screen w-screen flex flex-col relative select-none overflow-hidden">
 
     <div id="gradient-canvas-bg"></div>
 
@@ -47,7 +47,7 @@
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden z-10">
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden z-10">
         
         <section id="left-pane" class="w-full h-[40vh] md:w-1/2 md:h-full flex items-center justify-center p-6 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative bg-black/15 backdrop-blur-2xl shrink-0">
             <div id="drop-zone" class="absolute inset-0 flex flex-col items-center justify-center border-2 border-dashed border-transparent hover:border-white/20 transition-all cursor-pointer">
@@ -59,7 +59,7 @@
             <img id="image-preview" src class="max-w-full max-h-full object-contain shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] md:shadow-[0_60px_120px_-20px_rgba(0,0,0,0.9)] hidden transition-opacity duration-700 opacity-0" alt="Preview">
         </section>
 
-        <section id="right-pane" class="w-full md:w-1/2 md:h-full overflow-y-auto no-scrollbar p-6 md:p-14 flex flex-col justify-between bg-black/45 backdrop-blur-3xl">
+        <section id="right-pane" class="w-full flex-1 md:w-1/2 md:h-full overflow-y-auto no-scrollbar p-6 md:p-14 flex flex-col justify-between bg-black/45 backdrop-blur-3xl">
             
             <div class="space-y-10 md:space-y-14">
                 <div>
@@ -196,10 +196,13 @@
                     document.getElementById('exif-iso').innerText = rawTags.ISOSpeedRatings || 'N/A';
                     document.getElementById('exif-focal').innerText = rawTags.FocalLength ? `${rawTags.FocalLength}mm` : 'N/A';
 
-                    const make = rawTags.Make || '';
-                    const model = rawTags.Model || 'UNKNOWN CAMERA';
-                    document.getElementById('exif-make-model').innerText = `${make} ${model}`.trim().toUpperCase();
-                    document.getElementById('exif-lens').innerText = (rawTags.LensModel || rawTags.UndefinedTag_0xA434 || 'STANDARD LENS').toUpperCase();
+                    // 强类型安全转换，防止 null / array / object 导致 toUpperCase 阻塞挂起
+                    const make = String(rawTags.Make || '').trim();
+                    const model = String(rawTags.Model || 'UNKNOWN CAMERA').trim();
+                    document.getElementById('exif-make-model').innerText = `${make} ${model}`.trim().toUpperCase() || 'UNKNOWN HARDWARE';
+                    
+                    const lens = String(rawTags.LensModel || rawTags.UndefinedTag_0xA434 || 'STANDARD LENS').trim();
+                    document.getElementById('exif-lens').innerText = lens.toUpperCase();
 
                     allExifContainer.innerHTML = '';
                     const baseInfo = { "FileName": file.name, "FileSize": `${(file.size / 1024 / 1024).toFixed(2)} MB`, "FileType": file.type || 'IMAGE/JPEG' };
@@ -209,9 +212,14 @@
                         if (integratedTags.hasOwnProperty(key)) {
                             let value = integratedTags[key];
                             if (key === "thumbnail" || key === "MakerNote") continue;
+                            
+                            // 数据清洗保护
                             if (typeof value === 'object') {
-                                if (Array.isArray(value)) { value = value.map(v => v.numerator / v.denominator || v).join(', '); } 
-                                else { value = JSON.stringify(value); }
+                                if (Array.isArray(value)) { 
+                                    value = value.map(v => (v && typeof v === 'object' && 'numerator' in v) ? (v.numerator / v.denominator || 0) : v).join(', '); 
+                                } else { 
+                                    value = JSON.stringify(value); 
+                                }
                             }
 
                             const chineseLabel = exifDictionary[key];
@@ -221,14 +229,14 @@
                             row.className = "py-3.5 flex justify-between border-b border-white/10 items-start gap-6 hover:bg-white/5 px-1 transition-colors";
                             row.innerHTML = `
                                 <span class="text-white/80 font-bold shrink-0 tracking-wide uppercase break-words max-w-[45%]">${displayLabel}</span>
-                                <span class="text-right break-all text-white font-medium select-all">${value}</span>
+                                <span class="text-right break-all text-white font-medium select-all">${String(value)}</span>
                             `;
                             allExifContainer.appendChild(row);
                         }
                     }
                 });
 
-                // 2. 高级图像数据扫描与绘图
+                // 2. 图像底层数据计算
                 const img = new Image();
                 img.src = event.target.result;
                 img.onload = function() {
@@ -246,7 +254,7 @@
 
                     const imgData = ctx.getImageData(0, 0, w, h).data;
 
-                    // A. 直方图计算
+                    // A. 绘制亮度直方图
                     const histData = new Array(256).fill(0);
                     for (let i = 0; i < imgData.length; i += 4) {
                         const r = imgData[i];
@@ -291,7 +299,7 @@
                     }
                     hCtx.stroke();
 
-                    // B. 色彩矩阵生成
+                    // B. 色彩矩阵 HEX 提取
                     paletteContainer.innerHTML = '';
                     const samplePoints = [
                         { x: Math.floor(w * 0.2), y: Math.floor(h * 0.2) }, 
@@ -319,7 +327,7 @@
                         paletteContainer.appendChild(swatch);
                     });
 
-                    // C. 动态环境底色生成 (严密算法寻址 + 放宽的色域限制)
+                    // C. 动态环境底色调色盘 (精准 2D 内存寻址映射 + 宽色域规则)
                     const getPixelHsl = (p) => {
                         const idx = (p.y * w + p.x) * 4;
                         return rgbToHsl(imgData[idx], imgData[idx+1], imgData[idx+2]);
