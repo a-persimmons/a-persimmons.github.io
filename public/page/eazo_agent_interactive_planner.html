@@ -49,6 +49,7 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
         }
 
         body {
@@ -65,6 +66,60 @@
             display: flex;
             width: 100%;
             min-height: 100vh;
+        }
+
+        /* Mobile Header (Hidden on Desktop) */
+        .mobile-header {
+            display: none;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            background-color: var(--sidebar-bg);
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+        }
+
+        /* Sidebar Backdrop Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* Sidebar Navigation */
@@ -112,6 +167,16 @@
             font-size: 11px;
             color: var(--text-muted);
             letter-spacing: 0.5px;
+        }
+
+        .btn-close-sidebar {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 6px;
+            margin-left: auto;
         }
 
         /* Navigation Links */
@@ -278,6 +343,13 @@
             margin-top: 4px;
         }
 
+        .stat-value-secondary {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-top: 14px;
+        }
+
         .progress-bar-container {
             width: 100%;
             height: 10px;
@@ -424,6 +496,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            min-width: 0; /* 防止子元素溢出 */
         }
 
         .task-header {
@@ -439,6 +512,7 @@
             font-weight: 600;
             color: var(--text-primary);
             transition: var(--transition);
+            line-height: 1.4;
         }
 
         .task-card.completed .task-title {
@@ -454,6 +528,7 @@
             padding: 4px 10px;
             border-radius: 20px;
             border: 1px solid var(--accent-secondary);
+            white-space: nowrap;
         }
 
         .task-desc {
@@ -478,6 +553,7 @@
             color: var(--accent-primary);
             cursor: pointer;
             user-select: none;
+            padding: 8px 0; /* 优化可触控区域 */
         }
 
         .accordion-header svg {
@@ -532,13 +608,14 @@
         .btn-link {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             font-size: 12px;
             font-weight: 600;
             color: var(--accent-secondary);
             text-decoration: none;
             border: 1px solid var(--border-color);
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: var(--radius-sm);
             background-color: var(--card-bg);
             transition: var(--transition);
@@ -582,7 +659,7 @@
 
         .job-target-box {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 兼容小屏手机防止超出 */
             gap: 20px;
         }
 
@@ -654,11 +731,12 @@
             background-color: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: var(--radius-md);
             font-size: 13px;
             cursor: pointer;
             transition: var(--transition);
+            margin-top: auto;
         }
 
         .btn-reset:hover {
@@ -677,7 +755,7 @@
             font-size: 12px;
         }
 
-        /* Responsive Breakpoints */
+        /* Responsive Breakpoints & Mobile Adaptations */
         @media (max-width: 1024px) {
             aside {
                 width: 260px;
@@ -689,27 +767,175 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
             .app-container {
                 flex-direction: column;
             }
-            aside {
-                width: 100%;
-                height: auto;
-                position: relative;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                padding: 16px;
+
+            .mobile-header {
+                display: flex;
             }
+
+            /* Drawers Mode for Sidebar */
+            aside {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 290px;
+                z-index: 1000;
+                transform: translateX(-100%);
+                box-shadow: var(--shadow-lg);
+                border-right: 1px solid var(--border-color);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                padding-bottom: env(safe-area-inset-bottom, 24px); /* 适配全面屏底部底部安全区 */
+            }
+
+            aside.active {
+                transform: translateX(0);
+            }
+
+            .btn-close-sidebar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .sidebar-overlay {
+                display: block;
+            }
+
             main {
                 width: 100%;
-                padding: 16px;
+                padding: 20px 16px;
+                gap: 24px;
             }
+
+            /* Restyle workspace Top Bar */
             .top-bar {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: column-reverse;
+                align-items: stretch;
+                gap: 16px;
             }
+
+            .top-bar .controls .btn-theme {
+                display: none; /* 在主区域隐藏切换主题按钮，改用顶部栏 */
+            }
+
             .search-container {
                 width: 100%;
+            }
+
+            .page-title h2 {
+                font-size: 20px;
+            }
+
+            .page-title p {
+                font-size: 12px;
+            }
+
+            /* Adjust Dashboard Card metrics */
+            .dashboard-header {
+                padding: 20px 16px;
+            }
+
+            .stat-value {
+                font-size: 26px;
+            }
+
+            .stat-value-secondary {
+                font-size: 18px;
+                margin-top: 8px;
+            }
+
+            .role-readiness-grid {
+                grid-template-columns: repeat(2, 1fr); /* 平板和中大屏手机 2x2 排列 */
+                gap: 12px;
+            }
+
+            .role-card {
+                padding: 12px;
+            }
+
+            .role-title {
+                font-size: 11px;
+            }
+
+            .role-progress {
+                font-size: 14px;
+            }
+
+            /* Tasks Layout Reflows */
+            .task-card {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .task-checkbox-container {
+                padding-top: 2px;
+            }
+
+            .task-checkbox {
+                width: 22px;
+                height: 22px;
+            }
+
+            .task-checkbox:checked::after {
+                font-size: 12px;
+            }
+
+            .task-header {
+                flex-direction: column-reverse; /* 天数标签呈超标题位于最上方 */
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .day-badge {
+                align-self: flex-start;
+            }
+
+            /* Stack Resource elements to grid/vertical */
+            .resource-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .btn-link {
+                width: 100%;
+                padding: 10px;
+            }
+
+            /* Overview adjustments */
+            .welcome-card {
+                padding: 20px 16px;
+            }
+
+            .welcome-card h2 {
+                font-size: 20px;
+            }
+
+            .welcome-card p {
+                font-size: 13px;
+            }
+
+            .job-target-box {
+                grid-template-columns: 1fr;
+            }
+
+            .target-card {
+                padding: 18px 16px;
+            }
+        }
+
+        /* Extra small mobile screens */
+        @media (max-width: 480px) {
+            .role-readiness-grid {
+                grid-template-columns: 1fr; /* 极窄屏幕单列排布 */
             }
         }
     </style>
@@ -717,7 +943,27 @@
 <body>
 
 <div class="app-container">
-    <!-- Sidebar Navigation -->
+    <header class="mobile-header">
+        <button class="btn-menu-toggle" onclick="toggleSidebar()" aria-label="打开菜单">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px;">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <div class="mobile-brand">
+            <div class="brand-logo" style="width: 28px; height: 28px; font-size: 16px; border-radius: 4px;">E</div>
+            <span style="font-weight: 700; font-size: 14px; letter-spacing: 0.5px;">EAZO.AI 通关计划</span>
+        </div>
+        <button class="btn-theme" onclick="toggleTheme()" title="切换亮暗主题" style="padding: 6px; box-shadow: none; border-color: var(--border-color);">
+            <svg class="theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+        </button>
+    </header>
+
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     <aside>
         <div class="brand">
             <div class="brand-logo">E</div>
@@ -725,6 +971,12 @@
                 <h1>EAZO.AI 智能体通关计划</h1>
                 <p>ROAD TO AGENT ARCHITECT</p>
             </div>
+            <button class="btn-close-sidebar" onclick="toggleSidebar()" aria-label="关闭菜单">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px;">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
 
         <nav class="nav-menu">
@@ -761,9 +1013,7 @@
         <button class="btn-reset" onclick="resetProgress()">重置学习进度</button>
     </aside>
 
-    <!-- Main Workspace -->
     <main>
-        <!-- Top Bar with Search and Theme Toggle -->
         <div class="top-bar">
             <div class="page-title">
                 <h2 id="current-title">EAZO.AI 智能体基础设施工程师计划</h2>
@@ -775,14 +1025,13 @@
                     <input type="text" class="search-input" id="search-input" placeholder="全局搜索知识点..." oninput="handleSearch()">
                 </div>
                 <button class="btn-theme" onclick="toggleTheme()" title="切换亮暗主题">
-                    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <svg class="theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
                         <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                     </svg>
                 </button>
             </div>
         </div>
 
-        <!-- Progress Dashboard Header Card -->
         <div class="dashboard-header">
             <div class="progress-stats">
                 <div class="stat-group">
@@ -791,19 +1040,18 @@
                 </div>
                 <div class="stat-group" style="text-align: right;">
                     <h3>已掌握核心版块</h3>
-                    <div class="stat-value" id="global-count" style="font-size:20px; margin-top:14px;">0 / 16</div>
+                    <div class="stat-value-secondary" id="global-count">0 / 16</div>
                 </div>
             </div>
             <div class="progress-bar-container">
                 <div class="progress-bar-fill" id="global-bar"></div>
             </div>
 
-            <!-- Role-Specific Readiness Trackers -->
             <div style="border-top:1px solid var(--border-color); padding-top:16px; margin-top:8px;">
                 <h3 style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom:12px;">EAZO.AI 四大核心岗位胜任度指标</h3>
                 <div class="role-readiness-grid">
                     <div class="role-card">
-                        <div class="role-title">01 Coding Agent (代码智能体)</div>
+                        <div class="role-title">01 Coding Agent</div>
                         <div class="role-progress">
                             <span id="role-01-percent">0%</span>
                         </div>
@@ -812,7 +1060,7 @@
                         </div>
                     </div>
                     <div class="role-card">
-                        <div class="role-title">02 Agent Engineer (系统工程师)</div>
+                        <div class="role-title">02 Agent Engineer</div>
                         <div class="role-progress">
                             <span id="role-02-percent">0%</span>
                         </div>
@@ -821,7 +1069,7 @@
                         </div>
                     </div>
                     <div class="role-card">
-                        <div class="role-title">03 Browser Agent (浏览器智能体)</div>
+                        <div class="role-title">03 Browser Agent</div>
                         <div class="role-progress">
                             <span id="role-03-percent">0%</span>
                         </div>
@@ -830,7 +1078,7 @@
                         </div>
                     </div>
                     <div class="role-card">
-                        <div class="role-title">04 Memory Agent (智能体记忆专家)</div>
+                        <div class="role-title">04 Memory Agent</div>
                         <div class="role-progress">
                             <span id="role-04-percent">0%</span>
                         </div>
@@ -842,10 +1090,8 @@
             </div>
         </div>
 
-        <!-- Tasks / Phase Panel Content Area -->
         <div id="content-panel">
-            <!-- Dynamically populated -->
-        </div>
+            </div>
 
         <footer>
             EAZO.AI 靶向对齐学习手册 © 2026 · 基于 LocalStorage 保护本地隐私与学习足迹
@@ -1113,12 +1359,25 @@
     }
 
     function updateThemeIcon(theme) {
-        const icon = document.getElementById("theme-icon");
-        if (theme === "dark") {
-            icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-        } else {
-            icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-        }
+        const icons = document.querySelectorAll(".theme-icon-svg");
+        const darkContent = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+        const lightContent = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+        
+        icons.forEach(icon => {
+            if (theme === "dark") {
+                icon.innerHTML = darkContent;
+            } else {
+                icon.innerHTML = lightContent;
+            }
+        });
+    }
+
+    // Toggle Sidebar Drawer for Mobile
+    function toggleSidebar() {
+        const aside = document.querySelector("aside");
+        const overlay = document.querySelector(".sidebar-overlay");
+        aside.classList.toggle("active");
+        overlay.classList.toggle("active");
     }
 
     // Tab Switcher
@@ -1142,6 +1401,17 @@
         }
 
         renderActiveContent();
+
+        // Mobile specific: Close sidebar drawer after selecting a tab
+        const aside = document.querySelector("aside");
+        const overlay = document.querySelector(".sidebar-overlay");
+        if (aside.classList.contains("active")) {
+            aside.classList.remove("active");
+            overlay.classList.remove("active");
+        }
+
+        // Mobile UX: Scroll to top of the content area smoothly
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     // Render logic
@@ -1183,7 +1453,7 @@
             taskCard.id = `card-${task.id}`;
             taskCard.innerHTML = `
                 <div class="task-checkbox-container">
-                    <input type="checkbox" class="task-checkbox" id="check-${task.id}" ${isCompleted ? 'checked' : ''} onclick="toggleTask('${task.id}')">
+                    <input type="checkbox" class="task-checkbox" id="check-${task.id}" ${isCompleted ? 'checked' : ''} onclick="toggleTask('${task.id}')" aria-label="标记任务完成">
                 </div>
                 <div class="task-content">
                     <div class="task-header">
@@ -1205,7 +1475,7 @@
                                     </div>
                                     <a href="${res.url}" target="_blank" class="btn-link">
                                         查看资源
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;margin-left:4px;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                     </a>
                                 </div>
                             `).join('')}
