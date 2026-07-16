@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EAZO.AI 智能体基础设施工程师 · 180天通关进阶计划</title>
+    <style>
+        /* Modern Top-Tier Design System & Variables */
+        :root {
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --accent-primary: #0f766e; /* Deep Teal */
+            --accent-secondary: #0d9488;
+            --accent-light: #f0fdfa;
+            --progress-track: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #090d16;
+            --sidebar-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --accent-primary: #2dd4bf; /* Neon Teal */
+            --accent-secondary: #14b8a6;
+            --accent-light: #115e59;
+            --progress-track: #334155;
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Layout Structure */
+        .app-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            flex-shrink: 0;
+            transition: var(--transition);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #0d9488, #2dd4bf);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .brand-text h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .brand-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation Links */
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--accent-light);
+            color: var(--accent-secondary);
+        }
+
+        .nav-item.active {
+            background-color: var(--accent-light);
+            color: var(--accent-primary);
+            border-color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .nav-item svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Main Workspace */
+        main {
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: calc(100% - 320px);
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .page-title h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .page-title p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-theme {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-theme:hover {
+            border-color: var(--accent-secondary);
+            transform: translateY(-1px);
+        }
+
+        .search-container {
+            position: relative;
+            width: 240px;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px 10px 36px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Progress Dashboard Header Card */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--card-bg), var(--bg-color));
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-group h3 {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin-top: 4px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--progress-track);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Role Mapping Panel (Job-Specific Metrics) */
+        .role-readiness-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .role-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .role-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .role-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .role-bar-track {
+            width: 100%;
+            height: 6px;
+            background-color: var(--progress-track);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .role-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-secondary);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Tasks Grid */
+        .tasks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .phase-meta {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .phase-meta h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .phase-meta p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .task-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+
+        .task-card:hover {
+            border-color: var(--accent-secondary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .task-checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            padding-top: 4px;
+        }
+
+        .task-checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .task-checkbox:checked {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .task-checkbox:checked::after {
+            content: "\2713";
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .task-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .task-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .day-badge {
+            font-size: 11px;
+            font-weight: 600;
+            background-color: var(--accent-light);
+            color: var(--accent-primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-secondary);
+        }
+
+        .task-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Collapsible Resources Panel */
+        .resources-accordion {
+            border-top: 1px dashed var(--border-color);
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .accordion-header svg {
+            width: 14px;
+            height: 14px;
+            transition: var(--transition);
+        }
+
+        .accordion-header.open svg {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .accordion-content.show {
+            display: flex;
+        }
+
+        .resource-item {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .resource-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .resource-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .resource-note {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .btn-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background-color: var(--card-bg);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-link:hover {
+            background-color: var(--accent-light);
+            border-color: var(--accent-secondary);
+        }
+
+        /* Overview Page Specific Styles */
+        .overview-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .welcome-card h2 {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .welcome-card p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        .job-target-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .target-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .target-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .target-icon-wrapper {
+            width: 32px;
+            height: 32px;
+            background-color: var(--accent-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .target-icon-wrapper svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .target-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .target-card ul {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .target-card li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .target-card li::before {
+            content: "•";
+            color: var(--accent-secondary);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .btn-reset {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-reset:hover {
+            background-color: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            aside {
+                width: 260px;
+            }
+            main {
+                width: calc(100% - 260px);
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 16px;
+            }
+            main {
+                width: 100%;
+                padding: 16px;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .search-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="brand">
+            <div class="brand-logo">E</div>
+            <div class="brand-text">
+                <h1>EAZO.AI 智能体通关计划</h1>
+                <p>ROAD TO AGENT ARCHITECT</p>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="switchTab('overview')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                项目纵览 & 职业大图
+            </div>
+            <div class="nav-item" onclick="switchTab('phase1')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+                第一阶段：运行时与编排 (D1-30)
+            </div>
+            <div class="nav-item" onclick="switchTab('phase2')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                第二阶段：MCP协议与自愈 (D31-60)
+            </div>
+            <div class="nav-item" onclick="switchTab('phase3')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                第三阶段：安全沙箱与调度 (D61-90)
+            </div>
+            <div class="nav-item" onclick="switchTab('phase4')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                第四阶段：浏览器自动化 (D91-120)
+            </div>
+            <div class="nav-item" onclick="switchTab('phase5')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                第五阶段：分层记忆与图RAG (D121-150)
+            </div>
+            <div class="nav-item" onclick="switchTab('phase6')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                第六阶段：全链路观测与实战 (D151-180)
+            </div>
+        </nav>
+
+        <button class="btn-reset" onclick="resetProgress()">重置学习进度</button>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main>
+        <!-- Top Bar with Search and Theme Toggle -->
+        <div class="top-bar">
+            <div class="page-title">
+                <h2 id="current-title">EAZO.AI 智能体基础设施工程师计划</h2>
+                <p id="current-subtitle">顶尖 Agent 架构体系靶向对齐路径</p>
+            </div>
+            <div class="controls">
+                <div class="search-container" id="search-bar-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" class="search-input" id="search-input" placeholder="全局搜索知识点..." oninput="handleSearch()">
+                </div>
+                <button class="btn-theme" onclick="toggleTheme()" title="切换亮暗主题">
+                    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Dashboard Header Card -->
+        <div class="dashboard-header">
+            <div class="progress-stats">
+                <div class="stat-group">
+                    <h3>180天通关进度</h3>
+                    <div class="stat-value" id="global-percent">0%</div>
+                </div>
+                <div class="stat-group" style="text-align: right;">
+                    <h3>已掌握核心版块</h3>
+                    <div class="stat-value" id="global-count" style="font-size:20px; margin-top:14px;">0 / 16</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="global-bar"></div>
+            </div>
+
+            <!-- Role-Specific Readiness Trackers -->
+            <div style="border-top:1px solid var(--border-color); padding-top:16px; margin-top:8px;">
+                <h3 style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom:12px;">EAZO.AI 四大核心岗位胜任度指标</h3>
+                <div class="role-readiness-grid">
+                    <div class="role-card">
+                        <div class="role-title">01 Coding Agent (代码智能体)</div>
+                        <div class="role-progress">
+                            <span id="role-01-percent">0%</span>
+                        </div>
+                        <div class="role-bar-track">
+                            <div class="role-bar-fill" id="role-01-bar"></div>
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-title">02 Agent Engineer (系统工程师)</div>
+                        <div class="role-progress">
+                            <span id="role-02-percent">0%</span>
+                        </div>
+                        <div class="role-bar-track">
+                            <div class="role-bar-fill" id="role-02-bar"></div>
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-title">03 Browser Agent (浏览器智能体)</div>
+                        <div class="role-progress">
+                            <span id="role-03-percent">0%</span>
+                        </div>
+                        <div class="role-bar-track">
+                            <div class="role-bar-fill" id="role-03-bar"></div>
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-title">04 Memory Agent (智能体记忆专家)</div>
+                        <div class="role-progress">
+                            <span id="role-04-percent">0%</span>
+                        </div>
+                        <div class="role-bar-track">
+                            <div class="role-bar-fill" id="role-04-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks / Phase Panel Content Area -->
+        <div id="content-panel">
+            <!-- Dynamically populated -->
+        </div>
+
+        <footer>
+            EAZO.AI 靶向对齐学习手册 © 2026 · 基于 LocalStorage 保护本地隐私与学习足迹
+        </footer>
+    </main>
+</div>
+
+<script>
+    // 6-Phase Comprehensive Study Plan Data with mapped Job Roles & Handpicked Web Resources
+    const phasesData = [
+        {
+            id: "phase1",
+            title: "第一阶段：Agent 运行时、多模型编排与上下文工程",
+            duration: "Day 1 - 30",
+            target: "对齐岗位：02 智能体工程师 / 04 记忆工程师",
+            summary: "重点攻克：多模型统一代理路由层、极高频重复提示词成本控制、高性能流式上下文缓存管理及状态一致性模型。",
+            tasks: [
+                {
+                    id: "p1-1",
+                    days: "Day 1 - 10",
+                    title: "多模型基础设施统一编排",
+                    desc: "弃用传统单一模型SDK，构建以 LiteLLM 为核心底座的模型路由代理。设计具备自动 Fallback 兜底切换、动态时延监控和根据费用成本（Cost Limit）动态切换上游节点的调度规则。掌握在大并发量时动态防穿透机制。",
+                    resources: [
+                        { name: "LiteLLM Router docs", url: "https://docs.litellm.ai/", note: "精读 Router 模块源码，研究它是如何使用 Python 异步实现故障自愈、重试、多 key 负载均衡的。" },
+                        { name: "LiteLLM GitHub Repo", url: "https://github.com/BerriAI/litellm", note: "在本地克隆代码并重点审查其异常捕获机制与超时重试策略。" }
+                    ]
+                },
+                {
+                    id: "p1-2",
+                    days: "Day 11 - 20",
+                    title: "精细化上下文工程（Context Engineering）",
+                    desc: "攻克企业级多轮会话中的上下文溢出问题。设计可弹性管理的 Context Budget，实现智能的信息裁剪与动态剪枝机制（基于注意力权重的压缩算法），有效解决大模型长上下文“Lost in the Middle”的局限性。",
+                    resources: [
+                        { name: "Anthropic Prompt Caching Guide", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching", note: "掌握 Token 级成本控制的物理本质，深刻理解动态缓存技术。" },
+                        { name: "Lost in the Middle 核心论文", url: "https://arxiv.org/abs/2307.03172", note: "理解注意力机制在上下文首尾与中间部分的权重衰减规律。" }
+                    ]
+                },
+                {
+                    id: "p1-3",
+                    days: "Day 21 - 30",
+                    title: "生产级 Agent 状态机与本地 Serving",
+                    desc: "使用高并发异步模型（Python asyncio）重写 Agent 底层核心。开发具备断点 Resume（恢复）、持久化机制的状态机，并在本地搭建 vLLM Serving 服务，探究 PagedAttention 如何从工程层面优化显存占用并成倍提高吞吐率。",
+                    resources: [
+                        { name: "vLLM Documentation", url: "https://docs.vllm.ai/", note: "理解 vLLM 中的 PagedAttention 技术如何解决后端显存碎片化问题。" },
+                        { name: "Python Asyncio Docs", url: "https://docs.python.org/3/library/asyncio.html", note: "熟练使用 Python 异步锁与事件循环设计 Agent 的状态原子性。" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "phase2",
+            title: "第二阶段：高级工具系统设计、MCP 协议与代码自愈（Self-fix）循环",
+            duration: "Day 31 - 60",
+            target: "对齐岗位：01 代码智能体 / 02 智能体工程师",
+            summary: "重点攻克：极低故障率的 Model-Oriented 工具库规范设计、前沿大模型上下文通讯协议（MCP）、自动编译校验与错误自愈（Self-fix）闭环。",
+            tasks: [
+                {
+                    id: "p2-1",
+                    days: "Day 31 - 40",
+                    title: "Model-Oriented 工具系统规范设计",
+                    desc: "深度优化工具声明模式（Tool Schema & Description），建立工具输入参数和输出结果的自动格式校验拦截器。总结并分析 Tool Calling 失败的物理要素（如大模型幻觉参数），构建强防滑轨机制。",
+                    resources: [
+                        { name: "JSON Schema Specification", url: "https://json-schema.org/", note: "学会以最严苛、对LLM最易理解的规范声明工具元数据。" },
+                        { name: "OpenAI API: Function Calling Guide", url: "https://platform.openai.com/docs/guides/function-calling", note: "探究底层的 API 交互负载与大模型返回结构。" }
+                    ]
+                },
+                {
+                    id: "p2-2",
+                    days: "Day 41 - 50",
+                    title: "全面拥抱 MCP（Model Context Protocol）协议",
+                    desc: "彻底解耦传统硬编码的 Agent Tool。在本地手写一个完整的 MCP Server，实现大语言模型通过统一接口标准化、实时安全地读写本地文件系统、命令行输入和关联数据库（如 MySQL/Postgres）。",
+                    resources: [
+                        { name: "MCP (Model Context Protocol) 官网", url: "https://modelcontextprotocol.io/", note: "Anthropic 主推的下一代工具链协议，全面精读其核心协议与传输通道声明。" },
+                        { name: "MCP SDK Spec", url: "https://github.com/modelcontextprotocol", note: "分析 Python / TypeScript SDK 的实现，手动编写基于本地 Shell 交互的 MCP Server。" }
+                    ]
+                },
+                {
+                    id: "p2-3",
+                    days: "Day 51 - 60",
+                    title: "代码自愈（Self-fix）自动化循环系统",
+                    desc: "构建极高可靠性的『自动生成-静态分析-自动修复』死循环。集成 IDE AST（抽象语法树）或单元测试。当编译/执行过程捕获报错时，将精密的异常 Traceback 反馈给大模型以驱动自动闭环修复。",
+                    resources: [
+                        { name: "SWE-agent", url: "https://github.com/princeton-nlp/SWE-agent", note: "普林斯顿大学顶尖智能工程代理源码。分析它如何构建本地 Shell 交互闭环。" },
+                        { name: "aider", url: "https://github.com/paul-gauthier/aider", note: "市面上公认最实用的命令行 Coding Tool。重点学习它是如何在大模型交互中利用 git 变更并设计自愈逻辑的。" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "phase3",
+            title: "第三阶段：安全沙箱隔离环境与高并发分布式调度",
+            duration: "Day 61 - 90",
+            target: "对齐岗位：01 代码智能体 / 02 智能体工程师 / 03 浏览器智能体",
+            summary: "重点攻克：执行任意代码的安全边界防线、轻量级高速虚拟化沙箱底层、超长时延/多阶段长异步工作流调度引擎。",
+            tasks: [
+                {
+                    id: "p3-1",
+                    days: "Day 61 - 75",
+                    title: "云原生安全沙箱隔离实战（Sandbox）",
+                    desc: "解决 Agent 代码执行的终极安全问题。集成 E2B 容器沙箱运行时，实现毫秒级拉起包含完整代码解析器环境的文件沙箱，掌握在大并发量任务下临时沙箱的状态快照、扩容与极速销毁技术。了解 Firecracker / gVisor 的核心概念。",
+                    resources: [
+                        { name: "E2B (Agent Runtime Sandbox) 文档", url: "https://e2b.dev/docs", note: "专为 Agent 打造的高性能轻量级执行沙箱规范。重点研习其 Sandbox API 和实时流双向通讯。" },
+                        { name: "Firecracker MicroVM", url: "https://github.com/firecracker-microvm/firecracker", note: "AWS 开源的微型虚拟机底座，理解它是如何秒级拉起、实现系统调用拦截从而阻断黑客指令注入的。" }
+                    ]
+                },
+                {
+                    id: "p3-2",
+                    days: "Day 76 - 90",
+                    title: "长程任务分布式调度系统",
+                    desc: "设计可容忍连续执行数小时或数天的分布式 Agent。采用 FastAPI 搭配 Celery/Redis Queue 设计可恢复、具备断点持久化与事务幂等性（Idempotency）的运行队列，避免网络闪断、断电引起大模型任务全盘报废。",
+                    resources: [
+                        { name: "Celery Task Queue Docs", url: "https://docs.celeryq.dev/", note: "经典分布式任务调度库。深度攻克其在长耗时任务分配、状态回调及限流时的核心配置。" },
+                        { name: "Temporal.io Concepts", url: "https://docs.temporal.io/", note: "了解前沿工作流编排系统的持久化执行概念，学习其状态日志的设计理念。" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "phase4",
+            title: "第四阶段：浏览器自动化与底层协议逆向",
+            duration: "Day 91 - 120",
+            target: "对齐岗位：03 浏览器智能体工程师",
+            summary: "重点攻克：跳过常规框架直操 CDP 通讯底层、指纹浏览器指纹隐藏（TLS/JA3）、真实人类行为拟人化仿真与多级网页状态断点恢复。",
+            tasks: [
+                {
+                    id: "p4-1",
+                    days: "Day 91 - 100",
+                    title: "CDP 协议逆向与高级自动化",
+                    desc: "绕过普通自动化工具的死板限制，直接使用 CDP（Chrome DevTools Protocol）控制底层渲染引擎与网络层。使用 Playwright / Puppeteer 解决在面对没有固定 Selector、高度动态 DOM、复杂 iframe 嵌套及 SPA 单页应用时的抓取鲁棒性。",
+                    resources: [
+                        { name: "CDP Reference", url: "https://chromedevtools.github.io/devtools-protocol/", note: "最核心、最底层。不依赖封装，学会直接通过 CDP 发送网络事件、注入 JS 片段。" },
+                        { name: "Playwright Python Async API", url: "https://playwright.dev/python/docs/intro", note: "掌握高性能异步浏览器控制，学会监控和重写上游网络请求。" }
+                    ]
+                },
+                {
+                    id: "p4-2",
+                    days: "Day 101 - 110",
+                    title: "对抗反爬机制与拟人化策略",
+                    desc: "深入研究如何绕过主流安全网关。核心掌握 TLS/JA3 指纹伪装、基于 CDP 的真实的随机用户代理（UA）轮换、和真实人类点击/滑动的贝塞尔曲线算法，隐藏任何由自动化工具引起的特殊物理属性。",
+                    resources: [
+                        { name: "Skyvern Engine", url: "https://github.com/skyvern-ai/skyvern", note: "下一代利用大模型结合视觉和 DOM 的自动化智能体。分析其多步判断和页面异常处理的架构设计。" },
+                        { name: "puppeteer-extra stealth", url: "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth", note: "反自动化检测的事实标杆，研究它通过重写浏览器原生接口（如 navigator.webdriver）实现指纹完美伪装的源码。" }
+                    ]
+                },
+                {
+                    id: "p4-3",
+                    days: "Day 111 - 120",
+                    title: "长程网页任务状态机设计",
+                    desc: "解决由动态变化引起的任务失败。为 Browser Agent 构建分布式状态缓存，在网络请求加载超时、目标验证码拦截或系统崩溃时，能够实现持久化存储、跳过已知状态重试、甚至通过人机协同（Human-in-the-Loop）在人工手动输入验证码后实现完全无感知断点续行。",
+                    resources: [
+                        { name: "Stagehand Agent", url: "https://github.com/browserbase/stagehand", note: "探索其针对无固定 DOM 操作时，如何基于视觉实现高鲁棒性定位机制。" },
+                        { name: "Playwright Tracing & Videos", url: "https://playwright.dev/python/docs/trace-viewer", note: "实现完整的执行回溯，通过存储 Tracing 压缩包，实现出错步骤的可视化审查。" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "phase5",
+            title: "第五阶段：分层记忆体系统与 Graph RAG 架构",
+            duration: "Day 121 - 150",
+            target: "对齐岗位：04 智能体记忆工程师",
+            summary: "重点攻克：长期/短期分层记忆设计模式、基于操作系统虚拟缓存交换逻辑（MemGPT）的长轮长任务运行、大规模 Milvus 多路检索性能极度调优及实体图谱检索融合。",
+            tasks: [
+                {
+                    id: "p5-1",
+                    days: "Day 121 - 130",
+                    title: "多分路召回与前沿记忆框架",
+                    desc: "深度钻研将操作系统『内存/外存（RAM/Disk）』概念带入大模型上下文管理的先进技术。构建多分路召回框架，结合多轮对话上下文、向量检索（语义相似性）和时间序列衰减、遗忘算法，动态聚合当下最需要被大模型感知的最优信息集。",
+                    resources: [
+                        { name: "Letta (Formerly MemGPT)", url: "https://github.com/letta-ai/letta", note: "由伯克利大学主导的前沿大模型记忆与自治系统。重点深剖其如何通过 Agent 心跳、主动读写硬盘实现大模型状态的永续运行机制。" },
+                        { name: "Mem0 Python Framework", url: "https://github.com/mem0ai/mem0", note: "深入理解实体记忆与动态 User Profile 事实的提取、存储、以及全生命周期的管理策略。" }
+                    ]
+                },
+                {
+                    id: "p5-2",
+                    days: "Day 131 - 140",
+                    title: "大规模向量检索底座性能优化",
+                    desc: "基于 Milvus 千万级语义数据集，深度调优 HNSW 索引参数。构建后台定时运行的大模型『反思（Reflection）』离线调度管道：在每日深夜利用 LLM 对零星、高频的短期记忆进行压缩聚类，提炼出事实实体（Facts）后进行增量持久化存储。",
+                    resources: [
+                        { name: "Milvus Performance Bootcamps", url: "https://milvus.io/docs", note: "结合你原有的千万级存储经验，攻克冷启动优化、元数据过滤索引以及混合稀疏向量（Dense + Sparse）的高并发检索机制。" }
+                    ]
+                },
+                {
+                    id: "p5-3",
+                    days: "Day 141 - 150",
+                    title: "图数据库建模与 Graph RAG 融合",
+                    desc: "引入 Neo4j 拓扑。通过实体抽取模型对非结构化对话中频繁提到的人物、概念、习惯建立关系图。实现 Graph RAG 混合流：当输入问题时，同时从 Milvus 读语义上下文，从 Neo4j 提取二级关系关系拓扑，拼装成超越局域语义检索的终极记忆上下文。",
+                    resources: [
+                        { name: "Neo4j GraphAcademy: RAG", url: "https://graphacademy.neo4j.com/", note: "攻读其 Knowledge Graphs for RAG 专属技能模块，掌握利用 Cypher 语法为大模型进行实体关系召回的技术。" },
+                        { name: "Microsoft GraphRAG", url: "https://github.com/microsoft/graphrag", note: "微软开源图 RAG 标杆项目。深入其两阶段宏观聚合理论，理解其是如何在全局问题上生成高精准概要性回答的。" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "phase6",
+            title: "第六阶段：全链路可观测性、生产级评估与毕业靶向实战",
+            duration: "Day 151 - 180",
+            target: "对齐岗位：四大岗位通用的工程必杀技",
+            summary: "重点攻克：分布式链路追踪在非确定性 Agent 系统下的设计、量化 CI/CD 评估测试及靶向通关项目闭环交付。",
+            tasks: [
+                {
+                    id: "p6-1",
+                    days: "Day 151 - 160",
+                    title: "生产级 Agent 可观测性（Observability）",
+                    desc: "构建极高透明度的可观测性底座。彻底解构 Agent 调用链，通过 OpenTelemetry 和 APM 手段捕捉：每一次 Model Caching、Tool Calling 参数细节、向量提取耗时、大模型输入输出以及本次请求产生的真实 Token 消耗，可视化溯源系统延迟原因。",
+                    resources: [
+                        { name: "Langfuse Documentation", url: "https://langfuse.com/docs", note: "市面上最流行的 Agent 专属 APM 设施。精通 Trace / Span / Event / Generation / Score 树形通讯拓扑的 API 追踪细节。" },
+                        { name: "Arize Phoenix Docs", url: "https://phoenix.arize.com/", note: "通过本地极速拉起可观测看板，调试你的 RAG 与 Tools 调用，诊断系统幻觉与断链节点。" }
+                    ]
+                },
+                {
+                    id: "p6-2",
+                    days: "Day 161 - 165",
+                    title: "CI/CD 自动化评估（Evaluation）闭环",
+                    desc: "开发大模型验收网。使用 Ragas 框架建立对 Prompt 变动、知识库调整后的回归测试（Regression Testing）。通过自定义大模型裁判（LLM-as-a-Judge），持续量化指标：回答可信度（Faithfulness）、检索精确度（Context Precision）与相关度（Answer Relevance）。并在 GitHub Actions 构建自动评估门槛。",
+                    resources: [
+                        { name: "Ragas Framework", url: "https://ragas.io/", note: "经典 RAG 及 Agent 评估指标引擎。深钻其核心公式与自动测试集合生成的数学机理。" },
+                        { name: "Promptfoo Test Integration", url: "https://www.promptfoo.dev/docs/ci/", note: "了解 CI/CD 流程中在模型部署前进行提示词红队攻击和指标测试的实践模式。" }
+                    ]
+                },
+                {
+                    id: "p6-3",
+                    days: "Day 166 - 180",
+                    title: "毕业靶向实战项目：EAZO.AI 标准交付",
+                    desc: "【选择A】：仿照 Claude Code 开发一个能够连接本地开发工具链、基于 E2B 毫秒级云沙箱运行的自动代码生成与自愈（Self-fix）平台；【选择B】：设计开发一个具备多源检索（Neo4j+Milvus）动态反思记忆编译能力、利用 Playwright CDP 伪装跨越安全反爬、定时增量整理舆情并动态生成交互式网页的前沿 Browser Agent。并全链路监控 Langfuse Trace 汇报成果！",
+                    resources: [
+                        { name: "Claude Code / Cursor Insights", url: "https://github.com/features/copilot", note: "研读前沿智能 IDE 交互路径细节，以 EAZO 岗位 01、03 或 04 架构交付标准开发你最硬核的毕业作品。" }
+                    ]
+                }
+            ]
+        }
+    ];
+
+    // Job Roles to Tasks mapping (Weight calculation)
+    const roleMappings = {
+        "role-01": ["p2-1", "p2-2", "p2-3", "p3-1", "p6-3"],
+        "role-02": ["p1-1", "p1-2", "p1-3", "p2-2", "p3-2", "p6-1"],
+        "role-03": ["p4-1", "p4-2", "p4-3", "p3-1", "p6-3"],
+        "role-04": ["p5-1", "p5-2", "p5-3", "p1-2", "p5-2", "p5-3"]
+    };
+
+    let currentActiveTab = "overview";
+
+    // Initialize application states
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        renderActiveContent();
+        calculateProgress();
+    });
+
+    // Theme Management
+    function initTheme() {
+        const savedTheme = localStorage.getItem("eazo_theme") || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("eazo_theme", newTheme);
+        updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+        const icon = document.getElementById("theme-icon");
+        if (theme === "dark") {
+            icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+        } else {
+            icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+        }
+    }
+
+    // Tab Switcher
+    function switchTab(tabId) {
+        currentActiveTab = tabId;
+        
+        // Update Sidebar Active state
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach(item => item.classList.remove("active"));
+        
+        // Map tabId to sidebar index
+        const indexMap = { "overview": 0, "phase1": 1, "phase2": 2, "phase3": 3, "phase4": 4, "phase5": 5, "phase6": 6 };
+        navItems[indexMap[tabId]].classList.add("active");
+
+        // Set Search Box visibility (disable on overview page)
+        const searchBox = document.getElementById("search-bar-wrapper");
+        if (tabId === "overview") {
+            searchBox.style.display = "none";
+        } else {
+            searchBox.style.display = "block";
+        }
+
+        renderActiveContent();
+    }
+
+    // Render logic
+    function renderActiveContent() {
+        const container = document.getElementById("content-panel");
+        container.innerHTML = "";
+
+        if (currentActiveTab === "overview") {
+            renderOverview(container);
+            document.getElementById("current-title").innerText = "EAZO.AI 智能体基础设施工程师计划";
+            document.getElementById("current-subtitle").innerText = "四大岗位深度对齐与通关路线图 · 全景纵览";
+            return;
+        }
+
+        // Render specific Phase
+        const phase = phasesData.find(p => p.id === currentActiveTab);
+        if (!phase) return;
+
+        document.getElementById("current-title").innerText = phase.title;
+        document.getElementById("current-subtitle").innerText = `执行周期: ${phase.duration} | ${phase.target}`;
+
+        const phaseMeta = document.createElement("div");
+        phaseMeta.className = "phase-meta";
+        phaseMeta.innerHTML = `
+            <h3>${phase.title}</h3>
+            <p style="color: var(--accent-primary); font-weight:600; margin-top:6px;">${phase.target}</p>
+            <p style="margin-top:10px; line-height:1.6; font-size:14px;">${phase.summary}</p>
+        `;
+        container.appendChild(phaseMeta);
+
+        const tasksGrid = document.createElement("div");
+        tasksGrid.className = "tasks-container";
+        tasksGrid.id = "tasks-grid-element";
+
+        phase.tasks.forEach(task => {
+            const isCompleted = localStorage.getItem(`eazo_task_${task.id}`) === "true";
+            const taskCard = document.createElement("div");
+            taskCard.className = `task-card ${isCompleted ? 'completed' : ''}`;
+            taskCard.id = `card-${task.id}`;
+            taskCard.innerHTML = `
+                <div class="task-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" id="check-${task.id}" ${isCompleted ? 'checked' : ''} onclick="toggleTask('${task.id}')">
+                </div>
+                <div class="task-content">
+                    <div class="task-header">
+                        <span class="task-title">${task.title}</span>
+                        <span class="day-badge">${task.days}</span>
+                    </div>
+                    <p class="task-desc">${task.desc}</p>
+                    <div class="resources-accordion">
+                        <div class="accordion-header" onclick="toggleAccordion('${task.id}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" id="icon-accordion-${task.id}"><polyline points="6 9 12 15 18 9"/></svg>
+                            核心配套通关资料 (含精挑文献、官方仓库及攻关重点)
+                        </div>
+                        <div class="accordion-content" id="resources-${task.id}">
+                            ${task.resources.map(res => `
+                                <div class="resource-item">
+                                    <div class="resource-info">
+                                        <span class="resource-name">${res.name}</span>
+                                        <span class="resource-note">💡 <b>冲关导引：</b>${res.note}</span>
+                                    </div>
+                                    <a href="${res.url}" target="_blank" class="btn-link">
+                                        查看资源
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            tasksGrid.appendChild(taskCard);
+        });
+
+        container.appendChild(tasksGrid);
+    }
+
+    // Render Overview Dashboard
+    function renderOverview(container) {
+        const overviewDiv = document.createElement("div");
+        overviewDiv.className = "overview-panel";
+        overviewDiv.innerHTML = `
+            <div class="welcome-card">
+                <h2>🎯 EAZO.AI 智能体研发全景战役正式打响</h2>
+                <p>你好，资深后端研发专家。本路线图绝不带你做平庸的 GPT 套壳、写死逻辑的 Prompt Demo。它将引领你深入<b>智能体运行时 (Agent Runtime)、隔离安全沙箱架构、无痕浏览器底层协议（CDP）、以及千万级多源分层记忆体系统（MemGPT + Graph RAG）</b>。攻克本大图中的硬核指标，你将能直接降维打击、对齐高水准的 AI Agent 系统研发岗位。</p>
+            </div>
+
+            <h3 style="font-size: 18px; font-weight: 700; border-bottom: 2px solid var(--border-color); padding-bottom:10px;">靶向岗位能力对齐大图</h3>
+            <div class="job-target-box">
+                <div class="target-card">
+                    <div class="target-card-header">
+                        <div class="target-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        </div>
+                        <h4>01 Coding Agent (代码智能体工程师)</h4>
+                    </div>
+                    <ul>
+                        <li><b>核心战场：</b>设计能够全自动『获取分析代码-安全执行-自动捕获报错-自主编写补丁-自愈闭环』的高鲁棒性代码环境。</li>
+                        <li><b>冲关防线：</b>手写 Model-Oriented 工具强拦截、攻克 MCP 上下文传输标准协议、掌握 E2B 容器沙箱。</li>
+                    </ul>
+                </div>
+
+                <div class="target-card">
+                    <div class="target-card-header">
+                        <div class="target-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <h4>02 Agent Engineer (基础设施运行时工程师)</h4>
+                    </div>
+                    <ul>
+                        <li><b>核心战场：</b>打造生产级高并发、容灾、状态一致的长任务 Agent 调度引擎，杜绝大模型随机波动风险。</li>
+                        <li><b>冲关防线：</b>基于 LiteLLM 打造高可用路由、编写 Context Budget 控制长历史“Lost in the Middle”、编写 asyncio 高并发任务调度器。</li>
+                    </ul>
+                </div>
+
+                <div class="target-card">
+                    <div class="target-card-header">
+                        <div class="target-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                        <h4>03 Browser Agent (浏览器智能体工程师)</h4>
+                    </div>
+                    <ul>
+                        <li><b>核心战场：</b>令大模型能够像人类操作员一样，完全拟人化、无痕地穿梭于复杂网页流中执行长时间多步任务。</li>
+                        <li><b>冲关防线：</b>探究 CDP 底层通讯原理、编写 JA3 / TLS 指纹欺骗防御机制、设计网页加载超时自动熔断及断点续恢复。</li>
+                    </ul>
+                </div>
+
+                <div class="target-card">
+                    <div class="target-card-header">
+                        <div class="target-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                        </div>
+                        <h4>04 Memory Agent (多级智能体记忆体专家)</h4>
+                    </div>
+                    <ul>
+                        <li><b>核心战场：</b>攻克大模型上下文长度物理天花板，令 Agent 具备长期 User Profile 与知识记忆的深度组装、更新与检索。</li>
+                        <li><b>冲关防线：</b>理解 Letta (原MemGPT) 虚拟内存机制、在 Milvus 做千万级 HNSW 参数精优、使用 Neo4j 拓扑结合 Graph RAG。</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        container.appendChild(overviewDiv);
+    }
+
+    // Toggle Task and sync LocalStorage
+    function toggleTask(taskId) {
+        const checkbox = document.getElementById(`check-${taskId}`);
+        const card = document.getElementById(`card-${taskId}`);
+        
+        if (checkbox.checked) {
+            localStorage.setItem(`eazo_task_${taskId}`, "true");
+            card.classList.add("completed");
+        } else {
+            localStorage.setItem(`eazo_task_${taskId}`, "false");
+            card.classList.remove("completed");
+        }
+
+        calculateProgress();
+    }
+
+    // Toggle Collapsible Accordions
+    function toggleAccordion(taskId) {
+        const header = document.querySelector(`#card-${taskId} .accordion-header`);
+        const content = document.getElementById(`resources-${taskId}`);
+        
+        header.classList.toggle("open");
+        content.classList.toggle("show");
+    }
+
+    // Reactive Global Search
+    function handleSearch() {
+        const query = document.getElementById("search-input").value.trim().toLowerCase();
+        
+        // Return if we are on overview page
+        if (currentActiveTab === "overview") return;
+
+        const cards = document.querySelectorAll("#tasks-grid-element .task-card");
+        cards.forEach(card => {
+            const title = card.querySelector(".task-title").innerText.toLowerCase();
+            const desc = card.querySelector(".task-desc").innerText.toLowerCase();
+            
+            if (title.includes(query) || desc.includes(query)) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    // Advanced Progress Calculations (Dynamic Global Metrics & Role Readiness Maps)
+    function calculateProgress() {
+        // Collect total tasks
+        let totalCount = 0;
+        let checkedCount = 0;
+
+        phasesData.forEach(p => {
+            p.tasks.forEach(t => {
+                totalCount++;
+                if (localStorage.getItem(`eazo_task_${t.id}`) === "true") {
+                    checkedCount++;
+                }
+            });
+        });
+
+        const globalPercentValue = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+        
+        // Update global progress DOM elements
+        document.getElementById("global-percent").innerText = `${globalPercentValue}%`;
+        document.getElementById("global-count").innerText = `${checkedCount} / ${totalCount}`;
+        document.getElementById("global-bar").style.width = `${globalPercentValue}%`;
+
+        // Calculate Role Readiness
+        for (const [roleId, taskIds] of Object.entries(roleMappings)) {
+            const totalRoleTasks = taskIds.length;
+            let checkedRoleTasks = 0;
+
+            taskIds.forEach(tid => {
+                if (localStorage.getItem(`eazo_task_${tid}`) === "true") {
+                    checkedRoleTasks++;
+                }
+            });
+
+            const rolePercent = totalRoleTasks > 0 ? Math.round((checkedRoleTasks / totalRoleTasks) * 100) : 0;
+            
+            document.getElementById(`${roleId}-percent`).innerText = `${rolePercent}%`;
+            document.getElementById(`${roleId}-bar`).style.width = `${rolePercent}%`;
+        }
+    }
+
+    // Reset All Progress
+    function resetProgress() {
+        if (confirm("🚨 警告：确定要重置当前所有的学习通关进度吗？本操作将不可逆。")) {
+            phasesData.forEach(p => {
+                p.tasks.forEach(t => {
+                    localStorage.removeItem(`eazo_task_${t.id}`);
+                });
+            });
+            alert("学习记录已重置！");
+            
+            // Re-render
+            if (currentActiveTab !== "overview") {
+                renderActiveContent();
+            }
+            calculateProgress();
+        }
+    }
+</script>
+</body>
+</html>
